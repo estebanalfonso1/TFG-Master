@@ -1,0 +1,24 @@
+<main>
+    <h5>Iniciar sesión</h5>
+    <form (ngSubmit)="login()" [formGroup]="formLogin">
+        <div>
+            <label for="username">Usuario</label>
+            <input type="text" formControlName="username" id="username">
+            <div *ngIf="formLogin.get('username')?.touched && formLogin.get('username')?.invalid">
+                <span *ngIf="formLogin.get('username')?.errors?.['required']">
+                    Este campo es obligatorio.
+                </span>
+            </div>
+        </div>
+        <div>
+            <label for="password">Contraseña</label>
+            <input type="password" formControlName="password" id="password">
+            <div *ngIf="formLogin.get('password')?.touched && formLogin.get('password')?.invalid">
+                <span *ngIf="formLogin.get('password')?.errors?.['required']">
+                    Este campo es obligatorio.
+                </span>
+            </div>
+        </div>
+        <button type="submit" [disabled]="formLogin.invalid">Iniciar sesión</button>
+    </form>
+</main>

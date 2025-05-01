@@ -1,0 +1,3 @@
+export enum Rol {
+	PROFESOR, ALUMNO, ADMINISTRADOR
+}
