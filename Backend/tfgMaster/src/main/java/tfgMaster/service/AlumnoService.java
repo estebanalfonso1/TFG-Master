@@ -1,0 +1,80 @@
+package tfgMaster.service;
+
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+
+import jakarta.transaction.Transactional;
+import tfgMaster.entity.Alumno;
+import tfgMaster.entity.Rol;
+import tfgMaster.repository.AlumnoRepository;
+import tfgMaster.security.JWTUtils;
+
+@Service
+public class AlumnoService {
+	@Autowired
+	private AlumnoRepository alumnoRepository;
+	
+	@Autowired
+	private PasswordEncoder passwordEncoder;
+	
+	@Autowired
+	private JWTUtils JWTUtils;
+	
+	// Buscar ALUMNO por nombre de usuario
+	public Optional<Alumno> findByUsername(String username) {		
+		return alumnoRepository.findByUsername(username);
+	}
+	
+	// Busca todos los ALUMNOS
+		public List<Alumno> getAllAlumnos() {
+			return alumnoRepository.findAll();
+		}
+
+		// Buscar ALUMNO por Id
+		public Optional<Alumno> getAlumnoById(int id) {
+			return alumnoRepository.findById(id);
+		}
+		
+		// Crear ALUMNO
+		@Transactional
+		public Alumno saveAlumno(Alumno alumno) {
+			alumno.setRol(Rol.ALUMNO);
+			alumno.setPassword(passwordEncoder.encode(alumno.getPassword()));
+			return alumnoRepository.save(alumno);
+		}
+		
+		// Actualizar ALUMNO
+		@Transactional
+		public Alumno updateAlumno(Alumno alumnoU) {
+			Alumno alumno = JWTUtils.userLogin();
+			if (alumno != null) {
+				alumno.setNombre(alumnoU.getNombre());
+				alumno.setApellido1(alumnoU.getApellido1());
+				alumno.setApellido2(alumnoU.getApellido2());
+				alumno.setEmail(alumnoU.getEmail());
+				alumno.setFoto(alumnoU.getFoto());
+				alumno.setTelefono(alumnoU.getTelefono());
+				alumno.setDireccion(alumnoU.getDireccion());
+				alumno.setCalificacionTotal(alumnoU.getCalificacionTotal());
+				alumno.setCurso(alumnoU.getCurso());
+				return alumnoRepository.save(alumno);
+			}
+			return null;
+		}
+		
+		// Eliminar ALUMNO
+		@Transactional
+		public boolean deleteAlumno() {
+			Alumno alumno = JWTUtils.userLogin();
+			if (alumno != null) {
+				alumnoRepository.deleteById(alumno.getId());
+				return true;
+			}
+			return false;
+		}
+	
+}
