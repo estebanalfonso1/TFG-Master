@@ -8,7 +8,6 @@ import jakarta.validation.constraints.Pattern;
 
 @Entity
 public class Alumno extends Actor {
-	@NotBlank
 	@Min(0)
 	@Max(10)
 	private double calificacionTotal;

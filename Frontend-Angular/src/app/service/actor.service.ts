@@ -7,14 +7,19 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class ActorService {
+  private urlAPI = "http://localhost:8080"
 
   constructor(private http: HttpClient) { }
 
-  // URL API Backend
-  private urlAPI = "http://localhost:8080/login"
-
   login(actorLogin: ActorLogin): Observable<any> {
-    return this.http.post<any>(this.urlAPI, actorLogin);
+    return this.http.post<any>(`${this.urlAPI}/login`, actorLogin);
   }
 
+  userLogin(): Observable<any> {
+    return this.http.get<any>(`${this.urlAPI}/userLogin`);
+  }
+
+  actorExist(username: string): Observable<boolean> {
+    return this.http.get<boolean>(`${this.urlAPI}/actorExiste/${username}`);
+  }
 }

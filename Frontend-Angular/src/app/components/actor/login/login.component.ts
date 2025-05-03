@@ -27,7 +27,7 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    if (sessionStorage.getItem("token") !== null) {
+    if(sessionStorage.getItem("token") !== null) {
       this.router.navigate(['/']);
     }
   }
@@ -36,7 +36,7 @@ export class LoginComponent implements OnInit {
     const actor = this.formLogin.value;
 
     this.actorService.login(actor).subscribe(
-      tokenLogin => {
+      tokenLogin => { 
         sessionStorage.setItem("token", tokenLogin.token)
         this.router.navigate(['/']).then(() => window.location.reload());
       },

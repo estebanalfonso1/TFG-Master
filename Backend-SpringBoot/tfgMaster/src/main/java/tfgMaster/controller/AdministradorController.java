@@ -28,15 +28,15 @@ public class AdministradorController {
 	@ApiResponses(value = { @ApiResponse(responseCode = "201", description = "Administrador creado exitosamente"),
 			@ApiResponse(responseCode = "400", description = "Solicitud inválida"),
 			@ApiResponse(responseCode = "409", description = "El username ya está en uso") })
-	public ResponseEntity<String> saveAdministrador(@RequestBody Administrador administrador) {
+	public void saveAdministrador(@RequestBody Administrador administrador) {
 		if (administradorService.findByUsername(administrador.getUsername()).isPresent()) {
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("El username ya está en uso");
+			ResponseEntity.status(HttpStatus.BAD_REQUEST).body("El username ya está en uso");
 		} else {
 			Administrador a = administradorService.saveAdministrador(administrador);
 			if (a != null) {
-				return ResponseEntity.status(HttpStatus.CREATED).body("Administrador creado exitosamente");
+				ResponseEntity.status(HttpStatus.CREATED).body("Administrador creado exitosamente");
 			} else {
-				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("No se pudo crear el administrador");
+				ResponseEntity.status(HttpStatus.BAD_REQUEST).body("No se pudo crear el administrador");
 			}
 		}
 	}
@@ -46,12 +46,12 @@ public class AdministradorController {
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Administrador actualizado exitosamente"),
 			@ApiResponse(responseCode = "404", description = "Administrador no encontrado"),
 			@ApiResponse(responseCode = "400", description = "Solicitud inválida") })
-	public ResponseEntity<String> updateAdministrador(@RequestBody Administrador updatedAdministrador) {
+	public void updateAdministrador(@RequestBody Administrador updatedAdministrador) {
 		Administrador response = administradorService.updateAdministrador(updatedAdministrador);
 		if (response != null) {
-			return ResponseEntity.status(HttpStatus.OK).body("Administrador actualizado exitosamente");
+			ResponseEntity.status(HttpStatus.OK).body("Administrador actualizado exitosamente");
 		} else {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Administrador no encontrado");
+			ResponseEntity.status(HttpStatus.NOT_FOUND).body("Administrador no encontrado");
 		}
 	}
 
@@ -59,11 +59,11 @@ public class AdministradorController {
 	@Operation(summary = "Eliminar un administrador logueado")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Administrador eliminado exitosamente"),
 			@ApiResponse(responseCode = "404", description = "Administrador no encontrado") })
-	public ResponseEntity<String> deleteAdministrador() {
+	public void deleteAdministrador() {
 		if (administradorService.deleteAdministrador()) {
-			return ResponseEntity.status(HttpStatus.OK).body("Administrador eliminado exitosamente");
+			ResponseEntity.status(HttpStatus.OK).body("Administrador eliminado exitosamente");
 		} else {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Administrador no encontrado");
+			ResponseEntity.status(HttpStatus.NOT_FOUND).body("Administrador no encontrado");
 		}
 	}
 

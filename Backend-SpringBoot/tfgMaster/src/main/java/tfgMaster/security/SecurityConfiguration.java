@@ -38,25 +38,36 @@ public class SecurityConfiguration {
 	}
 
 	@Bean
-    SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+	SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		http.cors().and()
-			.csrf().disable()
-			.authorizeHttpRequests()
+				.csrf().disable()
+				.authorizeHttpRequests()
 				// LOGIN
 				.requestMatchers("/login").permitAll()
-				.requestMatchers("/actorLogeado").permitAll()
+				.requestMatchers("/userLogin").permitAll()
+				.requestMatchers("/actorExiste/**").permitAll()
 
-				// PRODUCTO
-				.requestMatchers(HttpMethod.GET, "/producto").permitAll()
-				.requestMatchers(HttpMethod.GET, "/producto/{id}").permitAll()
-				.requestMatchers(HttpMethod.POST, "/producto").hasAuthority("CASETA")
-				.requestMatchers(HttpMethod.PUT, "/producto/{id}").hasAuthority("CASETA")
-				.requestMatchers(HttpMethod.DELETE, "/producto/{id}").hasAuthority("CASETA")
-				
+				// ADMINISTRADOR
+				.requestMatchers(HttpMethod.POST, "/administrador").hasAuthority("ADMINISTRADOR")
+				.requestMatchers(HttpMethod.PUT, "/administrador").hasAuthority("ADMINISTRADOR")
+				.requestMatchers(HttpMethod.DELETE, "/administrador").hasAuthority("ADMINISTRADOR")
+
+				// PROFESOR
+				.requestMatchers(HttpMethod.POST, "/profesor").hasAuthority("ADMINISTRADOR")
+				.requestMatchers(HttpMethod.PUT, "/profesor").hasAuthority("PROFESOR")
+				.requestMatchers(HttpMethod.DELETE, "/profesor").hasAuthority("ADMINISTRADOR")
+
+				// ALUMNO
+				.requestMatchers(HttpMethod.POST, "/alumno").hasAuthority("PROFESOR")
+				.requestMatchers(HttpMethod.PUT, "/alumno").hasAuthority("ALUMNO")
+				.requestMatchers(HttpMethod.PUT, "/alumno/{id}").hasAuthority("PROFESOR")
+				.requestMatchers(HttpMethod.DELETE, "/alumno").hasAuthority("PROFESOR")
+				.requestMatchers(HttpMethod.GET, "/alumno/{id}").hasAuthority("PROFESOR")
+
 				// SWAGGER
 				.requestMatchers("/swagger-ui/**").permitAll()
-                .requestMatchers("/v3/api-docs/**").permitAll()
-                
+				.requestMatchers("/v3/api-docs/**").permitAll()
+
 				// OTRAS RUTAS
 				.anyRequest().authenticated();
 

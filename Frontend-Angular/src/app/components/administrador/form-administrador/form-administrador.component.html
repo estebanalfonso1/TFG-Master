@@ -1,0 +1,82 @@
+<main>
+    <h5>Formulario de Administrador</h5>
+    <form [formGroup]="administradorForm" (ngSubmit)="save()">
+        <div>
+            <label for="nombre">Nombre</label>
+            <input id="nombre" formControlName="nombre" type="text" required />
+            <div *ngIf="administradorForm.get('nombre')?.invalid && administradorForm.get('nombre')?.touched"
+                class="text-danger">
+                El nombre es obligatorio.
+            </div>
+        </div>
+        <div>
+            <label for="apellido1">Primer apellido</label>
+            <input id="apellido1" formControlName="apellido1" type="text" required />
+            <div *ngIf="administradorForm.get('apellido1')?.invalid && administradorForm.get('apellido1')?.touched"
+                class="text-danger">
+                El primer apellido es obligatorio.
+            </div>
+        </div>
+        <div>
+            <label for="apellido2">Segundo apellido</label>
+            <input id="apellido2" formControlName="apellido2" type="text" required />
+            <div *ngIf="administradorForm.get('apellido2')?.invalid && administradorForm.get('apellido2')?.touched"
+                class="text-danger">
+                El segundo apellido es obligatorio.
+            </div>
+        </div>
+        <div>
+            <label for="email">Correo electrónico</label>
+            <input id="email" formControlName="email" type="email" required />
+            <div *ngIf="administradorForm.get('email')?.invalid && administradorForm.get('email')?.touched"
+                class="text-danger">
+                El correo electrónico es obligatorio y debe ser válido.
+            </div>
+        </div>
+        <div>
+            <label for="foto">Foto</label>
+            <input id="foto" formControlName="foto" type="text" />
+        </div>
+        <div>
+            <label for="telefono">Teléfono</label>
+            <input id="telefono" formControlName="telefono" type="text" />
+            <div *ngIf="administradorForm.get('telefono')?.invalid && administradorForm.get('telefono')?.touched"
+                class="text-danger">
+                El teléfono debe ser un número válido.
+            </div>
+        </div>
+        <div>
+            <label for="direccion">Dirección</label>
+            <input id="direccion" formControlName="direccion" type="text" />
+        </div>
+
+        <div *ngIf="!isEditMode">
+            <label for="username">Nombre de usuario</label>
+            <input id="username" formControlName="username" type="text" required />
+            <div *ngIf="administradorForm.get('username')?.invalid && administradorForm.get('username')?.touched"
+                class="text-danger">
+                El nombre de usuario es obligatorio.
+            </div>
+        </div>
+        <div *ngIf="!isEditMode">
+            <label for="password">Contraseña</label>
+            <input id="password" formControlName="password" type="password" required />
+            <div *ngIf="administradorForm.get('password')?.invalid && administradorForm.get('password')?.touched"
+                class="text-danger">
+                La contraseña es obligatoria (mínimo 8 caracteres).
+            </div>
+        </div>
+        <div *ngIf="!isEditMode">
+            <label for="passconfirm">Confirmar Contraseña</label>
+            <input id="passconfirm" formControlName="passconfirm" type="password" required />
+            <div *ngIf="administradorForm.get('passconfirm')?.invalid && administradorForm.get('passconfirm')?.touched"
+                class="text-danger">
+                La confirmación de la contraseña es obligatoria.
+            </div>
+            <div *ngIf="administradorForm.hasError('passNoCoinciden')" class="text-danger">
+                Las contraseñas no coinciden.
+            </div>
+        </div>
+        <button type="submit" [disabled]="administradorForm.invalid">Guardar</button>
+    </form>
+</main>

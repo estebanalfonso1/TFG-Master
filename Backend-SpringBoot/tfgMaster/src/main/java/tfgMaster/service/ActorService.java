@@ -13,6 +13,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import jakarta.transaction.Transactional;
 import tfgMaster.entity.Actor;
 import tfgMaster.repository.ActorRepository;
 
@@ -21,10 +22,16 @@ public class ActorService implements UserDetailsService {
 	@Autowired
 	private ActorRepository actorRepository;
 
+	@Transactional
+	public Actor saveActor(Actor actor) {
+		return actorRepository.save(actor);
+	}
+	
 	public Optional<Actor> findByUsername(String username) {
 		return actorRepository.findByUsername(username);
 	}
 
+	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		Optional<Actor> actorO = this.findByUsername(username);
 		if (actorO.isPresent()) {

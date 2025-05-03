@@ -42,6 +42,7 @@ public class AlumnoService {
 		// Crear ALUMNO
 		@Transactional
 		public Alumno saveAlumno(Alumno alumno) {
+			alumno.setCalificacionTotal(0);
 			alumno.setRol(Rol.ALUMNO);
 			alumno.setPassword(passwordEncoder.encode(alumno.getPassword()));
 			return alumnoRepository.save(alumno);
@@ -62,6 +63,25 @@ public class AlumnoService {
 				alumno.setCalificacionTotal(alumnoU.getCalificacionTotal());
 				alumno.setCurso(alumnoU.getCurso());
 				return alumnoRepository.save(alumno);
+			}
+			return null;
+		}
+
+		// Actualizar ALUMNO por id
+		@Transactional
+		public Alumno updateAlumnoById(int id, Alumno alumnoU) {
+			Optional<Alumno> alumno = alumnoRepository.findById(id);
+			if (alumno != null) {
+				alumno.get().setNombre(alumnoU.getNombre());
+				alumno.get().setApellido1(alumnoU.getApellido1());
+				alumno.get().setApellido2(alumnoU.getApellido2());
+				alumno.get().setEmail(alumnoU.getEmail());
+				alumno.get().setFoto(alumnoU.getFoto());
+				alumno.get().setTelefono(alumnoU.getTelefono());
+				alumno.get().setDireccion(alumnoU.getDireccion());
+				alumno.get().setCalificacionTotal(alumnoU.getCalificacionTotal());
+				alumno.get().setCurso(alumnoU.getCurso());
+				return alumnoRepository.save(alumno.get());
 			}
 			return null;
 		}

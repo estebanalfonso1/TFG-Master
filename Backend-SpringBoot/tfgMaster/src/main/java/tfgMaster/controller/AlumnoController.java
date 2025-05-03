@@ -1,9 +1,13 @@
 package tfgMaster.controller;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -28,15 +32,15 @@ public class AlumnoController {
 	@ApiResponses(value = { @ApiResponse(responseCode = "201", description = "Alumno creado exitosamente"),
 			@ApiResponse(responseCode = "400", description = "Solicitud inválida"),
 			@ApiResponse(responseCode = "409", description = "El username ya está en uso") })
-	public ResponseEntity<String> saveAlumno(@RequestBody Alumno alumno) {
+	public void saveAlumno(@RequestBody Alumno alumno) {
 		if (alumnoService.findByUsername(alumno.getUsername()).isPresent()) {
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("El username ya está en uso");
+			ResponseEntity.status(HttpStatus.BAD_REQUEST).body("El username ya está en uso");
 		} else {
 			Alumno a = alumnoService.saveAlumno(alumno);
 			if (a != null) {
-				return ResponseEntity.status(HttpStatus.CREATED).body("Alumno creado exitosamente");
+				ResponseEntity.status(HttpStatus.CREATED).body("Alumno creado exitosamente");
 			} else {
-				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("No se pudo crear el alumno");
+				ResponseEntity.status(HttpStatus.BAD_REQUEST).body("No se pudo crear el alumno");
 			}
 		}
 	}
@@ -46,12 +50,26 @@ public class AlumnoController {
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Alumno actualizado exitosamente"),
 			@ApiResponse(responseCode = "404", description = "Alumno no encontrado"),
 			@ApiResponse(responseCode = "400", description = "Solicitud inválida") })
-	public ResponseEntity<String> updateAlumno(@RequestBody Alumno updatedAlumno) {
+	public void updateAlumno(@RequestBody Alumno updatedAlumno) {
 		Alumno response = alumnoService.updateAlumno(updatedAlumno);
 		if (response != null) {
-			return ResponseEntity.status(HttpStatus.OK).body("Alumno actualizado exitosamente");
+			ResponseEntity.status(HttpStatus.OK).body("Alumno actualizado exitosamente");
 		} else {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Alumno no encontrado");
+			ResponseEntity.status(HttpStatus.NOT_FOUND).body("Alumno no encontrado");
+		}
+	}
+
+	@PutMapping("/{id}")
+	@Operation(summary = "Actualizar un alumno existente")
+	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Alumno actualizado exitosamente"),
+			@ApiResponse(responseCode = "404", description = "Alumno no encontrado"),
+			@ApiResponse(responseCode = "400", description = "Solicitud inválida") })
+	public void updateAlumnoById(@PathVariable int id, @RequestBody Alumno updatedAlumno) {
+		Alumno response = alumnoService.updateAlumnoById(id, updatedAlumno);
+		if (response != null) {
+			ResponseEntity.status(HttpStatus.OK).body("Alumno actualizado exitosamente");
+		} else {
+			ResponseEntity.status(HttpStatus.NOT_FOUND).body("Alumno no encontrado");
 		}
 	}
 
@@ -59,11 +77,27 @@ public class AlumnoController {
 	@Operation(summary = "Eliminar un alumno logueado")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Alumno eliminado exitosamente"),
 			@ApiResponse(responseCode = "404", description = "Alumno no encontrado") })
-	public ResponseEntity<String> deleteAlumno() {
+	public void deleteAlumno() {
 		if (alumnoService.deleteAlumno()) {
-			return ResponseEntity.status(HttpStatus.OK).body("Alumno eliminado exitosamente");
+			ResponseEntity.status(HttpStatus.OK).body("Alumno eliminado exitosamente");
 		} else {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Alumno no encontrado");
+			ResponseEntity.status(HttpStatus.NOT_FOUND).body("Alumno no encontrado");
 		}
 	}
+
+	@GetMapping("/{id}")
+	@Operation(summary = "Buscar un alumno por ID")
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "200", description = "Alumno encontrado"),
+			@ApiResponse(responseCode = "404", description = "Alumno no encontrado")
+	})
+	public ResponseEntity<Alumno> findOneAlumno(@PathVariable int id) {
+		Optional<Alumno> alumno = alumnoService.getAlumnoById(id);
+		if (alumno.isPresent()) {
+			return ResponseEntity.ok(alumno.get());
+		} else {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+		}
+	}
+
 }

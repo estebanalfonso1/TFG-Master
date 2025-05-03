@@ -40,14 +40,14 @@ public class ProfesorService {
 	}
 
 	// Guardar PROFESOR
-	@Transactional
-	public Profesor saveProfesor(Profesor profesor) {
-		return profesorRepository.save(profesor);
-	}
+	// @Transactional
+	// public Profesor createProfesor(Profesor profesor) {
+	// 	return profesorRepository.save(profesor);
+	// }
 
 	// Crear PROFESOR
 	@Transactional
-	public Profesor createProfesor(Profesor profesor) {
+	public Profesor saveProfesor(Profesor profesor) {
 		profesor.setRol(Rol.PROFESOR);
 		profesor.setPassword(passwordEncoder.encode(profesor.getPassword()));
 		return profesorRepository.save(profesor);

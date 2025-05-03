@@ -28,15 +28,15 @@ public class ProfesorController {
 	@ApiResponses(value = { @ApiResponse(responseCode = "201", description = "Profesor creado exitosamente"),
 			@ApiResponse(responseCode = "400", description = "Solicitud inválida"),
 			@ApiResponse(responseCode = "409", description = "El username ya está en uso") })
-	public ResponseEntity<String> saveProfesor(@RequestBody Profesor profesor) {
+	public void saveProfesor(@RequestBody Profesor profesor) {
 		if (profesorService.findByUsername(profesor.getUsername()).isPresent()) {
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("El username ya está en uso");
+			ResponseEntity.status(HttpStatus.BAD_REQUEST).body("El username ya está en uso");
 		} else {
 			Profesor p = profesorService.saveProfesor(profesor);
 			if (p != null) {
-				return ResponseEntity.status(HttpStatus.CREATED).body("Profesor creado exitosamente");
+				ResponseEntity.status(HttpStatus.CREATED).body("Profesor creado exitosamente");
 			} else {
-				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("No se pudo crear el profesor");
+				ResponseEntity.status(HttpStatus.BAD_REQUEST).body("No se pudo crear el profesor");
 			}
 		}
 	}
@@ -46,12 +46,12 @@ public class ProfesorController {
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Profesor actualizado exitosamente"),
 			@ApiResponse(responseCode = "404", description = "Profesor no encontrado"),
 			@ApiResponse(responseCode = "400", description = "Solicitud inválida") })
-	public ResponseEntity<String> updateProfesor(@RequestBody Profesor updatedProfesor) {
+	public void updateProfesor(@RequestBody Profesor updatedProfesor) {
 		Profesor response = profesorService.updateProfesor(updatedProfesor);
 		if (response != null) {
-			return ResponseEntity.status(HttpStatus.OK).body("Profesor actualizado exitosamente");
+			ResponseEntity.status(HttpStatus.OK).body("Profesor actualizado exitosamente");
 		} else {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Profesor no encontrado");
+			ResponseEntity.status(HttpStatus.NOT_FOUND).body("Profesor no encontrado");
 		}
 	}
 
@@ -59,11 +59,11 @@ public class ProfesorController {
 	@Operation(summary = "Eliminar un profesor logueado")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Profesor eliminado exitosamente"),
 			@ApiResponse(responseCode = "404", description = "Profesor no encontrado") })
-	public ResponseEntity<String> deleteProfesor() {
+	public void deleteProfesor() {
 		if (profesorService.deleteProfesor()) {
-			return ResponseEntity.status(HttpStatus.OK).body("Profesor eliminado exitosamente");
+			ResponseEntity.status(HttpStatus.OK).body("Profesor eliminado exitosamente");
 		} else {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Profesor no encontrado");
+			ResponseEntity.status(HttpStatus.NOT_FOUND).body("Profesor no encontrado");
 		}
 	}
 }
