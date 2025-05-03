@@ -4,7 +4,7 @@ import java.util.Date;
 import java.util.Set;
 
 import jakarta.persistence.Entity;
-import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.validation.constraints.NotBlank;
 
@@ -16,11 +16,11 @@ public class Rubrica extends DomainEntity {
 	@NotBlank
 	private Date fechaPublicacion;
 
-	@ManyToMany//(optional = false)
-	private Set<Criterio> criterios;
-	
 	@OneToOne(optional = false)
-	private Profesor profesores;
+	private Profesor profesor;
+
+	@OneToMany
+	private Set<Criterio> criterios;
 
 	public Rubrica() {
 		super();
@@ -50,12 +50,12 @@ public class Rubrica extends DomainEntity {
 		this.criterios = criterios;
 	}
 
-	public Profesor getProfesores() {
-		return profesores;
+	public Profesor getProfesor() {
+		return profesor;
 	}
 
-	public void setProfesores(Profesor profesores) {
-		this.profesores = profesores;
+	public void setProfesor(Profesor profesor) {
+		this.profesor = profesor;
 	}
 
 }
