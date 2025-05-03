@@ -7,7 +7,8 @@ import jakarta.validation.constraints.NotBlank;
 
 @Entity
 public class Criterio extends DomainEntity {
-	@NotBlank
+	@Max(10)
+	@Min(0)	
 	private int puntuacionObtenida;
 
 	@Max(10)
