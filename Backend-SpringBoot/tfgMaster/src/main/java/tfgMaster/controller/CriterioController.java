@@ -33,12 +33,12 @@ public class CriterioController {
 	@Operation(summary = "Crear un nuevo criterio")
 	@ApiResponses(value = { @ApiResponse(responseCode = "201", description = "Criterio creado exitosamente"),
 			@ApiResponse(responseCode = "400", description = "Error al crear el criterio") })
-	public ResponseEntity<String> saveCriterio(@RequestBody Criterio criterio) {
+	public void saveCriterio(@RequestBody Criterio criterio) {
 		Criterio criterioSave = criterioService.saveCriterio(criterio);
 		if (criterioSave == null) {
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error al crear el criterio");
+			ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error al crear el criterio");
 		} else {
-			return ResponseEntity.status(HttpStatus.ACCEPTED).body("Criterio creado correctamente");
+			ResponseEntity.status(HttpStatus.ACCEPTED).body("Criterio creado correctamente");
 		}
 	}
 

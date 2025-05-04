@@ -37,12 +37,12 @@ public class TribunalController {
 	@Operation(summary = "Crear un nuevo tribunal")
 	@ApiResponses(value = { @ApiResponse(responseCode = "201", description = "Tribunal creado exitosamente"),
 			@ApiResponse(responseCode = "400", description = "Error al crear el tribunal") })
-	public ResponseEntity<String> saveTribunal(@RequestBody Tribunal tribunal) {
+	public void saveTribunal(@RequestBody Tribunal tribunal) {
 		Tribunal tribunalSave = tribunalService.saveTribunal(tribunal);
 		if (tribunalSave == null) {
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error al crear el tribunal");
+			ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error al crear el tribunal");
 		} else {
-			return ResponseEntity.status(HttpStatus.ACCEPTED).body("Tribunal creado correctamente");
+			ResponseEntity.status(HttpStatus.ACCEPTED).body("Tribunal creado correctamente");
 		}
 	}
 
@@ -74,7 +74,7 @@ public class TribunalController {
 	}
 
 	@GetMapping("/{id}")
-	@Operation(summary = "Buscar una tribunal por ID")
+	@Operation(summary = "Buscar un tribunal por ID")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Tribunal encontrado"),
 			@ApiResponse(responseCode = "404", description = "Tribunal no encontrado") })
 	public ResponseEntity<Tribunal> findOneTribunal(@PathVariable int id) {
@@ -129,12 +129,12 @@ public class TribunalController {
 	@Operation(summary = "Calificar un tribunal por ID")
 	@ApiResponses(value = { @ApiResponse(responseCode = "202", description = "Tribunal calificado exitosamente"),
 			@ApiResponse(responseCode = "400", description = "Error al calificar el tribunal") })
-	public ResponseEntity<String> qualifyTribunal(@PathVariable int id) {
+	public ResponseEntity<Void> qualifyTribunal(@PathVariable int id) {
 		Boolean verEstado = tribunalService.qualifyTribunal(id);
 		if (verEstado == false) {
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error al calificar el tribunal");
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
 		} else {
-			return ResponseEntity.status(HttpStatus.ACCEPTED).body("Tribunal calificado correctamente");
+			return ResponseEntity.status(HttpStatus.ACCEPTED).build();
 		}
 	}
 

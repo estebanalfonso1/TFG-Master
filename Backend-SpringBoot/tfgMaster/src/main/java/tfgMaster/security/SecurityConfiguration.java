@@ -64,6 +64,31 @@ public class SecurityConfiguration {
 				.requestMatchers(HttpMethod.DELETE, "/alumno").hasAuthority("PROFESOR")
 				.requestMatchers(HttpMethod.GET, "/alumno/{id}").hasAuthority("PROFESOR")
 
+				// TRIBUNAL
+				.requestMatchers(HttpMethod.POST, "/tribunal").hasAuthority("PROFESOR")
+				.requestMatchers(HttpMethod.PUT, "/tribunal/{id}").hasAuthority("PROFESOR")
+				.requestMatchers(HttpMethod.DELETE, "/tribunal/{id}").hasAuthority("PROFESOR")
+				.requestMatchers(HttpMethod.GET, "/tribunal/{id}").hasAuthority("PROFESOR")
+				.requestMatchers(HttpMethod.GET, "/tribunal").hasAuthority("PROFESOR")
+				.requestMatchers(HttpMethod.GET, "/tribunal/deProfesor").hasAuthority("PROFESOR")
+				.requestMatchers(HttpMethod.GET, "/tribunal/profesores/{id}").hasAuthority("PROFESOR")
+				.requestMatchers(HttpMethod.GET, "/tribunal/rubricas/{id}").hasAuthority("PROFESOR")
+				.requestMatchers(HttpMethod.GET, "/tribunal/calificar/{id}").hasAuthority("PROFESOR")
+
+				// RUBRICA
+				.requestMatchers(HttpMethod.POST, "/rubrica").hasAuthority("PROFESOR")
+				.requestMatchers(HttpMethod.PUT, "/rubrica/{id}").hasAuthority("PROFESOR")
+				.requestMatchers(HttpMethod.DELETE, "/rubrica/{id}").hasAuthority("PROFESOR")
+				.requestMatchers(HttpMethod.GET, "/rubrica/{id}").hasAuthority("PROFESOR")
+				.requestMatchers(HttpMethod.GET, "/rubrica").hasAuthority("PROFESOR")
+
+				// CRITERIO
+				.requestMatchers(HttpMethod.POST, "/criterio").hasAuthority("PROFESOR")
+				.requestMatchers(HttpMethod.PUT, "/criterio/{id}").hasAuthority("PROFESOR")
+				.requestMatchers(HttpMethod.DELETE, "/criterio/{id}").hasAuthority("PROFESOR")
+				.requestMatchers(HttpMethod.GET, "/criterio/{id}").hasAuthority("PROFESOR")
+				.requestMatchers(HttpMethod.GET, "/criterio").hasAuthority("PROFESOR")
+
 				// SWAGGER
 				.requestMatchers("/swagger-ui/**").permitAll()
 				.requestMatchers("/v3/api-docs/**").permitAll()

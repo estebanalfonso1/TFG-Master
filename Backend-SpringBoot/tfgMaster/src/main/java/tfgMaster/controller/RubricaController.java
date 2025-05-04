@@ -34,12 +34,12 @@ public class RubricaController {
 	@Operation(summary = "Crear una nueva rubrica")
 	@ApiResponses(value = { @ApiResponse(responseCode = "201", description = "Rubrica creada exitosamente"),
 			@ApiResponse(responseCode = "400", description = "Error al crear la rubrica") })
-	public ResponseEntity<String> saveRubrica(@RequestBody Rubrica rubrica) {
+	public void saveRubrica(@RequestBody Rubrica rubrica) {
 		Rubrica rubricaSave = rubricaService.saveRubrica(rubrica);
 		if (rubricaSave == null) {
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error al crear la rubrica");
+			ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error al crear la rubrica");
 		} else {
-			return ResponseEntity.status(HttpStatus.ACCEPTED).body("Rubrica creada correctamente");
+			ResponseEntity.status(HttpStatus.ACCEPTED).body("Rubrica creada correctamente");
 		}
 	}
 
