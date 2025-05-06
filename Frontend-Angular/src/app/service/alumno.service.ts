@@ -20,10 +20,11 @@ export class AlumnoService {
     editAlumno(alumno: Alumno): Observable<void> {
         return this.http.put<void>(this.urlAPI, alumno);
     }
-    
-    editAlumnoById(id:number, alumno: Alumno): Observable<void> {
+
+    editAlumnoById(id: number, alumno: Alumno): Observable<void> {
         const url = `${this.urlAPI}/${id}`;
-        return this.http.put<void>(url, alumno);    }
+        return this.http.put<void>(url, alumno);
+    }
 
     deleteAlumno(): Observable<void> {
         return this.http.delete<void>(this.urlAPI);
@@ -32,6 +33,10 @@ export class AlumnoService {
     getOneAlumno(id: number): Observable<Alumno> {
         const url = `${this.urlAPI}/${id}`;
         return this.http.get<Alumno>(url);
-      }
+    }
+
+    getAllAlumno(): Observable<Alumno[]> {
+        return this.http.get<Alumno[]>(this.urlAPI);
+    }
 
 }

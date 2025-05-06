@@ -1,7 +1,5 @@
 package tfgMaster.service;
 
-import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 
@@ -9,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import jakarta.transaction.Transactional;
-import tfgMaster.entity.Criterio;
 import tfgMaster.entity.Profesor;
 import tfgMaster.entity.Rubrica;
 import tfgMaster.entity.Tribunal;
@@ -41,9 +38,6 @@ public class RubricaService {
 	@Transactional
 	public Rubrica saveRubrica(Rubrica rubrica) {
 
-		rubrica.setFechaPublicacion(new Date());
-		rubrica.setCriterios(new HashSet<Criterio>());
-
 		Rubrica rubricaSave = rubricaRepository.save(rubrica);
 
 		return rubricaSave;
@@ -57,6 +51,9 @@ public class RubricaService {
 		if (rubricaO.isPresent()) {
 			Profesor profesor = JWTUtils.userLogin();
 			if (profesor != null) {
+				rubricaO.get().setDescripcion(rubrica.getDescripcion());
+				rubricaO.get().setCriterios(rubrica.getCriterios());
+				rubricaO.get().setEsBorrador(rubrica.getEsBorrador());
 				return rubricaRepository.save(rubricaO.get());
 			}
 		}
@@ -73,7 +70,7 @@ public class RubricaService {
 		if (rubricaO.isPresent()) {
 			boolean contieneRubrica = false;
 			for (Tribunal tribunal : tribunalService.getAllTribunales()) {
-				if (tribunal.getRubricas().contains(rubricaO.get())) {
+				if (tribunal.getRubrica().equals(rubricaO.get())) {
 					contieneRubrica = true;
 				}
 			}

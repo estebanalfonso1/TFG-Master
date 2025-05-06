@@ -4,15 +4,15 @@ import { Profesor } from "./Profesor";
 export class Rubrica {
     id!: number;
     descripcion: string;
+    esBorrador: boolean;
     fechaPublicacion: Date;
-    profesor: Profesor;
     criterios: Set<Criterio>;
 
-    constructor(descripcion: string, fechaPublicacion: Date, profesor: Profesor, criterios: Set<Criterio>
+    constructor(descripcion: string, esBorrador: boolean, fechaPublicacion: Date, criterios: Set<Criterio>
     ) {
         this.descripcion = descripcion,
+            this.esBorrador = esBorrador,
             this.fechaPublicacion = fechaPublicacion,
-            this.profesor = profesor,
             this.criterios = criterios
     }
 }

@@ -1,0 +1,18 @@
+<h2>Formulario de Rúbricas</h2>
+
+<form (ngSubmit)="save()" [formGroup]="formRubrica">
+    <div>
+        <label for="descripcion">Descripción</label>
+        <input type="text" formControlName="descripcion" id="descripcion">
+        <div *ngIf="formRubrica.get('descripcion')?.touched && formRubrica.get('descripcion')?.invalid">
+            <span *ngIf="formRubrica.get('descripcion')?.errors?.['required']">Este campo es obligatorio.</span>
+        </div>
+    </div>
+
+    <div>
+        <label for="fechaPublicacion">Fecha de publicación</label>
+        <input type="text" formControlName="fechaPublicacion" id="fechaPublicacion">
+    </div>
+
+    <button type="submit" [disabled]="formRubrica.invalid">Guardar</button>
+</form>

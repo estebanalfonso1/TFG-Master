@@ -1,0 +1,36 @@
+<br>
+<h2 class="">Listado de Alumnos</h2>
+<br>
+<div class="">
+    <!-- <div class="text-center mb-3">
+        <button *ngIf="rol == 'PROFESOR'" type="button" class="btn btn-primary" (click)="crearAlumno()">Crear
+            alumno</button>
+    </div> -->
+
+    <div *ngIf="alumnos.length === 0" class="alert alert-info text-center">
+        <strong>No hay tareas de reparación disponibles.</strong>
+    </div>
+
+    <table class="table table-striped" *ngIf="alumnos.length > 0">
+        <thead>
+            <tr>
+                <th scope="col">Nombre</th>
+                <th scope="col">Primer apellido</th>
+                <th scope="col">Segundo apellido</th>
+                <th scope="col">Curso</th>
+                <th scope="col">Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for(alumno of alumnos; track alumno.id) {
+            <tr>
+                <td>{{ alumno.nombre }}</td>
+                <td>{{ alumno.apellido1 }}</td>
+                <td>{{ alumno.apellido2 }}</td>
+                <td>{{ alumno.curso }}</td>
+            </tr>
+            }
+        </tbody>
+    </table>
+</div>
+<br>

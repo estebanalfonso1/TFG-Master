@@ -1,17 +1,15 @@
 export class Criterio {
     id!: number;
-    puntuacionObtenida: number;
-    puntuacionMaxima: number;
-    puntuacionMinima: number;
-    puntuacionDeTutor: number;
+    valoracionMaxima: number;
+    valoracionMinima: number;
+    deTutor: boolean;
     descripcion: string;
 
-    constructor(puntuacionObtenida: number, puntuacionMaxima: number, puntuacionMinima: number, puntuacionDeTutor: number, descripcion: string
+    constructor(valoracionMaxima: number, valoracionMinima: number, deTutor: boolean, descripcion: string
     ) {
-        this.puntuacionObtenida = puntuacionObtenida,
-            this.puntuacionMaxima = puntuacionMaxima,
-            this.puntuacionMinima = puntuacionMinima,
-            this.puntuacionDeTutor = puntuacionDeTutor,
+        this.valoracionMaxima = valoracionMaxima,
+            this.valoracionMinima = valoracionMinima,
+            this.deTutor = deTutor,
             this.descripcion = descripcion
     }
 }

@@ -1,24 +1,42 @@
-<main>
-    <h5>Iniciar sesión</h5>
-    <form (ngSubmit)="login()" [formGroup]="formLogin">
-        <div>
-            <label for="username">Usuario</label>
-            <input type="text" formControlName="username" id="username">
-            <div *ngIf="formLogin.get('username')?.touched && formLogin.get('username')?.invalid">
-                <span *ngIf="formLogin.get('username')?.errors?.['required']">
-                    Este campo es obligatorio.
-                </span>
-            </div>
+<main class="container-fluid d-flex justify-content-center align-items-center min-vh-100">
+    <div class="card w-100 position-relative" style="max-width: 500px;">
+        <div class="text-center mb-4 position-absolute top-0 start-50 translate-middle">
+            <img src="actor/contrasena.png" alt="Logo" class="logo-img rounded-circle border border-4 border-light shadow">
         </div>
-        <div>
-            <label for="password">Contraseña</label>
-            <input type="password" formControlName="password" id="password">
-            <div *ngIf="formLogin.get('password')?.touched && formLogin.get('password')?.invalid">
-                <span *ngIf="formLogin.get('password')?.errors?.['required']">
-                    Este campo es obligatorio.
-                </span>
+
+        <h2 class="text-center heading mb-4">Iniciar sesión</h2>
+
+        <form (ngSubmit)="login()" [formGroup]="formLogin">
+            <div class="mb-3">
+                <label for="username" class="form-label text-secondary">Usuario</label>
+                <input type="text" class="form-control rounded-pill" formControlName="username" id="username"
+                    placeholder="Introduce tu usuario" />
+                <div *ngIf="formLogin.get('username')?.touched && formLogin.get('username')?.invalid">
+                    <small class="text-danger" *ngIf="formLogin.get('username')?.errors?.['required']">
+                        Este campo es obligatorio.
+                    </small>
+                </div>
             </div>
+
+            <div class="mb-3">
+                <label for="password" class="form-label text-secondary">Contraseña</label>
+                <input type="password" class="form-control rounded-pill" formControlName="password" id="password"
+                    placeholder="Introduce tu contraseña" />
+                <div *ngIf="formLogin.get('password')?.touched && formLogin.get('password')?.invalid">
+                    <small class="text-danger" *ngIf="formLogin.get('password')?.errors?.['required']">
+                        Este campo es obligatorio.
+                    </small>
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary w-100 py-3 mt-3 rounded-pill boton"
+                [disabled]="formLogin.invalid">
+                ACCEDER
+            </button>
+        </form>
+
+        <div class="text-center mt-4 agreement">
+            <a href="#" class="text-decoration-none text-primary">Términos y licencias</a>
         </div>
-        <button type="submit" [disabled]="formLogin.invalid">Iniciar sesión</button>
-    </form>
+    </div>
 </main>

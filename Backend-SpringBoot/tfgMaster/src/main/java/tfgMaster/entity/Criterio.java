@@ -8,20 +8,15 @@ import jakarta.validation.constraints.NotBlank;
 @Entity
 public class Criterio extends DomainEntity {
 	@Max(10)
-	@Min(0)	
-	private int puntuacionObtenida;
+	@Min(0)
+	private double valoracionMaxima;
 
 	@Max(10)
 	@Min(0)
-	private int puntuacionMaxima;
+	private double valoracionMinima;
 
-	@Max(10)
-	@Min(0)
-	private int puntuacionMinima;
-
-	@Max(10)
-	@Min(0)
-	private int puntuacionDeTutor;
+	@NotBlank
+	private boolean deTutor;
 
 	@NotBlank
 	private String descripcion;
@@ -30,36 +25,28 @@ public class Criterio extends DomainEntity {
 		super();
 	}
 
-	public int getPuntuacionObtenida() {
-		return puntuacionObtenida;
+	public double getValoracionMaxima() {
+		return valoracionMaxima;
 	}
 
-	public void setPuntuacionObtenida(int puntuacionObtenida) {
-		this.puntuacionObtenida = puntuacionObtenida;
+	public void setValoracionMaxima(double valoracionMaxima) {
+		this.valoracionMaxima = valoracionMaxima;
 	}
 
-	public int getPuntuacionMaxima() {
-		return puntuacionMaxima;
+	public double getValoracionMinima() {
+		return valoracionMinima;
 	}
 
-	public void setPuntuacionMaxima(int puntuacionMaxima) {
-		this.puntuacionMaxima = puntuacionMaxima;
+	public void setValoracionMinima(double valoracionMinima) {
+		this.valoracionMinima = valoracionMinima;
 	}
 
-	public int getPuntuacionMinima() {
-		return puntuacionMinima;
+	public boolean getDeTutor() {
+		return deTutor;
 	}
 
-	public void setPuntuacionMinima(int puntuacionMinima) {
-		this.puntuacionMinima = puntuacionMinima;
-	}
-
-	public int getPuntuacionDeTutor() {
-		return puntuacionDeTutor;
-	}
-
-	public void setPuntuacionDeTutor(int puntuacionDeTutor) {
-		this.puntuacionDeTutor = puntuacionDeTutor;
+	public void setDeTutor(boolean deTutor) {
+		this.deTutor = deTutor;
 	}
 
 	public String getDescripcion() {

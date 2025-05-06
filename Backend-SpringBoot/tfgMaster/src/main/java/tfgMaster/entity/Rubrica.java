@@ -3,9 +3,10 @@ package tfgMaster.entity;
 import java.util.Date;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import jakarta.persistence.Entity;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.ManyToMany;
 import jakarta.validation.constraints.NotBlank;
 
 @Entity
@@ -14,12 +15,12 @@ public class Rubrica extends DomainEntity {
 	private String descripcion;
 
 	@NotBlank
+	private boolean esBorrador;
+
+	@JsonFormat(pattern = "dd-MM-yyyy")
 	private Date fechaPublicacion;
 
-	@OneToOne(optional = false)
-	private Profesor profesor;
-
-	@OneToMany
+	@ManyToMany
 	private Set<Criterio> criterios;
 
 	public Rubrica() {
@@ -32,6 +33,14 @@ public class Rubrica extends DomainEntity {
 
 	public void setDescripcion(String descripcion) {
 		this.descripcion = descripcion;
+	}
+
+	public boolean getEsBorrador() {
+		return esBorrador;
+	}
+
+	public void setEsBorrador(boolean esBorrador) {
+		this.esBorrador = esBorrador;
 	}
 
 	public Date getFechaPublicacion() {
@@ -48,14 +57,6 @@ public class Rubrica extends DomainEntity {
 
 	public void setCriterios(Set<Criterio> criterios) {
 		this.criterios = criterios;
-	}
-
-	public Profesor getProfesor() {
-		return profesor;
-	}
-
-	public void setProfesor(Profesor profesor) {
-		this.profesor = profesor;
 	}
 
 }

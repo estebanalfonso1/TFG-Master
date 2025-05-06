@@ -88,6 +88,9 @@ export class FormAlumnoComponent implements OnInit {
   }
 
   save() {
+    this.alumnoForm.get("nombre")?.enable();
+    this.alumnoForm.get("apellido1")?.enable();
+    this.alumnoForm.get("apellido2")?.enable();    
     const alumno = this.alumnoForm.value;
 
     this.actorService.actorExist(alumno.username).subscribe(

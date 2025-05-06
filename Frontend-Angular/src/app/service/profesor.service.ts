@@ -25,4 +25,8 @@ export class ProfesorService {
         return this.http.delete<void>(this.urlAPI);
     }
 
+    getAllProfesor(): Observable<Profesor[]> {
+        return this.http.get<Profesor[]>(this.urlAPI);
+    }
+
 }

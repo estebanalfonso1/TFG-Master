@@ -1,5 +1,6 @@
 package tfgMaster.controller;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import tfgMaster.entity.Alumno;
+import tfgMaster.entity.Profesor;
 import tfgMaster.service.AlumnoService;
 
 @RestController
@@ -98,6 +100,15 @@ public class AlumnoController {
 		} else {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
 		}
+	}
+
+	@GetMapping
+	@Operation(summary = "Obtener todos los alumnos")
+	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Lista de alumnos obtenida exitosamente"),
+			@ApiResponse(responseCode = "500", description = "Error interno del servidor") })
+	public ResponseEntity<List<Alumno>> getAllAlumnos() {
+		List<Alumno> listAlumnos = alumnoService.getAllAlumnos();
+		return ResponseEntity.ok(listAlumnos);
 	}
 
 }

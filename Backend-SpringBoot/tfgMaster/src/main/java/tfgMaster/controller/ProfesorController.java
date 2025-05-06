@@ -1,9 +1,12 @@
 package tfgMaster.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -65,5 +68,14 @@ public class ProfesorController {
 		} else {
 			ResponseEntity.status(HttpStatus.NOT_FOUND).body("Profesor no encontrado");
 		}
+	}
+
+	@GetMapping
+	@Operation(summary = "Obtener todos los profesores")
+	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Lista de profesores obtenida exitosamente"),
+			@ApiResponse(responseCode = "500", description = "Error interno del servidor") })
+	public ResponseEntity<List<Profesor>> getAllProfesores() {
+		List<Profesor> listProfesores = profesorService.getAllProfesores();
+		return ResponseEntity.ok(listProfesores);
 	}
 }

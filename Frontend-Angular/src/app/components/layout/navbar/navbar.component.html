@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg bg-body-tertiary shadow-sm">
+<nav class="navbar nav navbar-expand-lg bg-white " *ngIf="hayToken">
     <div class="container-fluid py-1">
         <img src="https://avatars.githubusercontent.com/u/36317649?s=280&v=4" width="3%"/>
 
@@ -6,13 +6,13 @@
         <div class="collapse navbar-collapse" id="navbarText">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="#">Home</a>
+                    <a class="nav-link active" aria-current="page"  routerLink="/">INICIO</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Features</a>
+                    <a class="nav-link active" aria-current="page" *ngIf="rol == 'PROFESOR'"  routerLink="/">ALUMNOS</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Pricing</a>
+                    <a class="nav-link active" aria-current="page" *ngIf="rol == 'ADMINISTRADOR'"  routerLink="/profesores">PROFESORES</a>
                 </li>
             </ul>
             <span class="navbar-text">

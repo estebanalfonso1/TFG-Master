@@ -11,8 +11,8 @@ import org.springframework.stereotype.Service;
 import jakarta.transaction.Transactional;
 import tfgMaster.entity.Alumno;
 import tfgMaster.entity.Profesor;
-import tfgMaster.entity.Rubrica;
 import tfgMaster.entity.Tribunal;
+import tfgMaster.entity.Valoracion;
 import tfgMaster.repository.TribunalRepository;
 import tfgMaster.security.JWTUtils;
 
@@ -61,19 +61,6 @@ public class TribunalService {
 		return null;
 	}
 
-	// Ver RUBRICAS de un TRIBUNAL
-	public Set<Rubrica> getRubricasByTribunal(int idTribunal) {
-
-		Optional<Tribunal> tribunal = getTribunalById(idTribunal);
-
-		if (tribunal != null) {
-
-			return tribunal.get().getRubricas();
-		}
-
-		return null;
-	}
-
 	// Calificar TRIBUNAL
 	public boolean qualifyTribunal(int id) {
 		boolean res = false;
@@ -89,8 +76,7 @@ public class TribunalService {
 	// Crear TRIBUNAL
 	@Transactional
 	public Tribunal saveTribunal(Tribunal tribunal) {
-
-		tribunal.setRubricas(new HashSet<Rubrica>());
+		tribunal.setValoraciones(new HashSet<Valoracion>());
 
 		Tribunal tribunalSave = tribunalRepository.save(tribunal);
 
@@ -107,16 +93,14 @@ public class TribunalService {
 			if (userLogin instanceof Profesor profesor && tribunalO.get().getTieneProfesores().contains(profesor)) {
 				tribunalO.get().setFechaEntrega(tribunal.getFechaEntrega());
 				tribunalO.get().setFechaFin(tribunal.getFechaFin());
-				tribunalO.get().setEstado(tribunal.getEstado());
+				tribunalO.get().setEstado("PENDIENTE");
 				tribunalO.get().setArchivo(tribunal.getArchivo());
-				tribunalO.get().setComentario(tribunal.getComentario());
-				tribunalO.get().setRubricas(tribunal.getRubricas());
+				tribunalO.get().setRubrica(tribunal.getRubrica());
+				tribunalO.get().setValoraciones(tribunal.getValoraciones());
 				return tribunalRepository.save(tribunalO.get());
 
 			} else if (userLogin instanceof Alumno alumno && tribunalO.get().getAlumno().equals(alumno)) {
-				tribunalO.get().setEstado("ENTREGADO");
 				tribunalO.get().setArchivo(tribunal.getArchivo());
-				tribunalO.get().setComentario(tribunal.getComentario());
 				return tribunalRepository.save(tribunalO.get());
 			}
 		}

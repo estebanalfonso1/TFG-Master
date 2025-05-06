@@ -116,15 +116,6 @@ public class TribunalController {
 		return ResponseEntity.ok(listProfesores);
 	}
 
-	@GetMapping("/rubricas/{id}")
-	@Operation(summary = "Obtener todas las rubricas de un tribunal")
-	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Lista de rubricas obtenida exitosamente"),
-			@ApiResponse(responseCode = "500", description = "Error interno del servidor") })
-	public ResponseEntity<Set<Rubrica>> getRubricasByTribunal(@PathVariable int id) {
-		Set<Rubrica> listRubricas = tribunalService.getRubricasByTribunal(id);
-		return ResponseEntity.ok(listRubricas);
-	}
-
 	@GetMapping("/calificar/{id}")
 	@Operation(summary = "Calificar un tribunal por ID")
 	@ApiResponses(value = { @ApiResponse(responseCode = "202", description = "Tribunal calificado exitosamente"),

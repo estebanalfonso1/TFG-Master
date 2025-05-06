@@ -38,10 +38,7 @@ public class CriterioService {
 	// Crear CRITERIO
 	@Transactional
 	public Criterio saveCriterio(Criterio criterio) {
-
-		Criterio criterioSave = criterioRepository.save(criterio);
-
-		return criterioSave;
+		return criterioRepository.save(criterio);
 	}
 
 	@Transactional
@@ -66,6 +63,10 @@ public class CriterioService {
 		if (criterioO.isPresent()) {
 			Profesor profesor = JWTUtils.userLogin();
 			if (profesor != null) {
+				criterioO.get().setDescripcion(criterio.getDescripcion());
+				criterioO.get().setValoracionMinima(criterio.getValoracionMinima());
+				criterioO.get().setValoracionMaxima(criterio.getValoracionMaxima());
+				criterioO.get().setDeTutor(criterio.getDeTutor());
 				return criterioRepository.save(criterioO.get());
 			}
 		}

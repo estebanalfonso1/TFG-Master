@@ -5,6 +5,7 @@ import java.util.Set;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.validation.constraints.Future;
@@ -25,16 +26,17 @@ public class Tribunal extends DomainEntity {
 
 	private String archivo;
 
-	private String comentario;
-
 	@ManyToMany
 	private Set<Profesor> tieneProfesores;
 
 	@OneToOne(optional = false)
 	private Alumno alumno;
 
-	@OneToMany
-	private Set<Rubrica> rubricas;
+	@ManyToOne(optional = false)
+	private Rubrica rubrica;
+
+	@OneToMany(mappedBy = "tribunal")
+	private Set<Valoracion> valoraciones;
 
 	public Tribunal() {
 		super();
@@ -72,14 +74,6 @@ public class Tribunal extends DomainEntity {
 		this.archivo = archivo;
 	}
 
-	public String getComentario() {
-		return comentario;
-	}
-
-	public void setComentario(String comentario) {
-		this.comentario = comentario;
-	}
-
 	public Set<Profesor> getTieneProfesores() {
 		return tieneProfesores;
 	}
@@ -96,12 +90,20 @@ public class Tribunal extends DomainEntity {
 		this.alumno = alumno;
 	}
 
-	public Set<Rubrica> getRubricas() {
-		return rubricas;
+	public Rubrica getRubrica() {
+		return rubrica;
 	}
 
-	public void setRubricas(Set<Rubrica> rubricas) {
-		this.rubricas = rubricas;
+	public void setRubrica(Rubrica rubrica) {
+		this.rubrica = rubrica;
+	}
+
+	public Set<Valoracion> getValoraciones() {
+		return valoraciones;
+	}
+
+	public void setValoraciones(Set<Valoracion> valoraciones) {
+		this.valoraciones = valoraciones;
 	}
 
 }

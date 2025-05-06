@@ -12,7 +12,8 @@
         <div>
             <label for="apellido1">Primer apellido</label>
             <input id="apellido1" formControlName="apellido1" type="text" required />
-            <div *ngIf="alumnoForm.get('apellido1')?.invalid && alumnoForm.get('apellido1')?.touched" class="text-danger">
+            <div *ngIf="alumnoForm.get('apellido1')?.invalid && alumnoForm.get('apellido1')?.touched"
+                class="text-danger">
                 El primer apellido es obligatorio.
             </div>
         </div>
@@ -20,7 +21,8 @@
         <div>
             <label for="apellido2">Segundo apellido</label>
             <input id="apellido2" formControlName="apellido2" type="text" required />
-            <div *ngIf="alumnoForm.get('apellido2')?.invalid && alumnoForm.get('apellido2')?.touched" class="text-danger">
+            <div *ngIf="alumnoForm.get('apellido2')?.invalid && alumnoForm.get('apellido2')?.touched"
+                class="text-danger">
                 El segundo apellido es obligatorio.
             </div>
         </div>
@@ -63,15 +65,15 @@
             </div>
         </div>
 
-        <div *ngIf="!isEditMode">
+        <div *ngIf="isEditModeId">
             <label for="calificacionTotal">Calificación</label>
             <input id="calificacionTotal" formControlName="calificacionTotal" type="text" />
             <div *ngIf="alumnoForm.get('calificacionTotal')?.errors?.['min']">
                 La calificación no puede ser menor que 0.
-              </div>
-              <div *ngIf="alumnoForm.get('calificacionTotal')?.errors?.['max']">
+            </div>
+            <div *ngIf="alumnoForm.get('calificacionTotal')?.errors?.['max']">
                 La calificación no puede ser mayor que 10.
-              </div>
+            </div>
         </div>
 
         <div *ngIf="!isEditMode && !isEditModeId">
@@ -93,7 +95,8 @@
         <div *ngIf="!isEditMode && !isEditModeId">
             <label for="passconfirm">Confirmar Contraseña</label>
             <input id="passconfirm" formControlName="passconfirm" type="password" required />
-            <div *ngIf="alumnoForm.get('passconfirm')?.invalid && alumnoForm.get('passconfirm')?.touched" class="text-danger">
+            <div *ngIf="alumnoForm.get('passconfirm')?.invalid && alumnoForm.get('passconfirm')?.touched"
+                class="text-danger">
                 La confirmación de la contraseña es obligatoria.
             </div>
             <div *ngIf="alumnoForm.hasError('passNoCoinciden')" class="text-danger">
