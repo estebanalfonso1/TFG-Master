@@ -10,48 +10,37 @@
     </div>
 
     <div>
-        <label for="puntuacionMinima">Puntuación mínima</label>
-        <input type="text" formControlName="puntuacionMinima" id="puntuacionMinima">
-        <div *ngIf="formCriterio.get('puntuacionMinima')?.errors?.['min']">
-            La puntuación mínima no puede ser menor que 0.
+        <label for="valoracionMaxima">Valoración máxima</label>
+        <input type="text" formControlName="valoracionMaxima" id="valoracionMaxima">
+        <div *ngIf="formCriterio.get('valoracionMaxima')?.errors?.['min']">
+            La valoración máxima no puede ser menor que 0.
         </div>
-        <div *ngIf="formCriterio.get('puntuacionMinima')?.errors?.['max']">
-            La puntuación mínima no puede ser mayor que 10.
-        </div>
-    </div>
-
-    <div>
-        <label for="puntuacionMaxima">Puntuación máxima</label>
-        <input type="text" formControlName="puntuacionMaxima" id="puntuacionMaxima">
-        <div *ngIf="formCriterio.get('puntuacionMaxima')?.errors?.['min']">
-            La puntuación máxima no puede ser menor que 0.
-        </div>
-        <div *ngIf="formCriterio.get('puntuacionMaxima')?.errors?.['max']">
-            La puntuación máxima no puede ser mayor que 10.
+        <div *ngIf="formCriterio.get('valoracionMaxima')?.errors?.['max']">
+            La valoración máxima no puede ser mayor que 10.
         </div>
     </div>
 
     <div>
-        <span>Puntuación de tutor</span>
+        <label for="valoracionMinima">Valoración mínima</label>
+        <input type="text" formControlName="valoracionMinima" id="valoracionMinima">
+        <div *ngIf="formCriterio.get('valoracionMinima')?.errors?.['min']">
+            La valoración mínima no puede ser menor que 0.
+        </div>
+        <div *ngIf="formCriterio.get('valoracionMinima')?.errors?.['max']">
+            La valoración mínima no puede ser mayor que 10.
+        </div>
+    </div>
+
+    <div>
+        <span>¿Valoración de tutor?</span>
         <label>
-            <input type="radio" id="puntuacionDeTutor" formControlName="puntuacionDeTutor" [value]="true">
+            <input type="radio" id="deTutor" formControlName="deTutor" [value]="true">
             Sí
         </label>
         <label>
-            <input type="radio" id="puntuacionDeTutor" formControlName="puntuacionDeTutor" [value]="false" checked>
+            <input type="radio" id="deTutor" formControlName="deTutor" [value]="false" checked>
             No
         </label>
-    </div>
-
-    <div>
-        <label for="puntuacionObtenida">Puntuación obtenida</label>
-        <input type="text" formControlName="puntuacionObtenida" id="puntuacionObtenida">
-        <div *ngIf="formCriterio.get('puntuacionObtenida')?.errors?.['min']">
-            La puntuación obtenida no puede ser menor que 0.
-        </div>
-        <div *ngIf="formCriterio.get('puntuacionObtenida')?.errors?.['max']">
-            La puntuación obtenida no puede ser mayor que 10.
-        </div>
     </div>
 
     <button type="submit" [disabled]="formCriterio.invalid">Guardar</button>

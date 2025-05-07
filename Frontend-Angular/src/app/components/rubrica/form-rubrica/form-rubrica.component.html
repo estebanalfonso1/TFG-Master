@@ -14,5 +14,26 @@
         <input type="text" formControlName="fechaPublicacion" id="fechaPublicacion">
     </div>
 
+    <div class="modal-body" style="background-color: #fff3cd;">
+        <select class="form-select" id="criterios" formControlName="criterios" multiple size="1">
+            @for(criterio of criterios; track criterio.id) {
+            <option [value]="criterio">
+                {{criterio.descripcion }}</option>
+            }
+        </select>
+    </div>
+
+    <div>
+        <span>¿Guardar como borrador?</span>
+        <label>
+            <input type="radio" id="esBorrador" formControlName="esBorrador" [value]="true">
+            Sí
+        </label>
+        <label>
+            <input type="radio" id="esBorrador" formControlName="esBorrador" [value]="false" checked>
+            No
+        </label>
+    </div>
+
     <button type="submit" [disabled]="formRubrica.invalid">Guardar</button>
 </form>

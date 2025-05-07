@@ -23,10 +23,9 @@ export class FormCriterioComponent implements OnInit {
   ) {
     this.formCriterio = this.fb.group(
       {
-        puntuacionObtenida: ['', [Validators.min(0), Validators.max(10)]],
-        puntuacionMaxima: ['', [Validators.min(0), Validators.max(10)]],
-        puntuacionMinima: ['', [Validators.min(0), Validators.max(10)]],
-        puntuacionDeTutor: [false],
+        valoracionMaxima: ['', [Validators.min(0), Validators.max(10)]],
+        valoracionMinima: ['', [Validators.min(0), Validators.max(10)]],
+        deTutor: [false],
         descripcion: ['', [Validators.required]]
       });
   }

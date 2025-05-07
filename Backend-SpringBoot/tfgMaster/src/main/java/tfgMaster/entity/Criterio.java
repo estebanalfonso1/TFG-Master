@@ -15,7 +15,6 @@ public class Criterio extends DomainEntity {
 	@Min(0)
 	private double valoracionMinima;
 
-	@NotBlank
 	private boolean deTutor;
 
 	@NotBlank

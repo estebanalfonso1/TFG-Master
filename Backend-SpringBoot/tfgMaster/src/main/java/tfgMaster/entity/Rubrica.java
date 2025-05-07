@@ -14,7 +14,6 @@ public class Rubrica extends DomainEntity {
 	@NotBlank
 	private String descripcion;
 
-	@NotBlank
 	private boolean esBorrador;
 
 	@JsonFormat(pattern = "dd-MM-yyyy")

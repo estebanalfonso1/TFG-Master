@@ -4,8 +4,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { RubricaService } from '../../../service/rubrica.service';
 import { CommonModule } from '@angular/common';
 import { jwtDecode } from 'jwt-decode';
-import { Profesor } from '../../../model/Profesor';
-import { ProfesorService } from '../../../service/profesor.service';
+import { CriterioService } from '../../../service/criterio.service';
+import { Criterio } from '../../../model/Criterio';
 
 @Component({
   selector: 'app-form-rubrica',
@@ -16,9 +16,13 @@ import { ProfesorService } from '../../../service/profesor.service';
 export class FormRubricaComponent implements OnInit {
   formRubrica!: FormGroup;
   id!: number;
+  public criterios: Criterio[] = [];
+  public criteriosIncluidos: Criterio[] = [];
+
+
 
   constructor(
-    private profesorService: ProfesorService,
+    private criterioService: CriterioService,
     private rubricaService: RubricaService,
     private router: Router,
     private route: ActivatedRoute,
@@ -31,7 +35,9 @@ export class FormRubricaComponent implements OnInit {
     this.formRubrica = this.fb.group(
       {
         descripcion: ['', [Validators.required]],
+        esBorrador: [true],
         fechaPublicacion: [fechaFormateada],
+        criterios: [[], [Validators.required]]
       });
   }
 
@@ -46,6 +52,11 @@ export class FormRubricaComponent implements OnInit {
         error => { console.log("Rubrica no encontrada") }
       );
     }
+
+    this.criterioService.getAllCriterio().subscribe(
+      result => { this.criterios = result; },
+      error => { console.log(error) }
+    );
 
   }
 
