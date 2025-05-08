@@ -1,0 +1,54 @@
+<h2>Formulario de Tribunales</h2>
+
+<form (ngSubmit)="save()" [formGroup]="formTribunal">
+    <div>
+        <label for="fechaFin">Fecha fin</label>
+        <input type="date" formControlName="fechaFin" id="fechaFin">
+        <div *ngIf="formTribunal.get('fechaFin')?.touched && formTribunal.get('fechaFin')?.invalid">
+            <span *ngIf="formTribunal.get('fechaFin')?.errors?.['required']">Este campo es obligatorio.</span>
+        </div>
+    </div>
+
+    <div>
+        <label for="tieneProfesores">Profesores</label>
+        <select id="tieneProfesores" formControlName="tieneProfesores" multiple size="1">
+            @for(profesor of profesores; track profesor.id) {
+            <option [value]="profesor">
+                {{profesor.nombre }} {{ profesor.apellido1 }} {{ profesor.apellido2 }}</option>
+            }
+        </select>
+        <div *ngIf="formTribunal.get('tieneProfesores')?.touched && formTribunal.get('tieneProfesores')?.invalid">
+            <span *ngIf="formTribunal.get('tieneProfesores')?.errors?.['required']">Este campo es obligatorio.</span>
+        </div>
+    </div>
+
+    <div>
+        <label for="alumno">Alumno</label>
+        <select id="alumno" formControlName="alumno">
+            <option></option>
+            @for(alumno of alumnos; track alumno.id) {
+            <option [ngValue]="alumno">
+                {{alumno.nombre }} {{ alumno.apellido1 }} {{ alumno.apellido2 }}</option>
+            }
+        </select>
+        <div *ngIf="formTribunal.get('alumno')?.touched && formTribunal.get('alumno')?.invalid">
+            <span *ngIf="formTribunal.get('alumno')?.errors?.['required']">Este campo es obligatorio.</span>
+        </div>
+    </div>
+
+    <div>
+        <label for="rubrica">Rubrica</label>
+        <select id="rubrica" formControlName="rubrica">
+            <option></option>
+            @for(rubrica of rubricas; track rubrica.id) {
+            <option [ngValue]="rubrica">
+                {{rubrica.descripcion }}</option>
+            }
+        </select>
+        <div *ngIf="formTribunal.get('rubrica')?.touched && formTribunal.get('rubrica')?.invalid">
+            <span *ngIf="formTribunal.get('rubrica')?.errors?.['required']">Este campo es obligatorio.</span>
+        </div>
+    </div>
+
+    <button type="submit" [disabled]="formTribunal.invalid">Guardar</button>
+</form>

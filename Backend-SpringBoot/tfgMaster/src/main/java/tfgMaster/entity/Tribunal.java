@@ -16,7 +16,6 @@ import jakarta.validation.constraints.Pattern;
 public class Tribunal extends DomainEntity {
 	private Date fechaEntrega;
 
-	@NotBlank
 	@Future
 	private Date fechaFin;
 

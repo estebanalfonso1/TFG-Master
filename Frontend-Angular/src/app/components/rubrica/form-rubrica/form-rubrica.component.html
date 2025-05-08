@@ -14,7 +14,8 @@
         <input type="text" formControlName="fechaPublicacion" id="fechaPublicacion">
     </div>
 
-    <div class="modal-body" style="background-color: #fff3cd;">
+    <div>
+        <label for="criterios">Criterios</label>
         <select class="form-select" id="criterios" formControlName="criterios" multiple size="1">
             @for(criterio of criterios; track criterio.id) {
             <option [value]="criterio">
