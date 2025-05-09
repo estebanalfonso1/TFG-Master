@@ -53,9 +53,6 @@ public class AlumnoService {
 		public Alumno updateAlumno(Alumno alumnoU) {
 			Alumno alumno = JWTUtils.userLogin();
 			if (alumno != null) {
-				alumno.setNombre(alumnoU.getNombre());
-				alumno.setApellido1(alumnoU.getApellido1());
-				alumno.setApellido2(alumnoU.getApellido2());
 				alumno.setEmail(alumnoU.getEmail());
 				alumno.setFoto(alumnoU.getFoto());
 				alumno.setTelefono(alumnoU.getTelefono());

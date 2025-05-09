@@ -5,29 +5,29 @@ import { Router } from '@angular/router';
 import { ActorService } from '../../../service/actor.service';
 
 @Component({
-  selector: 'app-form-categoria',
+  selector: 'app-login',
   imports: [ReactiveFormsModule, CommonModule],
   templateUrl: './login.component.html',
-  styleUrl: './login.component.css'
+  styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
   formLogin!: FormGroup;
   id!: number;
+  passwordVisible: boolean = false;
 
   constructor(
     private router: Router,
     private fb: FormBuilder,
     private actorService: ActorService
   ) {
-    this.formLogin = this.fb.group(
-      {
-        username: ['', [Validators.required]],
-        password: ['', [Validators.required]]
-      });
+    this.formLogin = this.fb.group({
+      username: ['', [Validators.required]],
+      password: ['', [Validators.required]]
+    });
   }
 
   ngOnInit(): void {
-    if(sessionStorage.getItem("token") !== null) {
+    if (sessionStorage.getItem("token") !== null) {
       this.router.navigate(['/']);
     }
   }
@@ -36,11 +36,17 @@ export class LoginComponent implements OnInit {
     const actor = this.formLogin.value;
 
     this.actorService.login(actor).subscribe(
-      tokenLogin => { 
-        sessionStorage.setItem("token", tokenLogin.token)
+      (tokenLogin) => {
+        sessionStorage.setItem("token", tokenLogin.token);
         this.router.navigate(['/']).then(() => window.location.reload());
       },
-      error => { window.alert("Usuario y/o constraseña incorrecto"); }
+      (error) => {
+        window.alert("Usuario y/o contraseña incorrectos");
+      }
     );
+  }
+
+  togglePassword() {
+    this.passwordVisible = !this.passwordVisible;
   }
 }

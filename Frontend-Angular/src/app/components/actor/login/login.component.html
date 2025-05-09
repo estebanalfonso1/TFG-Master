@@ -1,7 +1,10 @@
-<main class="container-fluid d-flex justify-content-center align-items-center min-vh-100">
-    <div class="card w-100 position-relative" style="max-width: 500px;">
+<main style="background-image: url('actor/fondo.jpg');" class="container-fluid d-flex justify-content-center align-items-center min-vh-100">
+    <div class="position-fixed top-0 start-0 w-100 h-100 bg-dark bg-opacity-50 z-1"></div>
+
+    <div class="card w-100 position-relative z-3" style="max-width: 500px;">
         <div class="text-center mb-4 position-absolute top-0 start-50 translate-middle">
-            <img src="actor/contrasena.png" alt="Logo" class="logo-img rounded-circle border border-4 border-light shadow">
+            <img src="actor/contrasena.png" alt="Logo"
+                class="logo-img rounded-circle border border-4 border-light shadow">
         </div>
 
         <h2 class="text-center heading mb-4">Iniciar sesión</h2>
@@ -20,8 +23,13 @@
 
             <div class="mb-3">
                 <label for="password" class="form-label text-secondary">Contraseña</label>
-                <input type="password" class="form-control rounded-pill" formControlName="password" id="password"
-                    placeholder="Introduce tu contraseña" />
+                <div class="input-group">
+                    <input [type]="passwordVisible ? 'text' : 'password'" class="form-control rounded-pill"
+                        formControlName="password" id="password" placeholder="Introduce tu contraseña" />
+                    <button type="button" class="border-0 bg-transparent" (click)="togglePassword()">
+                        <i class="bi" [ngClass]="passwordVisible ? 'bi-eye-slash' : 'bi-eye'"></i>
+                    </button>
+                </div>
                 <div *ngIf="formLogin.get('password')?.touched && formLogin.get('password')?.invalid">
                     <small class="text-danger" *ngIf="formLogin.get('password')?.errors?.['required']">
                         Este campo es obligatorio.

@@ -1,23 +1,26 @@
 <nav class="navbar nav navbar-expand-lg bg-white " *ngIf="hayToken">
     <div class="container-fluid py-1">
-        <img src="https://avatars.githubusercontent.com/u/36317649?s=280&v=4" width="3%"/>
+        <img src="https://avatars.githubusercontent.com/u/36317649?s=280&v=4" width="3%" />
 
 
         <div class="collapse navbar-collapse" id="navbarText">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
-                    <a class="nav-link active" aria-current="page"  routerLink="/">INICIO</a>
+                    <a class="nav-link active" aria-current="page" routerLink="/">INICIO</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" *ngIf="rol == 'PROFESOR'"  routerLink="/">ALUMNOS</a>
+                    <a class="nav-link active" aria-current="page" *ngIf="rol == 'PROFESOR'"
+                        routerLink="/alumnos">ALUMNOS</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" *ngIf="rol == 'ADMINISTRADOR'"  routerLink="/profesores">PROFESORES</a>
+                    <a class="nav-link active" aria-current="page" *ngIf="rol == 'ADMINISTRADOR'"
+                        routerLink="/profesores">PROFESORES</a>
                 </li>
             </ul>
-            <span class="navbar-text">
-                Navbar text with an inline element
-            </span>
+            <p-avatar label="{{ primeraLetra }}" styleClass="mr-2 cursor-pointer" size="large" shape="circle"
+                (click)="menu.toggle($event)"/>
+
+            <p-menu #menu [popup]="true" [model]="items"/>
         </div>
     </div>
 </nav>

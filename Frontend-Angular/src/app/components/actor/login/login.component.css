@@ -1,43 +1,39 @@
-body {
-    background-color: #f1f3f9;
-  }
+.card {
+  background: #f8f9fd;
+  border-radius: 2rem;
+  padding: 2rem;
+  box-shadow: rgba(133, 189, 215, 0.9) 0px 30px 30px -20px;
+}
 
-  .card {
-    background: #f8f9fd;
-    border-radius: 2rem;
-    padding: 2rem;
-    box-shadow: rgba(133, 189, 215, 0.9) 0px 30px 30px -20px;
-  }
+.logo-img {
+  width: 25%;
+}
 
-  .logo-img {
-    width: 25%;
-  }
+.heading {
+  font-weight: bold;
+  color: rgb(16, 137, 211);
+  letter-spacing: 1px;
+  font-size: clamp(1.5rem, 4vw, 2.5rem);
+}
 
-  .heading {
-    font-weight: bold;
-    color: rgb(16, 137, 211);
-    letter-spacing: 1px;
-    font-size: clamp(1.5rem, 4vw, 2.5rem);
-  }
+::placeholder {
+  font-size: clamp(0.85rem, 1vw, 1rem);
+  color: gray;
+  font-weight: 200;
 
-  ::placeholder {
-    font-size: clamp(0.85rem, 1vw, 1rem);
-    color: gray;
-    font-weight: 200;
+}
 
-  }
+label {
+  font-weight: 600;
+  letter-spacing: 0.65px;
+}
 
-  label {
-    font-weight: 600;
-    letter-spacing: 0.65px;
-  }
+.boton {
+  font-weight: 600;
+  font-size: clamp(1rem, 2vw, 1.2rem);
+  letter-spacing: 1px;
+}
 
-  .boton {
-    font-weight: 600;
-    font-size: clamp(1rem, 2vw, 1.2rem);
-    letter-spacing: 1px;
-  }
-
-  .agreement {
-    font-size: clamp(0.9rem, 1.2vw, 1rem);
-  }
+.agreement {
+  font-size: clamp(0.9rem, 1.2vw, 1rem);
+}

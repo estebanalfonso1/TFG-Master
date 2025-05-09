@@ -23,6 +23,7 @@ export class FormTribunalComponent implements OnInit {
   public profesores: Profesor[] = [];
   public alumnos: Alumno[] = [];
   public rubricas: Rubrica[] = [];
+  isEditMode!: boolean;
 
   constructor(
     private tribunalService: TribunalService,
@@ -46,6 +47,7 @@ export class FormTribunalComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.isEditMode = this.router.url.includes('editar');
     this.comprobarRol();
     this.id = Number(this.route.snapshot.paramMap.get('id'));
     if (this.id > 0) {

@@ -1,3 +1,16 @@
 .nav {
     box-shadow: rgba(133, 189, 215, 0.9) 0px 30px 30px -30px;
 }
+
+:root {
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  body {
+    background-color: white;
+    color: black;
+  }
+
+  /* También puedes forzar estilos adicionales si lo necesitas */
+}
