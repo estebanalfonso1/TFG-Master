@@ -1,109 +1,338 @@
-<main>
-    <h5>Formulario de Alumno</h5>
-    <form [formGroup]="alumnoForm" (ngSubmit)="save()">
-        <div>
-            <label for="nombre">Nombre</label>
-            <input id="nombre" formControlName="nombre" type="text" required />
-            <div *ngIf="alumnoForm.get('nombre')?.invalid && alumnoForm.get('nombre')?.touched" class="text-danger">
-                El nombre es obligatorio.
+<main style="background-image: url('actor/fondo.jpg');"
+    class="container-fluid d-flex justify-content-center align-items-center min-vh-100">
+    <div class="position-fixed top-0 start-0 w-100 h-100 bg-dark bg-opacity-50 z-1"></div>
+    <div class="container my-4 z-3">
+        <div class="row" style="min-height: 300px;">
+            <!-- Primer card -->
+            <div class="col-md-4 d-flex">
+                <div class="card w-100 h-100">
+                    <div class="card-body text-center position-relative">
+                        <p-avatar label="{{ alumnoForm.get('nombre')?.value?.charAt(0)?.toUpperCase() }}"
+                            styleClass="mr-2 avatar" size="xlarge" shape="circle" />
+                        <input type="file" id="foto" accept="image/*" hidden (change)="onImageSelected($event)">
+                        <div class="position-absolute lapiz">
+                            <label for="foto"
+                                class="btn btn-primary rounded-circle d-inline-flex align-items-center justify-content-center"
+                                style="width: 60px; height: 60px; cursor: pointer;">
+                                <i class="pi pi-pencil fs-4"></i>
+                            </label>
+                        </div>
+                        <p class="mt-5 datosUsuario">
+                            {{ alumnoForm.get('nombre')?.value }}
+                            <br />
+                            {{ alumnoForm.get('apellido1')?.value }}
+                            {{ alumnoForm.get('apellido2')?.value }}
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Segundo card -->
+            <div class="col-md-8 d-flex">
+                <div class="card w-100 h-100">
+                    <div class="card-body justify-content-center text-center">
+                        <h2 *ngIf="!isEditMode" class="text-center titulo mb-4">Crear alumno</h2>
+                        <h2 *ngIf="isEditMode" class="text-center titulo mb-4">Mis datos</h2>
+
+                        <form [formGroup]="alumnoForm" (ngSubmit)="save()">
+
+                            <!-- Contenido si en modo creación -->
+                            <div *ngIf="!isEditMode && !isEditModeId" class="d-flex">
+                                <!-- Primera columna -->
+                                <div class="flex-fill">
+                                    <div class="mb-3">
+                                        <label for="nombre" class="form-label text-secondary">Nombre*</label>
+                                        <input id="nombre" class="form-control rounded-pill" formControlName="nombre"
+                                            type="text" placeholder="Introduce el nombre" required />
+                                        <small class="text-danger"
+                                            *ngIf="alumnoForm.get('nombre')?.invalid && alumnoForm.get('nombre')?.touched"
+                                            class="text-danger">
+                                            El nombre es obligatorio.
+                                        </small>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label for="apellido1" class="form-label text-secondary">Primer
+                                            apellido*</label>
+                                        <input id="apellido1" class="form-control rounded-pill"
+                                            formControlName="apellido1" placeholder="Introduce el primer apellido"
+                                            type="text" required />
+                                        <small
+                                            *ngIf="alumnoForm.get('apellido1')?.invalid && alumnoForm.get('apellido1')?.touched"
+                                            class="text-danger">
+                                            El primer apellido es obligatorio.
+                                        </small>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label for="apellido2" class="form-label text-secondary">Segundo
+                                            apellido*</label>
+                                        <input id="apellido2" class="form-control rounded-pill"
+                                            formControlName="apellido2" placeholder="Introduce el segundo apellido"
+                                            type="text" required />
+                                        <small
+                                            *ngIf="alumnoForm.get('apellido2')?.invalid && alumnoForm.get('apellido2')?.touched"
+                                            class="text-danger">
+                                            El segundo apellido es obligatorio.
+                                        </small>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label for="email" class="form-label text-secondary">Correo electrónico*</label>
+                                        <input id="email" class="form-control rounded-pill"
+                                            placeholder="Introduce el correo" formControlName="email" type="email"
+                                            required />
+                                        <small
+                                            *ngIf="alumnoForm.get('email')?.invalid && alumnoForm.get('email')?.touched"
+                                            class="text-danger">
+                                            El correo electrónico es obligatorio y debe ser válido.
+                                        </small>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label for="curso" class="form-label text-secondary">Curso*</label>
+                                        <select id="curso" class="form-select rounded-pill" formControlName="curso">
+                                            <option class="se" selected>Selecciona un curso</option>
+                                            <option value="DAW">DAW</option>
+                                            <option value="ASIR">ASIR</option>
+                                            <option value="AFI">AFI</option>
+                                        </select>
+                                        <small
+                                            *ngIf="alumnoForm.get('curso')?.invalid && alumnoForm.get('curso')?.touched"
+                                            class="text-danger">
+                                            El curso es obligatorio.
+                                        </small>
+                                    </div>
+                                </div>
+
+                                <!-- Segunda columna -->
+                                <div class="flex-fill">
+                                    <div class="mb-3">
+                                        <label class="form-label text-secondary" for="telefono">Teléfono</label>
+                                        <input class="form-control rounded-pill" placeholder="Introduce el teléfono"
+                                            id="telefono" formControlName="telefono" type="text" />
+                                        <small
+                                            *ngIf="alumnoForm.get('telefono')?.invalid && alumnoForm.get('telefono')?.touched"
+                                            class="text-danger">
+                                            El teléfono debe ser un número válido.
+                                        </small>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label class="form-label text-secondary" for="direccion">Dirección</label>
+                                        <input class="form-control rounded-pill" placeholder="Introduce la dirección"
+                                            id="direccion" formControlName="direccion" type="text" />
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label class="form-label text-secondary" for="username">Nombre de
+                                            usuario*</label>
+                                        <input class="form-control rounded-pill" id="username"
+                                            placeholder="Introduce el usuario" formControlName="username" type="text"
+                                            required />
+                                        <small
+                                            *ngIf="alumnoForm.get('username')?.invalid && alumnoForm.get('username')?.touched"
+                                            class="text-danger">
+                                            El nombre de usuario es obligatorio.
+                                        </small>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label class="form-label text-secondary" for="password">Contraseña*</label>
+                                        <div class="input-group">
+                                            <input [type]="passwordVisible ? 'text' : 'password'"
+                                                class="form-control rounded-pill" formControlName="password"
+                                                id="password" placeholder="Introduce la contraseña" />
+                                            <button type="button" class="border-0 bg-transparent"
+                                                (click)="togglePassword()">
+                                                <i class="bi"
+                                                    [ngClass]="passwordVisible ? 'bi-eye-slash' : 'bi-eye'"></i>
+                                            </button>
+                                        </div>
+                                        <small
+                                            *ngIf="alumnoForm.get('password')?.invalid && alumnoForm.get('password')?.touched"
+                                            class="text-danger">
+                                            La contraseña es obligatoria (mínimo 8 caracteres).
+                                        </small>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Contenido si en modo edición por id -->
+                            <div *ngIf="isEditModeId" class="d-flex">
+                                <!-- Primera columna -->
+                                <div class="flex-fill">
+                                    <div class="mb-3">
+                                        <label for="nombre" class="form-label text-secondary">Nombre*</label>
+                                        <input id="nombre" class="form-control rounded-pill" formControlName="nombre"
+                                            type="text" placeholder="Introduce el nombre" required />
+                                        <small class="text-danger"
+                                            *ngIf="alumnoForm.get('nombre')?.invalid && alumnoForm.get('nombre')?.touched"
+                                            class="text-danger">
+                                            El nombre es obligatorio.
+                                        </small>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label for="apellido1" class="form-label text-secondary">Primer
+                                            apellido*</label>
+                                        <input id="apellido1" class="form-control rounded-pill"
+                                            formControlName="apellido1" placeholder="Introduce el primer apellido"
+                                            type="text" required />
+                                        <small
+                                            *ngIf="alumnoForm.get('apellido1')?.invalid && alumnoForm.get('apellido1')?.touched"
+                                            class="text-danger">
+                                            El primer apellido es obligatorio.
+                                        </small>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label for="apellido2" class="form-label text-secondary">Segundo
+                                            apellido*</label>
+                                        <input id="apellido2" class="form-control rounded-pill"
+                                            formControlName="apellido2" placeholder="Introduce el segundo apellido"
+                                            type="text" required />
+                                        <small
+                                            *ngIf="alumnoForm.get('apellido2')?.invalid && alumnoForm.get('apellido2')?.touched"
+                                            class="text-danger">
+                                            El segundo apellido es obligatorio.
+                                        </small>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label for="email" class="form-label text-secondary">Correo electrónico*</label>
+                                        <input id="email" class="form-control rounded-pill"
+                                            placeholder="Introduce el correo" formControlName="email" type="email"
+                                            required />
+                                        <small
+                                            *ngIf="alumnoForm.get('email')?.invalid && alumnoForm.get('email')?.touched"
+                                            class="text-danger">
+                                            El correo electrónico es obligatorio y debe ser válido.
+                                        </small>
+                                    </div>
+                                </div>
+
+                                <!-- Segunda columna -->
+                                <div class="flex-fill">
+                                    <div class="mb-3">
+                                        <label for="curso" class="form-label text-secondary">Curso*</label>
+                                        <select id="curso" class="form-select rounded-pill" formControlName="curso">
+                                            <option class="se" selected>Selecciona un curso</option>
+                                            <option value="DAW">DAW</option>
+                                            <option value="ASIR">ASIR</option>
+                                            <option value="AFI">AFI</option>
+                                        </select>
+                                        <small
+                                            *ngIf="alumnoForm.get('curso')?.invalid && alumnoForm.get('curso')?.touched"
+                                            class="text-danger">
+                                            El curso es obligatorio.
+                                        </small>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label class="form-label text-secondary" for="telefono">Teléfono</label>
+                                        <input class="form-control rounded-pill" placeholder="Introduce el teléfono"
+                                            id="telefono" formControlName="telefono" type="text" />
+                                        <small
+                                            *ngIf="alumnoForm.get('telefono')?.invalid && alumnoForm.get('telefono')?.touched"
+                                            class="text-danger">
+                                            El teléfono debe ser un número válido.
+                                        </small>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label class="form-label text-secondary" for="direccion">Dirección</label>
+                                        <input class="form-control rounded-pill" placeholder="Introduce la dirección"
+                                            id="direccion" formControlName="direccion" type="text" />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Contenido si en modo edicion -->
+                            <div *ngIf="isEditMode" class="d-flex  mt-5">
+                                <!-- Primera columna -->
+                                <div class="flex-fill">
+                                    <div class="mb-3">
+                                        <label for="nombre" class="form-label text-secondary">Nombre*</label>
+                                        <input id="nombre" class="form-control rounded-pill" formControlName="nombre"
+                                            placeholder="Introduce tu nombre" type="text" required />
+                                        <small class="text-danger"
+                                            *ngIf="alumnoForm.get('nombre')?.invalid && alumnoForm.get('nombre')?.touched"
+                                            class="text-danger">
+                                            El nombre es obligatorio.
+                                        </small>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label for="apellido1" class="form-label text-secondary">Primer
+                                            apellido*</label>
+                                        <input id="apellido1" class="form-control rounded-pill"
+                                            placeholder="Introduce tu primer apellido" formControlName="apellido1"
+                                            type="text" required />
+                                        <small
+                                            *ngIf="alumnoForm.get('apellido1')?.invalid && alumnoForm.get('apellido1')?.touched"
+                                            class="text-danger">
+                                            El primer apellido es obligatorio.
+                                        </small>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label for="apellido2" class="form-label text-secondary">Segundo
+                                            apellido*</label>
+                                        <input id="apellido2" class="form-control rounded-pill"
+                                            placeholder="Introduce tu segundo apellido" formControlName="apellido2"
+                                            type="text" required />
+                                        <small
+                                            *ngIf="alumnoForm.get('apellido2')?.invalid && alumnoForm.get('apellido2')?.touched"
+                                            class="text-danger">
+                                            El segundo apellido es obligatorio.
+                                        </small>
+                                    </div>
+                                </div>
+
+
+                                <!-- Segunda columna -->
+                                <div class="flex-fill">
+                                    <div class="mb-3">
+                                        <label for="email" class="form-label text-secondary">Correo electrónico*</label>
+                                        <input id="email" class="form-control rounded-pill" formControlName="email"
+                                            placeholder="Introduce tu correo" type="email" required />
+                                        <small
+                                            *ngIf="alumnoForm.get('email')?.invalid && alumnoForm.get('email')?.touched"
+                                            class="text-danger">
+                                            El correo electrónico es obligatorio y debe ser válido.
+                                        </small>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label class="form-label text-secondary" for="telefono">Teléfono</label>
+                                        <input class="form-control rounded-pill" id="telefono"
+                                            placeholder="Introduce tu teléfono" formControlName="telefono"
+                                            type="text" />
+                                        <small
+                                            *ngIf="alumnoForm.get('telefono')?.invalid && alumnoForm.get('telefono')?.touched"
+                                            class="text-danger">
+                                            El teléfono debe ser un número válido.
+                                        </small>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label class="form-label text-secondary" for="direccion">Dirección</label>
+                                        <input class="form-control rounded-pill" id="direccion"
+                                            placeholder="Introduce tu dirección" formControlName="direccion"
+                                            type="text" />
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary w-25 py-2 mt-4 rounded-pill boton"
+                                [disabled]="alumnoForm.invalid">GUARDAR</button>
+                        </form>
+
+                    </div>
+                </div>
             </div>
         </div>
-
-        <div>
-            <label for="apellido1">Primer apellido</label>
-            <input id="apellido1" formControlName="apellido1" type="text" required />
-            <div *ngIf="alumnoForm.get('apellido1')?.invalid && alumnoForm.get('apellido1')?.touched"
-                class="text-danger">
-                El primer apellido es obligatorio.
-            </div>
-        </div>
-
-        <div>
-            <label for="apellido2">Segundo apellido</label>
-            <input id="apellido2" formControlName="apellido2" type="text" required />
-            <div *ngIf="alumnoForm.get('apellido2')?.invalid && alumnoForm.get('apellido2')?.touched"
-                class="text-danger">
-                El segundo apellido es obligatorio.
-            </div>
-        </div>
-
-        <div>
-            <label for="email">Correo electrónico</label>
-            <input id="email" formControlName="email" type="email" required />
-            <div *ngIf="alumnoForm.get('email')?.invalid && alumnoForm.get('email')?.touched" class="text-danger">
-                El correo electrónico es obligatorio y debe ser válido.
-            </div>
-        </div>
-
-        <div>
-            <label for="foto">Foto</label>
-            <input id="foto" formControlName="foto" type="text" />
-        </div>
-
-        <div>
-            <label for="telefono">Teléfono</label>
-            <input id="telefono" formControlName="telefono" type="text" />
-            <div *ngIf="alumnoForm.get('telefono')?.invalid && alumnoForm.get('telefono')?.touched" class="text-danger">
-                El teléfono debe ser un número válido.
-            </div>
-        </div>
-
-        <div>
-            <label for="direccion">Dirección</label>
-            <input id="direccion" formControlName="direccion" type="text" />
-        </div>
-
-        <div *ngIf="!isEditMode">
-            <label for="curso">Curso</label>
-            <select id="curso" formControlName="curso">
-                <option value="DAW">DAW</option>
-                <option value="ASIR">ASIR</option>
-                <option value="AFI">AFI</option>
-            </select>
-            <div *ngIf="alumnoForm.get('curso')?.invalid && alumnoForm.get('curso')?.touched" class="text-danger">
-                El curso apellido es obligatorio.
-            </div>
-        </div>
-
-        <div *ngIf="isEditModeId">
-            <label for="calificacionTotal">Calificación</label>
-            <input id="calificacionTotal" formControlName="calificacionTotal" type="text" />
-            <div *ngIf="alumnoForm.get('calificacionTotal')?.errors?.['min']">
-                La calificación no puede ser menor que 0.
-            </div>
-            <div *ngIf="alumnoForm.get('calificacionTotal')?.errors?.['max']">
-                La calificación no puede ser mayor que 10.
-            </div>
-        </div>
-
-        <div *ngIf="!isEditMode && !isEditModeId">
-            <label for="username">Nombre de usuario</label>
-            <input id="username" formControlName="username" type="text" required />
-            <div *ngIf="alumnoForm.get('username')?.invalid && alumnoForm.get('username')?.touched" class="text-danger">
-                El nombre de usuario es obligatorio.
-            </div>
-        </div>
-
-        <div *ngIf="!isEditMode && !isEditModeId">
-            <label for="password">Contraseña</label>
-            <input id="password" formControlName="password" type="password" required />
-            <div *ngIf="alumnoForm.get('password')?.invalid && alumnoForm.get('password')?.touched" class="text-danger">
-                La contraseña es obligatoria (mínimo 8 caracteres).
-            </div>
-        </div>
-
-        <div *ngIf="!isEditMode && !isEditModeId">
-            <label for="passconfirm">Confirmar Contraseña</label>
-            <input id="passconfirm" formControlName="passconfirm" type="password" required />
-            <div *ngIf="alumnoForm.get('passconfirm')?.invalid && alumnoForm.get('passconfirm')?.touched"
-                class="text-danger">
-                La confirmación de la contraseña es obligatoria.
-            </div>
-            <div *ngIf="alumnoForm.hasError('passNoCoinciden')" class="text-danger">
-                Las contraseñas no coinciden.
-            </div>
-        </div>
-
-        <button type="submit" [disabled]="alumnoForm.invalid">Guardar</button>
-    </form>
+    </div>
 </main>

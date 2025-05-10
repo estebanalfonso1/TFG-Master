@@ -1,3 +1,17 @@
+.datosUsuario {
+  font-weight: bold;
+  color: rgb(16, 137, 211);
+  letter-spacing: 1.1px;
+  font-size: 20px;
+}
+
+.titulo {
+  font-weight: bold;
+  color: rgb(16, 137, 211);
+  letter-spacing: 1.1px;
+  font-size: clamp(1.5rem, 4vw, 2.5rem);
+}
+
 .card {
   background: #f8f9fd;
   border-radius: 2rem;
@@ -5,8 +19,20 @@
   box-shadow: rgba(133, 189, 215, 0.9) 0px 30px 30px -20px;
 }  
 
+.lapiz {
+    margin-top: -50px;
+    margin-right: 40px;
+    right: 0;
+}
+
+.avatar {
+  width: 280px !important;
+  height: 280px !important;
+  font-size: 232px !important;
+}
+
 .d-flex {
-      gap: 200px;
+      gap: 100px;
 }
 
 ::placeholder {
@@ -22,7 +48,7 @@ label {
 }
 
 .boton {
-  font-weight: 600;
-  font-size: clamp(1rem, 2vw, 1.2rem);
+  font-weight: 500;
+  font-size: clamp(1rem, 2vw, 1rem);
   letter-spacing: 1px;
 }

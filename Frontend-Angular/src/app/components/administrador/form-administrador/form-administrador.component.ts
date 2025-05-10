@@ -5,19 +5,21 @@ import { ActorService } from '../../../service/actor.service';
 import { Router } from '@angular/router';
 import { AdministradorService } from '../../../service/administrador.service';
 import { jwtDecode } from 'jwt-decode';
+import { AvatarModule } from 'primeng/avatar';
 
 @Component({
   selector: 'app-form-administrador',
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule],
+  imports: [ReactiveFormsModule, CommonModule, AvatarModule],
   templateUrl: './form-administrador.component.html',
   styleUrls: ['./form-administrador.component.css']
 })
 export class FormAdministradorComponent implements OnInit {
   administradorForm: FormGroup;
   id!: number;
-  passNoCoinciden: boolean = false;
   isEditMode!: boolean;
+  imagenSeleccionada: File | null = null;
+  passwordVisible: boolean = false;
 
   constructor(
     private fb: FormBuilder,
@@ -35,8 +37,7 @@ export class FormAdministradorComponent implements OnInit {
       direccion: [''],
       username: ['', Validators.required],
       password: ['', [Validators.required, Validators.minLength(8)]],
-      passconfirm: ['', [Validators.required, Validators.minLength(8)]],
-    }, { validator: this.comprobarContrasena });
+    });
   }
 
   ngOnInit(): void {
@@ -105,14 +106,25 @@ export class FormAdministradorComponent implements OnInit {
     }
   }
 
-  private comprobarContrasena(group: FormGroup) {
-    const password = group.get('password')?.value;
-    const confirmPassword = group.get('passconfirm')?.value;
+  togglePassword() {
+    this.passwordVisible = !this.passwordVisible;
+  }
 
-    if (password && confirmPassword && password !== confirmPassword) {
-      return { passNoCoinciden: true };
+  onImageSelected(event: any): void {
+    const file = event.target.files[0]; // Obtiene el primer archivo
+    if (file) {
+      this.imagenSeleccionada = file;
+      console.log('Imagen seleccionada:', file);
     }
-    return null;
+  }
+
+  uploadImage(): void {
+    if (this.imagenSeleccionada) {
+      // Aquí puedes manejar la carga de la imagen, por ejemplo, enviarla a un servidor
+      console.log('Subiendo imagen...', this.imagenSeleccionada);
+    } else {
+      console.log('No se ha seleccionado ninguna imagen.');
+    }
   }
 
 }
