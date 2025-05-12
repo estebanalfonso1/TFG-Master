@@ -71,7 +71,7 @@ export class FormProfesorComponent implements OnInit {
             this.profesorService.editProfesor(profesor).subscribe(
               result => {
                 window.alert("Perfil actualizado correctamente");
-                this.router.navigateByUrl("/");
+                window.location.href = "/";
               },
               error => { console.log(error); }
             );

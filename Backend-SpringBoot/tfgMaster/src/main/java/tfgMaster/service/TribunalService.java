@@ -95,6 +95,7 @@ public class TribunalService {
 				tribunalO.get().setFechaFin(tribunal.getFechaFin());
 				tribunalO.get().setEstado("PENDIENTE");
 				tribunalO.get().setArchivo(tribunal.getArchivo());
+				tribunalO.get().setTieneProfesores(tribunal.getTieneProfesores());
 				tribunalO.get().setRubrica(tribunal.getRubrica());
 				tribunalO.get().setValoraciones(tribunal.getValoraciones());
 				return tribunalRepository.save(tribunalO.get());

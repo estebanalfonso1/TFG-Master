@@ -99,10 +99,10 @@ export class FormAdministradorComponent implements OnInit {
     if (token) {
       const decodedToken = jwtDecode<{ rol: string }>(token);
       if (decodedToken.rol != "ADMINISTRADOR") {
-        this.router.navigate(['/']);
+        window.location.href = "/";
       }
     } else {
-      this.router.navigate(['/']);
+      window.location.href = "/";
     }
   }
 

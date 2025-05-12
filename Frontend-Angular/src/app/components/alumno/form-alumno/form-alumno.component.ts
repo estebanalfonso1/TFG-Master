@@ -88,7 +88,7 @@ export class FormAlumnoComponent implements OnInit {
 
   }
 
-  save() {    
+  save() {
     const alumno = this.alumnoForm.value;
 
     this.actorService.actorExist(alumno.username).subscribe(
@@ -100,19 +100,19 @@ export class FormAlumnoComponent implements OnInit {
             this.alumnoService.editAlumno(alumno).subscribe(
               result => {
                 window.alert("Perfil actualizado correctamente");
-                this.router.navigateByUrl("/");
+                window.location.href = "/";
               },
               error => { console.log(error); }
             );
-          } else if (this.isEditModeId)  {
+          } else if (this.isEditModeId) {
             this.alumnoService.editAlumnoById(this.id, alumno).subscribe(
               result => {
                 window.alert("Perfil actualizado correctamente");
-                this.router.navigateByUrl("/");
+                window.location.href = "/";
               },
               error => { console.log(error); }
             );
-          } 
+          }
           else {
             this.alumnoService.saveAlumno(alumno).subscribe(
               result => {

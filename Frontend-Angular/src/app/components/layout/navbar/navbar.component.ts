@@ -6,6 +6,7 @@ import { AvatarModule } from 'primeng/avatar';
 import { AvatarGroupModule } from 'primeng/avatargroup';
 import { MenuModule } from 'primeng/menu';
 import { MenuItem } from 'primeng/api';
+import { ActorService } from '../../../service/actor.service';
 
 
 @Component({
@@ -22,9 +23,9 @@ export class NavbarComponent implements OnInit {
   nombreUsuario !: any;
   primeraLetra!: any;
   items!: MenuItem[];
+  nombre !: any;
 
-
-  constructor(private router: Router) {
+  constructor(private router: Router, private actorService: ActorService) {
     if (this.token !== null && this.token) {
       this.nombreUsuario = jwtDecode(this.token).sub;
       this.rol = jwtDecode<{ rol: string }>(this.token).rol;
@@ -34,8 +35,11 @@ export class NavbarComponent implements OnInit {
   ngOnInit(): void {
     if (sessionStorage.getItem("token") !== null) {
       this.hayToken = true;
-      this.primeraLetra = this.nombreUsuario.charAt(0).toUpperCase();
-
+      this.actorService.userLogin().subscribe(
+        usuario => {
+          this.nombre = usuario.nombre;
+          this.primeraLetra = this.nombre.charAt(0).toUpperCase();
+        });
     } else {
       this.hayToken = false;
     }
