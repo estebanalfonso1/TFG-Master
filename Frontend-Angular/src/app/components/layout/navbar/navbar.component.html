@@ -8,13 +8,58 @@
                 <li class="nav-item">
                     <a class="nav-link active" aria-current="page" routerLink="/">INICIO</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" *ngIf="rol == 'PROFESOR'"
-                        routerLink="/alumnos">ALUMNOS</a>
+                <li *ngIf="rol == 'PROFESOR'">
+                    <div class="menu">
+                        <div class="item">
+                            <a class="link cursor-pointer">
+                                <span>ALUMNOS</span>
+                                <svg viewBox="0 0 360 360" xml:space="preserve">
+                                    <g id="SVGRepo_iconCarrier">
+                                        <path id="XMLID_225_"
+                                            d="M325.607,79.393c-5.857-5.857-15.355-5.858-21.213,0.001l-139.39,139.393L25.607,79.393 c-5.857-5.857-15.355-5.858-21.213,0.001c-5.858,5.858-5.858,15.355,0,21.213l150.004,150c2.813,2.813,6.628,4.393,10.606,4.393 s7.794-1.581,10.606-4.394l149.996-150C331.465,94.749,331.465,85.251,325.607,79.393z">
+                                        </path>
+                                    </g>
+                                </svg>
+                            </a>
+                            <div class="submenu">
+                                <div class="submenu-item">
+                                    <a routerLink="/tribunales/asignados" class="submenu-link">Alumnos</a>
+                                </div>
+                                <div class="submenu-item">
+                                    <a routerLink="/tribunales/asignados" class="submenu-link">Mis alumnos</a>
+                                </div>
+                                <div class="submenu-item" style="padding-bottom: 12px;">
+                                    <a routerLink="/tribunal/nuevo" class="submenu-link">Registrar alumno</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" *ngIf="rol == 'PROFESOR'"
-                        routerLink="/tribunales/asignados">TRIBUNALES</a>
+                <li *ngIf="rol == 'PROFESOR'">
+                    <div class="menu">
+                        <div class="item">
+                            <a class="link cursor-pointer">
+                                <span>TRIBUNALES</span>
+                                <svg viewBox="0 0 360 360" xml:space="preserve">
+                                    <g id="SVGRepo_iconCarrier">
+                                        <path id="XMLID_225_"
+                                            d="M325.607,79.393c-5.857-5.857-15.355-5.858-21.213,0.001l-139.39,139.393L25.607,79.393 c-5.857-5.857-15.355-5.858-21.213,0.001c-5.858,5.858-5.858,15.355,0,21.213l150.004,150c2.813,2.813,6.628,4.393,10.606,4.393 s7.794-1.581,10.606-4.394l149.996-150C331.465,94.749,331.465,85.251,325.607,79.393z">
+                                        </path>
+                                    </g>
+                                </svg>
+                            </a>
+                            <div class="submenu">
+                                <div class="submenu-item">
+                                    <a routerLink="/tribunales/asignados" class="submenu-link">Mis tribunales</a>
+                                </div>
+                                <div class="submenu-item" style="padding-bottom: 10px;">
+                                    <a routerLink="/tribunal/nuevo" class="submenu-link">Crear tribunal</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                 </li>
                 <li class="nav-item">
                     <a class="nav-link active" aria-current="page" *ngIf="rol == 'ADMINISTRADOR'"
@@ -22,9 +67,12 @@
                 </li>
             </ul>
             <p-avatar label="{{ primeraLetra }}" styleClass="mr-2 cursor-pointer" size="large" shape="circle"
-                (click)="menu.toggle($event)"/>
+                (click)="menu.toggle($event)" />
 
-            <p-menu #menu [popup]="true" [model]="items"/>
+            <p-menu #menu [popup]="true" [model]="items" />
         </div>
     </div>
+
+
+
 </nav>
