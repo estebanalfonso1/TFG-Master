@@ -6,11 +6,15 @@ import { Router } from '@angular/router';
 import { AdministradorService } from '../../../service/administrador.service';
 import { jwtDecode } from 'jwt-decode';
 import { AvatarModule } from 'primeng/avatar';
+import { AvatarEstadoService } from '../../../service/avatar.service';
+import { ToastModule } from 'primeng/toast';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-form-administrador',
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule, AvatarModule],
+  imports: [ReactiveFormsModule, CommonModule, AvatarModule, ToastModule],
+  providers: [MessageService],
   templateUrl: './form-administrador.component.html',
   styleUrls: ['./form-administrador.component.css']
 })
@@ -20,12 +24,15 @@ export class FormAdministradorComponent implements OnInit {
   isEditMode!: boolean;
   imagenSeleccionada: File | null = null;
   passwordVisible: boolean = false;
+  datosFormulario: any;
 
   constructor(
     private fb: FormBuilder,
     private administradorService: AdministradorService,
     private actorService: ActorService,
     private router: Router,
+    private avatarEstado: AvatarEstadoService,
+    private messageService: MessageService
   ) {
     this.administradorForm = this.fb.group({
       nombre: ['', Validators.required],
@@ -51,6 +58,11 @@ export class FormAdministradorComponent implements OnInit {
           this.administradorForm.get("password")?.disable();
           this.administradorForm.get("passconfirm")?.disable();
           this.administradorForm.get('username')?.disable();
+
+          this.datosFormulario = { ...result };
+
+          const letra = result.nombre.charAt(0).toUpperCase();
+          this.avatarEstado.setLetra(letra);
         },
         error => {
           this.router.navigateByUrl("/");
@@ -59,29 +71,63 @@ export class FormAdministradorComponent implements OnInit {
     }
   }
 
+  datosModificados(): boolean {
+    return JSON.stringify(this.administradorForm.value) !== JSON.stringify(this.datosFormulario);
+  }
+
+  formularioModificado(): boolean {
+    return !this.datosModificados() || this.administradorForm.invalid;
+  }
+
   save() {
     const admin = this.administradorForm.value;
 
     this.actorService.actorExist(admin.username).subscribe(
       exists => {
         if (exists) {
-          window.alert("El nombre de usuario ya está en uso. Por favor, elige otro.");
+          this.messageService.add({
+            severity: "error",
+            summary: "Error",
+            detail: "El nombre de usuario ya está en uso. Por favor, elige otro.",
+            life: 1900
+          })
         } else {
           if (this.isEditMode) {
             this.administradorService.editAdministrador(admin).subscribe(
               result => {
-                window.alert("Perfil actualizado correctamente");
-                this.router.navigateByUrl("/");
+                const nuevaLetra = admin.nombre.charAt(0).toUpperCase();
+                this.avatarEstado.setLetra(nuevaLetra);
+
+                this.messageService.add({
+                  severity: "success",
+                  summary: "Éxito",
+                  detail: "Perfil actualizado correctamente",
+                  life: 1900
+                })
+
+                this.datosFormulario = { ...admin };
               },
               error => { console.log(error); }
             );
           } else {
             this.administradorService.saveAdministrador(admin).subscribe(
               result => {
-                window.alert("Administrador creado correctamente");
+                this.messageService.add({
+                  severity: "success",
+                  summary: "Éxito",
+                  detail: "Administrador creado correctamente",
+                  life: 1900
+                })
                 this.router.navigateByUrl("/");
               },
-              error => { console.log(error); }
+              error => {
+                this.messageService.add({
+                  severity: "error",
+                  summary: "Error",
+                  detail: "No se ha podido crear el administrador",
+                  life: 1900
+                })
+              }
             );
           }
         }

@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import { CommonModule, NgClass } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { jwtDecode } from 'jwt-decode';
@@ -7,6 +7,7 @@ import { AvatarGroupModule } from 'primeng/avatargroup';
 import { MenuModule } from 'primeng/menu';
 import { MenuItem } from 'primeng/api';
 import { ActorService } from '../../../service/actor.service';
+import { AvatarEstadoService } from '../../../service/avatar.service';
 
 
 @Component({
@@ -25,7 +26,8 @@ export class NavbarComponent implements OnInit {
   items!: MenuItem[];
   nombre !: any;
 
-  constructor(private router: Router, private actorService: ActorService) {
+  constructor(private router: Router, private actorService: ActorService, private avatarEstado: AvatarEstadoService
+  ) {
     if (this.token !== null && this.token) {
       this.nombreUsuario = jwtDecode(this.token).sub;
       this.rol = jwtDecode<{ rol: string }>(this.token).rol;
@@ -35,11 +37,16 @@ export class NavbarComponent implements OnInit {
   ngOnInit(): void {
     if (sessionStorage.getItem("token") !== null) {
       this.hayToken = true;
-      this.actorService.userLogin().subscribe(
-        usuario => {
-          this.nombre = usuario.nombre;
-          this.primeraLetra = this.nombre.charAt(0).toUpperCase();
-        });
+      this.actorService.userLogin().subscribe(usuario => {
+        this.nombre = usuario.nombre;
+        const letra = this.nombre.charAt(0).toUpperCase();
+        this.avatarEstado.setLetra(letra);
+      });
+
+      this.avatarEstado.letra$.subscribe(letra => {
+        this.primeraLetra = letra;
+      });
+
     } else {
       this.hayToken = false;
     }
@@ -49,6 +56,7 @@ export class NavbarComponent implements OnInit {
       { label: 'Cerrar sesión', icon: 'pi pi-sign-out', command: () => this.logout() }
     ];
   }
+
 
   logout() {
     sessionStorage.removeItem("token");

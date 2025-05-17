@@ -1,6 +1,9 @@
 <main style="background-image: url('actor/fondo.jpg');"
     class="container-fluid d-flex justify-content-center align-items-center min-vh-100">
+    <p-toast position="top-center"></p-toast>
+
     <div class="position-fixed top-0 start-0 w-100 h-100 bg-dark bg-opacity-50 z-1"></div>
+
     <div class="container my-4 z-3">
         <div class="row" style="min-height: 300px;">
             <!-- Primer card -->
@@ -52,7 +55,8 @@
                                     </div>
 
                                     <div class="mb-3">
-                                        <label for="apellido1" class="form-label text-secondary">Primer apellido*</label>
+                                        <label for="apellido1" class="form-label text-secondary">Primer
+                                            apellido*</label>
                                         <input id="apellido1" class="form-control rounded-pill"
                                             formControlName="apellido1" placeholder="Introduce el primer apellido"
                                             type="text" required />
@@ -221,7 +225,7 @@
                             </div>
 
                             <button type="submit" class="btn btn-primary w-25 py-2 mt-4 rounded-pill boton"
-                                [disabled]="profesorForm.invalid">GUARDAR</button>
+                                [disabled]="formularioModificado() || profesorForm.pristine">GUARDAR</button>
                         </form>
 
                     </div>
