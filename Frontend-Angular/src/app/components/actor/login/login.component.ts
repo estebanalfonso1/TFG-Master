@@ -3,10 +3,13 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ActorService } from '../../../service/actor.service';
+import { ToastModule } from 'primeng/toast';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-login',
-  imports: [ReactiveFormsModule, CommonModule],
+  imports: [ReactiveFormsModule, CommonModule, ToastModule],
+  providers: [MessageService],
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
@@ -18,7 +21,8 @@ export class LoginComponent implements OnInit {
   constructor(
     private router: Router,
     private fb: FormBuilder,
-    private actorService: ActorService
+    private actorService: ActorService,
+    private messageService: MessageService
   ) {
     this.formLogin = this.fb.group({
       username: ['', [Validators.required]],
@@ -41,7 +45,13 @@ export class LoginComponent implements OnInit {
         this.router.navigate(['/']).then(() => window.location.reload());
       },
       (error) => {
-        window.alert("Usuario y/o contraseña incorrectos");
+        // window.alert("Usuario y/o contraseña incorrectos");
+      this.messageService.add ({
+        severity: "error",
+        summary:"Error al iniciar sesión",
+        detail:"Usuario y/o contraseña incorrectos",
+        life: 1900
+      })        
       }
     );
   }
