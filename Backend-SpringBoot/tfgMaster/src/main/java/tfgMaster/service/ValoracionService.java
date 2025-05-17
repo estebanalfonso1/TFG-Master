@@ -30,6 +30,19 @@ public class ValoracionService {
         return valoracionRepository.findById(id);
     }
 
+    // Busca una VALORACION por TRIBUNAL y PROFESOR
+    public Optional<Valoracion> getValoracionByTribunalByProfesor(int idTribunal) {
+        Profesor profesor = JWTUtils.userLogin();
+
+        for (Valoracion valoracion : getAllValoraciones()) {
+            if (valoracion.getTribunal().getId() == idTribunal && valoracion.getProfesor().equals(profesor)) {
+                return valoracionRepository.findById(valoracion.getId());
+            }
+        }
+
+        return null;
+    }
+
     // Crear VALORACION
     @Transactional
     public Valoracion saveValoracion(Valoracion valoracion) {
@@ -43,10 +56,7 @@ public class ValoracionService {
 
         if (valoracionO.isPresent()) {
             Profesor profesor = JWTUtils.userLogin();
-            if (profesor != null) {
-                valoracionO.get().setProfesor(valoracion.getProfesor());
-                valoracionO.get().setTribunal(valoracion.getTribunal());
-                valoracionO.get().setCriterio(valoracion.getCriterio());
+            if (profesor != null && profesor.getId() == valoracionO.get().getProfesor().getId()) {
                 valoracionO.get().setValoracion(valoracion.getValoracion());
                 return valoracionRepository.save(valoracionO.get());
             }
@@ -67,7 +77,7 @@ public class ValoracionService {
                 tribunalCalificado = true;
             }
 
-            if (profesor != null && !tribunalCalificado && valoracionO.get().getProfesor().equals(profesor)) {
+            if (profesor != null && !tribunalCalificado) {
                 valoracionRepository.deleteById(id);
 
                 res = true;

@@ -1,0 +1,41 @@
+<h2 class="">Valoración</h2>
+<div *ngIf="listaValoraciones.length === 0" class="alert alert-info text-center">
+  <strong>No tienes valoraciones asignadas.</strong>
+</div>
+
+<form [formGroup]="formPrincipal" *ngIf="listaValoraciones.length > 0">
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Alumno</th>
+        <th>Mín</th>
+        <th>Máx</th>
+        <th>De Tutor</th>
+        <th>Valoración</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody formArrayName="valoraciones">
+      <tr *ngFor="let valoracion of listaValoraciones; let i = index" [formGroupName]="i">
+        <td>{{ valoracion.criterio.descripcion }}</td>
+        <td>{{ valoracion.criterio.valoracionMinima }}</td>
+        <td>{{ valoracion.criterio.valoracionMaxima }}</td>
+        <td>{{ valoracion.criterio.deTutor ? 'Sí' : 'No' }}</td>
+        <td>
+          <input type="number" formControlName="valoracion" class="form-control">
+          <div class="text-danger" *ngIf="getFormGroup(i).get('valoracion')?.invalid">
+            <small *ngIf="getFormGroup(i).get('valoracion')?.hasError('min')">Menor que el mínimo</small>
+            <small *ngIf="getFormGroup(i).get('valoracion')?.hasError('max')">Mayor que el máximo</small>
+            <small *ngIf="getFormGroup(i).get('valoracion')?.hasError('required')">Obligatorio</small>
+          </div>
+        </td>
+        <td>
+          <button type="button" class="btn btn-primary" [disabled]="getFormGroup(i).invalid || getFormGroup(i).pristine"
+            (click)="saveValoracion(i)">
+            Guardar
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</form>

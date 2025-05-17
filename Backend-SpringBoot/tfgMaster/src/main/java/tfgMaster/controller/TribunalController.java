@@ -21,7 +21,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import tfgMaster.entity.Profesor;
-import tfgMaster.entity.Rubrica;
 import tfgMaster.entity.Tribunal;
 import tfgMaster.service.TribunalService;
 
@@ -127,6 +126,16 @@ public class TribunalController {
 		} else {
 			return ResponseEntity.status(HttpStatus.ACCEPTED).build();
 		}
+	}
+
+	@GetMapping("/deAlumno")
+	@Operation(summary = "Obtener todos los tribunales de un profesor")
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "200", description = "Lista de tribunales obtenida exitosamente"),
+			@ApiResponse(responseCode = "500", description = "Error interno del servidor") })
+	public ResponseEntity<Set<Tribunal>> getAllTribunalesByAlumno() {
+		Set<Tribunal> listTribunales = tribunalService.getAllTribunalesByAlumno();
+		return ResponseEntity.ok(listTribunales);
 	}
 
 }

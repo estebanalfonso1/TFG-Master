@@ -82,6 +82,19 @@ public class ValoracionController {
         }
     }
 
+    @GetMapping("/deProfesor/{id}")
+    @Operation(summary = "Buscar una valoracion de un profesor por ID de tribunal")
+    @ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Valoracion encontrada"),
+            @ApiResponse(responseCode = "404", description = "Valoracion no encontrada") })
+    public ResponseEntity<Valoracion> findOneValoracionByTribunalByProfesor(@PathVariable int idTribunal) {
+        Optional<Valoracion> valoracion = valoracionService.getValoracionByTribunalByProfesor(idTribunal);
+        if (!valoracion.isPresent()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        } else {
+            return ResponseEntity.ok(valoracion.get());
+        }
+    }
+
     @GetMapping
     @Operation(summary = "Obtener todas las valoraciones")
     @ApiResponses(value = {

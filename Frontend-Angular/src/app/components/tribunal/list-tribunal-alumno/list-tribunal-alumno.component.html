@@ -1,0 +1,39 @@
+<br>
+<h2 class="">Listado de Tribunales</h2>
+<br>
+<div class="">
+    <!-- <div class="text-center mb-3">
+        <button *ngIf="rol == 'PROFESOR'" type="button" class="btn btn-primary" (click)="crearAlumno()">Crear
+            alumno</button>
+    </div> -->
+
+    <div *ngIf="listaTribunales.length === 0" class="alert alert-info text-center">
+        <strong>No tienes tribunales asignados.</strong>
+    </div>
+
+    <table class="table table-striped" *ngIf="listaTribunales.length > 0">
+        <thead>
+            <tr>
+                <th scope="col">Alumno</th>
+                <th scope="col">Estado</th>
+                <th scope="col">Fecha fin</th>
+                <th scope="col">Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for(tribunal of listaTribunales; track tribunal.id) {
+            <tr>
+                <td>{{ tribunal.alumno.nombre }} {{ tribunal.alumno.apellido1 }} {{ tribunal.alumno.apellido2 }}</td>
+                <td>{{ tribunal.estado }}</td>
+                <td>{{ tribunal.fechaFin | date: 'dd-MM-yyyy' }}</td>
+                <td>
+                    <button type="button" (click)="editarTribunal(tribunal.id)">
+                        Editar
+                    </button>
+                </td>
+            </tr>
+            }
+        </tbody>
+    </table>
+</div>
+<br>

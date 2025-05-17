@@ -57,4 +57,9 @@ export class TribunalService {
         return this.http.get<Tribunal>(url);
     }
 
+    getAllTribunalByAlumno(): Observable<Set<Tribunal>> {
+        const url = `${this.urlAPI}/deAlumno`;
+        return this.http.get<Set<Tribunal>>(url);
+    }
+
 }

@@ -1,5 +1,6 @@
 package tfgMaster.service;
 
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import jakarta.transaction.Transactional;
 import tfgMaster.entity.Alumno;
+import tfgMaster.entity.Criterio;
 import tfgMaster.entity.Profesor;
 import tfgMaster.entity.Tribunal;
 import tfgMaster.entity.Valoracion;
@@ -22,6 +24,9 @@ public class TribunalService {
 	private TribunalRepository tribunalRepository;
 
 	@Autowired
+	private ValoracionService valoracionService;
+
+	@Autowired
 	private JWTUtils JWTUtils;
 
 	// Busca todos los TRIBUNALES
@@ -31,7 +36,15 @@ public class TribunalService {
 
 	// Busca un TRIBUNAL
 	public Optional<Tribunal> getTribunalById(int id) {
-		return tribunalRepository.findById(id);
+		Object userLogin = JWTUtils.userLogin();
+
+		if (userLogin instanceof Alumno alumno && tribunalRepository.findById(id).get().getAlumno().equals(alumno)) {
+			return tribunalRepository.findById(id);
+		} else if (userLogin instanceof Profesor) {
+			return tribunalRepository.findById(id);
+		}
+
+		return null;
 	}
 
 	// Obtener TRIBUNALES a los que pertenece un PROFESOR
@@ -42,6 +55,21 @@ public class TribunalService {
 
 		for (Tribunal tribunal : tribunalRepository.findAll()) {
 			if (tribunal.getTieneProfesores().contains(profesor)) {
+				tribunales.add(tribunal);
+			}
+		}
+
+		return tribunales;
+	}
+
+	// Obtener TRIBUNALES a los que pertenece un ALUMNO
+	public Set<Tribunal> getAllTribunalesByAlumno() {
+		Alumno alumno = JWTUtils.userLogin();
+
+		Set<Tribunal> tribunales = new HashSet<Tribunal>();
+
+		for (Tribunal tribunal : tribunalRepository.findAll()) {
+			if (tribunal.getAlumno().equals(alumno)) {
 				tribunales.add(tribunal);
 			}
 		}
@@ -76,10 +104,20 @@ public class TribunalService {
 	// Crear TRIBUNAL
 	@Transactional
 	public Tribunal saveTribunal(Tribunal tribunal) {
-		tribunal.setValoraciones(new HashSet<Valoracion>());
 
 		Tribunal tribunalSave = tribunalRepository.save(tribunal);
 
+		for (Criterio criterio : tribunal.getRubrica().getCriterios()) {
+
+			for (Profesor profesorT : tribunal.getTieneProfesores()) {
+				Valoracion valoracion = new Valoracion();
+				valoracion.setCriterio(criterio);
+				valoracion.setTribunal(tribunal);
+				valoracion.setProfesor(profesorT);
+				valoracionService.saveValoracion(valoracion);
+			}
+
+		}
 		return tribunalSave;
 	}
 
@@ -90,18 +128,17 @@ public class TribunalService {
 		if (tribunalO.isPresent()) {
 			Object userLogin = JWTUtils.userLogin();
 
-			if (userLogin instanceof Profesor profesor && tribunalO.get().getTieneProfesores().contains(profesor)) {
-				tribunalO.get().setFechaEntrega(tribunal.getFechaEntrega());
-				tribunalO.get().setFechaFin(tribunal.getFechaFin());
-				tribunalO.get().setEstado("PENDIENTE");
+			if (userLogin instanceof Alumno alumno && tribunalO.get().getAlumno().equals(alumno)) {
 				tribunalO.get().setArchivo(tribunal.getArchivo());
-				tribunalO.get().setTieneProfesores(tribunal.getTieneProfesores());
-				tribunalO.get().setRubrica(tribunal.getRubrica());
-				tribunalO.get().setValoraciones(tribunal.getValoraciones());
-				return tribunalRepository.save(tribunalO.get());
+				if (tribunalO.get().getArchivo().length() > 0) {
+					Date fechaHoy = new Date();
 
-			} else if (userLogin instanceof Alumno alumno && tribunalO.get().getAlumno().equals(alumno)) {
-				tribunalO.get().setArchivo(tribunal.getArchivo());
+					tribunalO.get().setFechaEntrega(fechaHoy);
+					tribunalO.get().setEstado("ENTREGADO");
+				} else {
+					tribunalO.get().setFechaEntrega(null);
+					tribunalO.get().setEstado("PENDIENTE");
+				}
 				return tribunalRepository.save(tribunalO.get());
 			}
 		}
@@ -117,6 +154,12 @@ public class TribunalService {
 
 		if (tribunalO.isPresent()) {
 			if (profesor != null && tribunalO.get().getEstado().equals("PENDIENTE")) {
+
+				for (Valoracion valoracion : valoracionService.getAllValoraciones()) {
+					if (valoracion.getTribunal() != null && valoracion.getTribunal().getId() == id) {
+						valoracionService.deleteValoracion(valoracion.getId());
+					}
+				}
 
 				tribunalRepository.deleteById(id);
 

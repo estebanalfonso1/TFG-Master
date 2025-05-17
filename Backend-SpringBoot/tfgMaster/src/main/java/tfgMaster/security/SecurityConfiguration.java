@@ -18,8 +18,6 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
-import tfgMaster.security.JWTAuthenticationFilter;
-
 @Configuration
 @EnableWebSecurity
 public class SecurityConfiguration {
@@ -68,13 +66,14 @@ public class SecurityConfiguration {
 
 				// TRIBUNAL
 				.requestMatchers(HttpMethod.POST, "/tribunal").hasAuthority("PROFESOR")
-				.requestMatchers(HttpMethod.PUT, "/tribunal/{id}").hasAuthority("PROFESOR")
+				.requestMatchers(HttpMethod.PUT, "/tribunal/{id}").hasAuthority("ALUMNO")
 				.requestMatchers(HttpMethod.DELETE, "/tribunal/{id}").hasAuthority("PROFESOR")
-				.requestMatchers(HttpMethod.GET, "/tribunal/{id}").hasAuthority("PROFESOR")
+				.requestMatchers(HttpMethod.GET, "/tribunal/{id}").hasAnyAuthority("PROFESOR", "ALUMNO")
 				.requestMatchers(HttpMethod.GET, "/tribunal").hasAuthority("PROFESOR")
 				.requestMatchers(HttpMethod.GET, "/tribunal/deProfesor").hasAuthority("PROFESOR")
 				.requestMatchers(HttpMethod.GET, "/tribunal/profesores/{id}").hasAuthority("PROFESOR")
 				.requestMatchers(HttpMethod.GET, "/tribunal/calificar/{id}").hasAuthority("PROFESOR")
+				.requestMatchers(HttpMethod.GET, "/tribunal/deAlumno").hasAuthority("ALUMNO")
 
 				// RUBRICA
 				.requestMatchers(HttpMethod.POST, "/rubrica").hasAuthority("PROFESOR")
@@ -96,6 +95,7 @@ public class SecurityConfiguration {
 				.requestMatchers(HttpMethod.DELETE, "/valoracion/{id}").hasAuthority("PROFESOR")
 				.requestMatchers(HttpMethod.GET, "/valoracion/{id}").hasAuthority("PROFESOR")
 				.requestMatchers(HttpMethod.GET, "/valoracion").hasAuthority("PROFESOR")
+				.requestMatchers(HttpMethod.GET, "/valoracion/deProfesor/{id}").hasAuthority("PROFESOR")
 
 				// SWAGGER
 				.requestMatchers("/swagger-ui/**").permitAll()

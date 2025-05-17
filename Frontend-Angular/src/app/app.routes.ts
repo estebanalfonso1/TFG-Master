@@ -1,4 +1,4 @@
-import { Routes } from '@angular/router';   
+import { Routes } from '@angular/router';
 import { LoginComponent } from './components/actor/login/login.component';
 import { HomeComponent } from './components/layout/home/home.component';
 import { FormAdministradorComponent } from './components/administrador/form-administrador/form-administrador.component';
@@ -9,35 +9,45 @@ import { FormRubricaComponent } from './components/rubrica/form-rubrica/form-rub
 import { ListAlumnoComponent } from './components/alumno/list-alumno/list-alumno.component';
 import { ListProfesorComponent } from './components/profesor/list-profesor/list-profesor.component';
 import { FormTribunalComponent } from './components/tribunal/form-tribunal/form-tribunal.component';
+import { ListTribunalProfesorComponent } from './components/tribunal/list-tribunal-profesor/list-tribunal-profesor.component';
+import { FormValoracionComponent } from './components/valoracion/form-valoracion/form-valoracion.component';
+import { ListTribunalAlumnoComponent } from './components/tribunal/list-tribunal-alumno/list-tribunal-alumno.component';
 
 export const routes: Routes = [
     { path: '', component: HomeComponent },
-    {path: "login", component: LoginComponent},
+    { path: "login", component: LoginComponent },
 
     // ADMINISTRADOR
-    {path: "administrador/registro", component: FormAdministradorComponent},
-    {path: "administrador/editar", component: FormAdministradorComponent},
+    { path: "administrador/registro", component: FormAdministradorComponent },
+    { path: "administrador/editar", component: FormAdministradorComponent },
 
     // PROFESOR
-    {path: "profesor/registro", component: FormProfesorComponent},
-    {path: "profesor/editar", component: FormProfesorComponent},
-    {path: "profesores", component: ListProfesorComponent},
+    { path: "profesor/registro", component: FormProfesorComponent },
+    { path: "profesor/editar", component: FormProfesorComponent },
+    { path: "profesores", component: ListProfesorComponent },
 
     // ALUMNO
-    {path: "alumno/registro", component: FormAlumnoComponent},
-    {path: "alumno/editar", component: FormAlumnoComponent},
-    {path: "alumno/editar/:id", component: FormAlumnoComponent},
-    {path: "alumnos", component: ListAlumnoComponent},
+    { path: "alumno/registro", component: FormAlumnoComponent },
+    { path: "alumno/editar", component: FormAlumnoComponent },
+    { path: "alumno/editar/:id", component: FormAlumnoComponent },
+    { path: "alumnos", component: ListAlumnoComponent },
 
     // CRITERIO
-    {path: "criterio/nuevo", component: FormCriterioComponent},
-    {path: "criterio/editar/:id", component: FormCriterioComponent},
+    { path: "criterio/nuevo", component: FormCriterioComponent },
+    { path: "criterio/editar/:id", component: FormCriterioComponent },
 
     // RUBRICA
-    {path: "rubrica/nueva", component: FormRubricaComponent},
-    {path: "rubrica/editar/:id", component: FormRubricaComponent},
+    { path: "rubrica/nueva", component: FormRubricaComponent },
+    { path: "rubrica/editar/:id", component: FormRubricaComponent },
 
     // TRIBUNAL
-    {path: "tribunal/nuevo", component: FormTribunalComponent},
-    {path: "tribunal/editar/:id", component: FormTribunalComponent},
+    { path: "tribunal/nuevo", component: FormTribunalComponent },
+    { path: "tribunal/editar/:id", component: FormTribunalComponent },
+    { path: "tribunales/asignados", component: ListTribunalProfesorComponent },
+    { path: "tribunales/mistribunales", component: ListTribunalAlumnoComponent },
+
+    // VALORACION
+    { path: "tribunales/asignados/valorar/:id", component: FormValoracionComponent },
+
+
 ];

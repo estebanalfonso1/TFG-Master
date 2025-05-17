@@ -37,3 +37,7 @@ label {
 .agreement {
   font-size: clamp(0.9rem, 1.2vw, 1rem);
 }
+
+.bg-opacity-50 {
+    --bs-bg-opacity: 0.8;
+}

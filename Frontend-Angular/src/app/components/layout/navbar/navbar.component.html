@@ -13,6 +13,10 @@
                         routerLink="/alumnos">ALUMNOS</a>
                 </li>
                 <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" *ngIf="rol == 'PROFESOR'"
+                        routerLink="/tribunales/asignados">TRIBUNALES</a>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link active" aria-current="page" *ngIf="rol == 'ADMINISTRADOR'"
                         routerLink="/profesores">PROFESORES</a>
                 </li>

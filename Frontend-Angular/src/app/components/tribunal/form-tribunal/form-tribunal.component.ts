@@ -53,23 +53,44 @@ export class FormTribunalComponent implements OnInit {
     if (this.id > 0) {
       this.tribunalService.getOneTribunal(this.id).subscribe(
         result => { this.formTribunal.patchValue(result) },
-        error => { console.log("Tribunal no encontrado") }
+        error => {
+          console.log("Tribunal no encontrado");
+          this.router.navigateByUrl("/");
+        }
       );
     }
 
-    this.profesorService.getAllProfesor().subscribe(
-      result => { this.profesores = result; },
-      error => { console.log(error) }
-    );
+    if (!this.isEditMode) {
+      this.profesorService.getAllProfesor().subscribe(
+        result => { this.profesores = result; },
+        error => { console.log(error) }
+      );
 
-    this.alumnoService.getAllAlumno().subscribe(
-      result => { this.alumnos = result; },
-      error => { console.log(error) }
-    );
+      this.alumnoService.getAllAlumno().subscribe(
+        result => { this.alumnos = result; },
+        error => { console.log(error) }
+      );
 
-    this.rubricaService.getAllRubrica().subscribe(
-      result => { this.rubricas = result; },
-      error => { console.log(error) }
+      this.rubricaService.getAllRubrica().subscribe(
+        result => { this.rubricas = result; },
+        error => { console.log(error) }
+      );
+    }
+  }
+
+  cancelarEntrega() {
+    this.tribunalService.getOneTribunal(this.id).subscribe(
+      result => {
+        result.archivo = null;
+
+        this.tribunalService.editTribunal(this.id, result).subscribe(
+          resul => { },
+          error => { }
+        );
+      },
+      error => {
+        console.error("Error al obtener el tribunal:", error);
+      }
     );
   }
 
@@ -86,13 +107,13 @@ export class FormTribunalComponent implements OnInit {
       );
     } else {
       this.tribunalService
-.saveTribunal(tribunal).subscribe(
-        result => {
-          this.router.navigateByUrl("/tribunal")
-          this.router.navigateByUrl("/");
-        },
-        error => { console.log("Tribunal no creado") }
-      );
+        .saveTribunal(tribunal).subscribe(
+          result => {
+            this.router.navigateByUrl("/tribunal")
+            this.router.navigateByUrl("/");
+          },
+          error => { console.log("Tribunal no creado") }
+        );
     }
   }
 
@@ -101,7 +122,9 @@ export class FormTribunalComponent implements OnInit {
 
     if (token) {
       const decodedToken = jwtDecode<{ rol: string }>(token);
-      if (decodedToken.rol != "PROFESOR") {
+      if (decodedToken.rol != "PROFESOR" && !this.isEditMode) {
+        this.router.navigate(['/']);
+      } else if (decodedToken.rol != "ALUMNO" && this.isEditMode) {
         this.router.navigate(['/']);
       }
     } else {
