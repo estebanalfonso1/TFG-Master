@@ -41,7 +41,7 @@ export class ListTribunalProfesorComponent implements OnInit {
     private tribunalService: TribunalService,
     private valoracionService: ValoracionService,
     private router: Router,
-        private messageService: MessageService
+    private messageService: MessageService
   ) {
     if (this.token !== null && this.token) {
       this.nombreUsuario = jwtDecode(this.token).sub;
@@ -98,10 +98,21 @@ export class ListTribunalProfesorComponent implements OnInit {
   eliminarTribunal(id: number) {
     this.tribunalService.deleteTribunal(id).subscribe(
       result => {
+        this.messageService.add({
+          severity: "success",
+          summary: "Éxito",
+          detail: "Tribunal eliminado correctamente",
+          life: 1900
+        });
         window.location.reload()
       },
       error => {
-        this.router.navigate(['/']);
+        this.messageService.add({
+          severity: "error",
+          summary: "Error",
+          detail: "No se ha podido eliminar el tribunal",
+          life: 1900
+        });
       }
     )
   }

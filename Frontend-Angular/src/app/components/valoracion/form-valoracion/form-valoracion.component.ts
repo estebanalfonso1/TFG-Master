@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { jwtDecode } from 'jwt-decode';
 import { TribunalService } from '../../../service/tribunal.service';
@@ -8,11 +8,24 @@ import { ValoracionService } from '../../../service/valoracion.service';
 import { Valoracion } from '../../../model/Valoracion';
 import { ActorService } from '../../../service/actor.service';
 import { Profesor } from '../../../model/Profesor';
+import { TagModule } from 'primeng/tag';
+import { IconFieldModule } from 'primeng/iconfield';
+import { InputIconModule } from 'primeng/inputicon';
+import { InputTextModule } from 'primeng/inputtext';
+import { MultiSelectModule } from 'primeng/multiselect';
+import { SelectModule } from 'primeng/select';
+import { TableModule } from 'primeng/table';
+import { ButtonModule } from 'primeng/button';
+import { FormsModule } from '@angular/forms';
+import { ToastModule } from 'primeng/toast';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-form-valoracion',
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule],
+  imports: [ReactiveFormsModule, CommonModule, TableModule, InputTextModule, TagModule,
+    SelectModule, MultiSelectModule, ButtonModule, IconFieldModule, InputIconModule, FormsModule, RouterLink, ToastModule],
+  providers: [MessageService],
   templateUrl: './form-valoracion.component.html',
   styleUrl: './form-valoracion.component.css'
 })
@@ -31,13 +44,14 @@ export class FormValoracionComponent implements OnInit {
     private router: Router,
     private tribunalService: TribunalService,
     private valoracionService: ValoracionService,
-    private actorService: ActorService
+    private actorService: ActorService,
+    private messageService: MessageService
   ) {
     if (this.token !== null && this.token) {
       this.nombreUsuario = jwtDecode(this.token).sub;
       this.rol = jwtDecode<{ rol: string }>(this.token).rol;
     }
-   }
+  }
 
   ngOnInit(): void {
     this.idTribunal = Number(this.route.snapshot.paramMap.get('id'));
@@ -97,10 +111,23 @@ export class FormValoracionComponent implements OnInit {
 
     this.valoracionService.editValoracion(payload.id, payload).subscribe({
       next: () => {
-        console.log(`Valoración ${payload.id} actualizada.`);
-        formValoracion.markAsPristine();
+        this.listaValoraciones[i].valoracion = nuevaValoracion; // actualiza visual
+        this.messageService.add({
+          severity: "success",
+          summary: "Éxito",
+          detail: "Valoración guardada correctamente",
+          life: 1900
+        }); formValoracion.markAsPristine();
       },
-      error: err => console.error(`Error al actualizar valoración ${payload.id}`, err)
+      error: err => {
+        console.error(`Error al actualizar valoración ${payload.id}`, err);
+        this.messageService.add({
+          severity: "error",
+          summary: "Error",
+          detail: "No se ha podido guardar la valoración",
+          life: 1900
+        });
+      }
     });
   }
 
@@ -116,4 +143,9 @@ export class FormValoracionComponent implements OnInit {
       this.router.navigate(['/']);
     }
   }
+
+  volver() {
+    this.router.navigate(['/tribunales/asignados']);
+  }
+
 }

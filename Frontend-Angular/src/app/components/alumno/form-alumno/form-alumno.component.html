@@ -1,9 +1,9 @@
 <main style="background-image: url('actor/fondo.jpg');"
     class="container-fluid d-flex justify-content-center align-items-center min-vh-100">
     <p-toast position="top-center"></p-toast>
-    <button class="position-absolute top-0 start-0 z-3 volver" (click)="volver()"
-        style="margin-top: 120px; margin-left: 80px; border: none; background: none;">
-        <i class="pi pi-arrow-left"></i>
+    <button *ngIf="isEditModeId" class="position-absolute top-0 start-0 z-3 d-none d-lg-block" (click)="volver()"
+        style="margin-top: 150px; margin-left: 80px; border: none; background: none;">
+        <i class="pi pi-arrow-left" style="font-size: 2rem; color: #fff;"></i>
     </button>
 
     <div class="position-fixed top-0 start-0 w-100 h-100 bg-dark bg-opacity-50 z-1"></div>

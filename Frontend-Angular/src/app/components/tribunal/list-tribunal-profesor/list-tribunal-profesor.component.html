@@ -54,7 +54,9 @@
                             <p-tag *ngIf="tribunal.estado == 'ENTREGADO'" [value]="tribunal.estado"
                                 severity="warn"></p-tag>
                         </td>
-                        <td class="fuenteTr">{{ tribunal.archivo }}</td>
+                        <td class="fuenteTr">
+                            {{ tribunal.archivo }} <span *ngIf="!tribunal.archivo">No entregado</span>
+                        </td>
                         <td class="fuenteTr">
                             {{ tribunal.fechaEntrega | date: 'dd-MM-yyyy' }} <span *ngIf="!tribunal.fechaEntrega">No
                                 entregado</span>
@@ -68,14 +70,18 @@
                                 [routerLink]="'/tribunales/asignados/valorar/' + tribunal.id">
                                 <i class="pi pi-clipboard"></i>Evaluar
                             </p-button>
-                            <span style="margin-right: 10px"></span>
+
+                            <p-button *ngIf="tribunal.estado == 'PENDIENTE'" label="" severity="danger" variant="text"
+                                styleClass="p-button-primary rounded-pill" (click)="eliminarTribunal(tribunal.id)">
+                                <i class="pi pi-trash"></i>
+                            </p-button>
                         </td>
                     </tr>
                 </ng-template>
 
                 <ng-template pTemplate="emptymessage">
                     <tr>
-                        <td colspan="7" class="fuenteTr">No hay alumnos registrados.</td>
+                        <td colspan="7" class="fuenteTr">No hay tribunales registrados.</td>
                     </tr>
                 </ng-template>
             </p-table>

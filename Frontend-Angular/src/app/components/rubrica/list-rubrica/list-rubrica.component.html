@@ -1,0 +1,69 @@
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;300;400;600&display=swap" rel="stylesheet" />
+<p-toast position="top-center"></p-toast>
+
+<main style="background-image: url('actor/fondo.jpg');"
+    class="container-fluid d-flex justify-content-center align-items-center min-vh-100">
+    <div class="position-fixed top-0 start-0 w-100 h-100 bg-dark bg-opacity-50 z-1"></div>
+
+    <div class="card z-2">
+        <div>
+            <h2 class="text-center titulo mb-4 z-2">Rúbricas</h2>
+            <p-table #dt1 [value]="rubricas" dataKey="id" [rows]="10" [paginator]="true"
+                [globalFilterFields]="['rubrica', 'fechaPublicacion', 'estado']">
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th style="min-width:15rem" class="fuenteTh">
+                            Rúbrica
+                            <p-columnFilter type="text" field="rubrica" display="menu"></p-columnFilter>
+                        </th>
+                        <th style="min-width:15rem" class="fuenteTh">
+                            Fecha publicación
+                            <p-columnFilter type="text" field="fechaPublicacion" display="menu"></p-columnFilter>
+                        </th>
+                        <th style="min-width:10rem" class="fuenteTh">
+                            Estado
+                            <p-columnFilter type="text" field="estado" display="menu"></p-columnFilter>
+                        </th>
+                        <th style="min-width:10rem" class="fuenteTh">
+                            Acciones
+                        </th>
+                    </tr>
+                </ng-template>
+
+                <ng-template pTemplate="body" let-rubrica>
+                    <tr>
+                        <td class="fuenteTr">
+                            {{ rubrica.descripcion }}
+                        </td>                        
+                        <td class="fuenteTr">
+                            {{ rubrica.fechaPublicacion }}
+                        </td>
+                        <td class="fuenteTr">
+                            <p-tag [severity]="rubrica.esBorrador ? 'info' : 'success'">
+                                {{ rubrica.esBorrador ? 'Borrador' : 'Oficial' }}
+                            </p-tag>
+                        </td>
+                        <td class="fuenteBoton">
+                            <p-button label="" severity="info" variant="text"
+                                styleClass="p-button-primary rounded-pill py-1"
+                                [routerLink]="'/rubrica/editar/' + rubrica.id">
+                                <i class="pi pi-user"></i>Editar
+                            </p-button>
+                            <span style="margin-right: 10px"></span>
+                            <p-button *ngIf="rubrica.esBorrador" label="" severity="danger" variant="text"
+                                styleClass="p-button-primary rounded-pill" (click)="eliminar(rubrica.id)">
+                                <i class="pi pi-trash"></i>
+                            </p-button>
+                        </td>
+                    </tr>
+                </ng-template>
+
+                <ng-template pTemplate="emptymessage">
+                    <tr>
+                        <td colspan="7" class="fuenteTr">No hay rúbricas registradas.</td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div>
+    </div>
+</main>
