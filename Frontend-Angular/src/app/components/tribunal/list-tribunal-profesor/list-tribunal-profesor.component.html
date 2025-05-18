@@ -1,42 +1,84 @@
-<br>
-<h2 class="">Listado de Tribunales</h2>
-<br>
-<div class="">
-    <!-- <div class="text-center mb-3">
-        <button *ngIf="rol == 'PROFESOR'" type="button" class="btn btn-primary" (click)="crearAlumno()">Crear
-            alumno</button>
-    </div> -->
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;300;400;600&display=swap" rel="stylesheet" />
+<p-toast position="top-center"></p-toast>
 
-    <div *ngIf="listaTribunales.length === 0" class="alert alert-info text-center">
-        <strong>No tienes tribunales asignados.</strong>
+<main style="background-image: url('actor/fondo.jpg');"
+    class="container-fluid d-flex justify-content-center align-items-center min-vh-100">
+    <div class="position-fixed top-0 start-0 w-100 h-100 bg-dark bg-opacity-50 z-1"></div>
+
+    <div class="card z-2">
+        <div>
+            <h2 class="text-center titulo mb-4 z-2">Mis tribunales</h2>
+            <p-table #dt1 [value]="listaTribunales" dataKey="id" [rows]="10" [paginator]="true"
+                [globalFilterFields]="['alumno', 'entrega', 'estado', 'fechaFin', 'fechaEntrega']">
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th style="min-width:20rem" class="fuenteTh">
+                            Alumno
+                            <p-columnFilter type="text" field="alumno" display="menu"></p-columnFilter>
+                        </th>
+                        <th style="min-width:15rem" class="fuenteTh">
+                            Estado
+                            <p-columnFilter type="text" field="estado" display="menu"></p-columnFilter>
+                        </th>
+                        <th style="min-width:15rem" class="fuenteTh">
+                            Entrega
+                            <p-columnFilter type="text" field="entrega" display="menu"></p-columnFilter>
+                        </th>
+                        <th style="min-width:10rem" class="fuenteTh">
+                            Fecha entrega
+                            <p-columnFilter type="text" field="fechaEntrega" display="menu"></p-columnFilter>
+                        </th>
+                        <th style="min-width:10rem" class="fuenteTh">
+                            Fecha fin
+                            <p-columnFilter type="text" field="fechaFin" display="menu"></p-columnFilter>
+                        </th>
+                        <th style="min-width:10rem" class="fuenteTh">
+                            Acciones
+                            <p-columnFilter type="text" field="calificacionTotal" display="menu"></p-columnFilter>
+                        </th>
+                    </tr>
+                </ng-template>
+
+                <ng-template pTemplate="body" let-tribunal>
+                    <tr>
+                        <td class="fuenteTr">
+                            <p-avatar label="{{ tribunal.alumno.nombre.charAt(0)?.toUpperCase() }}" styleClass="avatar"
+                                size="large" shape="circle"></p-avatar>
+                            {{ tribunal.alumno.nombre }} {{ tribunal.alumno.apellido1 }} {{ tribunal.alumno.apellido2 }}
+                        </td>
+                        <td class="fuenteTr">
+                            <p-tag *ngIf="tribunal.estado == 'CALIFICADO'" [value]="tribunal.estado"
+                                severity="success"></p-tag>
+                            <p-tag *ngIf="tribunal.estado == 'PENDIENTE'" [value]="tribunal.estado"
+                                severity="secondary"></p-tag>
+                            <p-tag *ngIf="tribunal.estado == 'ENTREGADO'" [value]="tribunal.estado"
+                                severity="warn"></p-tag>
+                        </td>
+                        <td class="fuenteTr">{{ tribunal.archivo }}</td>
+                        <td class="fuenteTr">
+                            {{ tribunal.fechaEntrega | date: 'dd-MM-yyyy' }} <span *ngIf="!tribunal.fechaEntrega">No
+                                entregado</span>
+                        </td>
+                        <td class="fuenteTr">
+                            {{ tribunal.fechaFin | date: 'dd-MM-yyyy' }}
+                        </td>
+                        <td class="fuenteBoton">
+                            <p-button label="" severity="info" variant="text"
+                                styleClass="p-button-primary rounded-pill py-1"
+                                [routerLink]="'/tribunales/asignados/valorar/' + tribunal.id">
+                                <i class="pi pi-clipboard"></i>Evaluar
+                            </p-button>
+                            <span style="margin-right: 10px"></span>
+                        </td>
+                    </tr>
+                </ng-template>
+
+                <ng-template pTemplate="emptymessage">
+                    <tr>
+                        <td colspan="7" class="fuenteTr">No hay alumnos registrados.</td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div>
     </div>
-
-    <table class="table table-striped" *ngIf="listaTribunales.length > 0">
-        <thead>
-            <tr>
-                <th scope="col">Alumno</th>
-                <th scope="col">Estado</th>
-                <th scope="col">Fecha fin</th>
-                <th scope="col">Acciones</th>
-            </tr>
-        </thead>
-        <tbody>
-            @for(tribunal of listaTribunales; track tribunal.id) {
-            <tr>
-                <td>{{ tribunal.alumno.nombre }} {{ tribunal.alumno.apellido1 }} {{ tribunal.alumno.apellido2 }}</td>
-                <td>{{ tribunal.estado }}</td>
-                <td>{{ tribunal.fechaFin | date: 'dd-MM-yyyy' }}</td>
-                <td>
-                    <button type="button" (click)="editarValoracion(tribunal.id)">
-                        Corregir
-                    </button>
-                    <button type="button" (click)="eliminarTribunal(tribunal.id)">
-                        Eliminar
-                    </button>
-                </td>
-            </tr>
-            }
-        </tbody>
-    </table>
-</div>
-<br>
+</main>

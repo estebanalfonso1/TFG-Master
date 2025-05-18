@@ -110,4 +110,13 @@ public class AlumnoController {
 		return ResponseEntity.ok(listAlumnos);
 	}
 
+	@GetMapping("/deProfesor")
+	@Operation(summary = "Obtener todos los alumnos de un profesor")
+	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Lista de alumnos obtenida exitosamente"),
+			@ApiResponse(responseCode = "500", description = "Error interno del servidor") })
+	public ResponseEntity<List<Alumno>> getAllAlumnosByProfesor() {
+		List<Alumno> listAlumnos = alumnoService.getAllAlumnosByProfesor();
+		return ResponseEntity.ok(listAlumnos);
+	}
+
 }

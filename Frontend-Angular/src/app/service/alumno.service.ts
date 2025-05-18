@@ -40,4 +40,9 @@ export class AlumnoService {
         return this.http.get<Alumno[]>(this.urlAPI);
     }
 
+    getAllAlumnoByProfesor(): Observable<Alumno[]> {
+        const url = `${this.urlAPI}/deProfesor`;
+        return this.http.get<Alumno[]>(url);
+    }
+
 }

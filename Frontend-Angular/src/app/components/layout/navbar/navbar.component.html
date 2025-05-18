@@ -2,10 +2,35 @@
 
 <nav class="navbar nav navbar-expand-lg z-3" *ngIf="hayToken">
     <div class="container-fluid">
-        <img src="logo.png" width="4%" />
+        <img src="logo.png" class="d-block d-lg-none" width="10%" />
+        <img src="logo.png" class="d-none d-lg-block" width="4%" />
 
+        <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText"
+            aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation"
+            style="outline: none; box-shadow: none;">
+            <span class="navbar-toggler-icon"></span>
+        </button>
 
         <div class="collapse navbar-collapse" id="navbarText">
+            <div class="menu menu-avatar d-block d-lg-none">
+                <div class="item">
+                    <a class="link cursor-pointer">
+                        <p-avatar label="{{ primeraLetra }}" styleClass="mr-2 cursor-pointer" size="large"
+                            shape="circle" (click)="menu.toggle($event)" />
+                    </a>
+                    <div class="submenu submenu-avatar-movil">
+                        <div class="submenu-item">
+                            <a (click)="editarDatos()" class="submenu-link cursor-pointer"><i class="pi pi-user"
+                                    style="margin-right: 10px;"></i>Editar</a>
+                        </div>
+                        <div class="submenu-item" style="padding-bottom: 10px;">
+                            <a (click)="logout()" class="submenu-link cursor-pointer" style="color:tomato;"><i
+                                    class="pi pi-sign-out" style="margin-right: 10px;"></i>Cerrar sesión</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                 <li>
                     <div class="menu">
@@ -34,7 +59,7 @@
                                     <a routerLink="/alumnos" class="submenu-link">Alumnos</a>
                                 </div>
                                 <div class="submenu-item">
-                                    <a routerLink="/tribunales/asignados" class="submenu-link">Mis alumnos</a>
+                                    <a routerLink="/alumnos/misalumnos" class="submenu-link">Mis alumnos</a>
                                 </div>
                                 <div class="submenu-item" style="padding-bottom: 12px;">
                                     <a routerLink="/alumno/registro" class="submenu-link">Registrar alumno</a>
@@ -73,7 +98,7 @@
                 </li>
             </ul>
 
-            <div class="menu menu-avatar">
+            <div class="menu menu-avatar d-none d-lg-block">
                 <div class="item">
                     <a class="link cursor-pointer">
                         <p-avatar label="{{ primeraLetra }}" styleClass="mr-2 cursor-pointer" size="large"

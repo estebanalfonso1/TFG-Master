@@ -158,6 +158,15 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
+.submenu-avatar-movil {
+  min-width: 200px;
+  left: 0;
+  right: auto !important;
+  top: 100%;
+  background-color: #fff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
 .menu-avatar .item {
   font-family: 'Poppins', sans-serif;
   font-weight: 500;

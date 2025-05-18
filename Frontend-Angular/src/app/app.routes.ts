@@ -12,6 +12,7 @@ import { FormTribunalComponent } from './components/tribunal/form-tribunal/form-
 import { ListTribunalProfesorComponent } from './components/tribunal/list-tribunal-profesor/list-tribunal-profesor.component';
 import { FormValoracionComponent } from './components/valoracion/form-valoracion/form-valoracion.component';
 import { ListTribunalAlumnoComponent } from './components/tribunal/list-tribunal-alumno/list-tribunal-alumno.component';
+import { ListAlumnoProfesorComponent } from './components/alumno/list-alumno-profesor/list-alumno-profesor.component';
 
 export const routes: Routes = [
     { path: '', component: HomeComponent },
@@ -31,6 +32,7 @@ export const routes: Routes = [
     { path: "alumno/editar", component: FormAlumnoComponent },
     { path: "alumno/editar/:id", component: FormAlumnoComponent },
     { path: "alumnos", component: ListAlumnoComponent },
+    { path: "alumnos/misalumnos", component: ListAlumnoProfesorComponent },
 
     // CRITERIO
     { path: "criterio/nuevo", component: FormCriterioComponent },

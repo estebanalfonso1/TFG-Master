@@ -7,7 +7,7 @@
 
     <div class="card z-2">
         <div>
-            <h2 class="text-center titulo mb-4 z-2">Alumnos</h2>
+            <h2 class="text-center titulo mb-4 z-2">Mis alumnos</h2>
             <p-table #dt1 [value]="alumnos" dataKey="id" [rows]="10" [paginator]="true"
                 [globalFilterFields]="['nombre', 'email', 'curso', 'telefono', 'direccion', 'calificacionTotal']">
                 <ng-template pTemplate="header">
@@ -70,13 +70,9 @@
                             <p-button label="" severity="info" variant="text"
                                 styleClass="p-button-primary rounded-pill py-1"
                                 [routerLink]="'/alumno/editar/' + alumno.id">
-                                <i class="pi pi-user"></i>Editar
+                                <i class="pi pi-clipboard"></i>Evaluar
                             </p-button>
                             <span style="margin-right: 10px"></span>
-                            <p-button label="" severity="danger" variant="text"
-                                styleClass="p-button-primary rounded-pill" (click)="eliminar(alumno.id)">
-                                <i class="pi pi-trash"></i>
-                            </p-button>
                         </td>
                     </tr>
                 </ng-template>

@@ -16,16 +16,17 @@ import { ButtonModule } from 'primeng/button';
 import { FormsModule } from '@angular/forms';
 import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
+import {CardModule} from 'primeng/card';
 
 @Component({
-  selector: 'app-list-alumno',
+  selector: 'app-list-alumno-profesor',
   imports: [CommonModule, AvatarModule, TableModule, InputTextModule, TagModule,
-    SelectModule, MultiSelectModule, ButtonModule, IconFieldModule, InputIconModule, FormsModule, RouterLink, ToastModule],
+    SelectModule, MultiSelectModule, ButtonModule, IconFieldModule, InputIconModule, FormsModule, RouterLink, ToastModule, CardModule],
   providers: [MessageService],
-  templateUrl: './list-alumno.component.html',
-  styleUrl: './list-alumno.component.css'
+  templateUrl: './list-alumno-profesor.component.html',
+  styleUrl: './list-alumno-profesor.component.css'
 })
-export class ListAlumnoComponent implements OnInit {
+export class ListAlumnoProfesorComponent implements OnInit {
   public alumnos: Alumno[] = [];
   searchValue: string | undefined;
 
@@ -41,7 +42,7 @@ export class ListAlumnoComponent implements OnInit {
   }
 
   findAllAlumnos() {
-    this.alumnoService.getAllAlumno().subscribe(
+    this.alumnoService.getAllAlumnoByProfesor().subscribe(
       result => { this.alumnos = result; },
       error => { console.log(error) }
     );
@@ -64,30 +65,6 @@ export class ListAlumnoComponent implements OnInit {
 
   aprobado(calificacion: any): boolean {
     return Number(calificacion) >= 5;
-  }
-
-  eliminar(id: number) {
-    this.alumnoService.deleteAlumno(id).subscribe(
-      result => {
-        this.messageService.add({
-          severity: "success",
-          summary: "Éxito",
-          detail: "Alumno eliminado correctamente",
-          life: 1900
-        });
-        this.alumnos = this.alumnos.filter(alumno => alumno.id !== id);
-      },
-      error => {
-        this.messageService.add({
-          severity: "error",
-          summary: "Error",
-          detail: "No se ha podido eliminar al alumno",
-          life: 1900
-        });
-      }
-    );
-  }
-
-   
+  }   
 
 }

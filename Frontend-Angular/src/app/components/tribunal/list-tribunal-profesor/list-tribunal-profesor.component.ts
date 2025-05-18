@@ -1,18 +1,31 @@
 import { Component, OnInit } from '@angular/core';
 import { Alumno } from '../../../model/Alumno';
 import { AlumnoService } from '../../../service/alumno.service';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { jwtDecode } from 'jwt-decode';
 import { CommonModule } from '@angular/common';
 import { Tribunal } from '../../../model/Tribunal';
 import { TribunalService } from '../../../service/tribunal.service';
 import { DatePipe } from '@angular/common';
 import { ValoracionService } from '../../../service/valoracion.service';
+import { AvatarModule } from 'primeng/avatar';
+import { TagModule } from 'primeng/tag';
+import { IconFieldModule } from 'primeng/iconfield';
+import { InputIconModule } from 'primeng/inputicon';
+import { InputTextModule } from 'primeng/inputtext';
+import { MultiSelectModule } from 'primeng/multiselect';
+import { SelectModule } from 'primeng/select';
+import { TableModule } from 'primeng/table';
+import { ButtonModule } from 'primeng/button';
+import { FormsModule } from '@angular/forms';
+import { ToastModule } from 'primeng/toast';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-list-tribunal-profesor',
-  imports: [CommonModule],
-  providers: [DatePipe],
+  imports: [CommonModule, AvatarModule, TableModule, InputTextModule, TagModule,
+    SelectModule, MultiSelectModule, ButtonModule, IconFieldModule, InputIconModule, FormsModule, ToastModule, RouterLink],
+  providers: [DatePipe, MessageService],
   templateUrl: './list-tribunal-profesor.component.html',
   styleUrl: './list-tribunal-profesor.component.css'
 })
@@ -27,7 +40,8 @@ export class ListTribunalProfesorComponent implements OnInit {
   constructor(
     private tribunalService: TribunalService,
     private valoracionService: ValoracionService,
-    private router: Router
+    private router: Router,
+        private messageService: MessageService
   ) {
     if (this.token !== null && this.token) {
       this.nombreUsuario = jwtDecode(this.token).sub;

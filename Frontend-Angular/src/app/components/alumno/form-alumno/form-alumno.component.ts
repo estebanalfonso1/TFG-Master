@@ -144,7 +144,7 @@ export class FormAlumnoComponent implements OnInit {
                   detail: "Alumno actualizado correctamente",
                   life: 1900
                 })
-                window.location.reload;
+                this.datosFormulario = { ...alumno };
               },
               error => { console.log(error); }
             );
@@ -212,6 +212,10 @@ export class FormAlumnoComponent implements OnInit {
     } else {
       console.log('No se ha seleccionado ninguna imagen.');
     }
+  }
+
+  volver() {
+      this.router.navigate(['/alumnos']);
   }
 
 }
