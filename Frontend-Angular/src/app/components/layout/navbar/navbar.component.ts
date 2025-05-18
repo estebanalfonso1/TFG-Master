@@ -1,10 +1,10 @@
 import { CommonModule, NgClass } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { jwtDecode } from 'jwt-decode';
 import { AvatarModule } from 'primeng/avatar';
 import { AvatarGroupModule } from 'primeng/avatargroup';
-import { MenuModule } from 'primeng/menu';
+import { Menu, MenuModule } from 'primeng/menu';
 import { MenuItem } from 'primeng/api';
 import { ActorService } from '../../../service/actor.service';
 import { AvatarEstadoService } from '../../../service/avatar.service';
@@ -23,8 +23,8 @@ export class NavbarComponent implements OnInit {
   rol!: string;
   nombreUsuario !: any;
   primeraLetra!: any;
-  items!: MenuItem[];
   nombre !: any;
+  @ViewChild('menu') menu!: Menu;
 
   constructor(private router: Router, private actorService: ActorService, private avatarEstado: AvatarEstadoService
   ) {
@@ -50,11 +50,6 @@ export class NavbarComponent implements OnInit {
     } else {
       this.hayToken = false;
     }
-
-    this.items = [
-      { label: 'Editar', icon: 'pi pi-user', command: () => this.editarDatos() },
-      { label: 'Cerrar sesión', icon: 'pi pi-sign-out', command: () => this.logout() }
-    ];
   }
 
 
@@ -66,6 +61,15 @@ export class NavbarComponent implements OnInit {
   editarDatos() {
     const ruta = this.rol.toLowerCase();
     this.router.navigate([`/${ruta}/editar`]);
+  }
+
+
+  mostrarMenu(event: MouseEvent) {
+    this.menu.show(event);
+  }
+
+  ocultarMenu() {
+    this.menu.hide();
   }
 
 }

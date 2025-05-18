@@ -39,12 +39,7 @@
   font-size: clamp(0.85rem, 1vw, 1rem);
   color: gray;
   font-weight: 200;
-}
 
-.se {
-  font-size: clamp(0.85rem, 1vw, 1rem);
-  color: gray;
-  font-weight: 200;
 }
 
 label {

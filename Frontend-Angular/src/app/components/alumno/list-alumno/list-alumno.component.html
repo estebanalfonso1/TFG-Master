@@ -1,36 +1,56 @@
-<br>
-<h2 class="">Listado de Alumnos</h2>
-<br>
-<div class="">
-    <!-- <div class="text-center mb-3">
-        <button *ngIf="rol == 'PROFESOR'" type="button" class="btn btn-primary" (click)="crearAlumno()">Crear
-            alumno</button>
-    </div> -->
+<div class="card">
+    <p-table #dt1 [value]="alumnos" dataKey="id" [rows]="10" [rowsPerPageOptions]="[10, 25, 50]" [paginator]="true"
+        [globalFilterFields]="['nombre', 'email', 'curso', 'telefono', 'direccion', 'calificacionTotal']">
 
-    <div *ngIf="alumnos.length === 0" class="alert alert-info text-center">
-        <strong>No hay alumnos registrados.</strong>
-    </div>
 
-    <table class="table table-striped" *ngIf="alumnos.length > 0">
-        <thead>
+        <ng-template pTemplate="header">
             <tr>
-                <th scope="col">Nombre</th>
-                <th scope="col">Primer apellido</th>
-                <th scope="col">Segundo apellido</th>
-                <th scope="col">Curso</th>
-                <th scope="col">Acciones</th>
+                <th style="min-width:15rem">
+                    Alumno
+                    <p-columnFilter type="text" field="nombre" display="menu" />
+                </th>
+                <th style="min-width:15rem">
+                    Email
+                    <p-columnFilter type="text" field="email" display="menu" />
+                </th>
+                <th style="min-width:15rem">
+                    Curso
+                    <p-columnFilter type="text" field="curso" display="menu" />
+                </th>
+                <th style="min-width:10rem">
+                    Teléfono
+                    <p-columnFilter type="text" field="telefono" display="menu" />
+                </th>
+                <th style="min-width:10rem">
+                    Dirección
+                    <p-columnFilter type="text" field="direccion" display="menu" />
+                </th>
+                <th style="min-width:10rem">
+                    Calificación
+                    <p-columnFilter type="text" field="calificacionTotal" display="menu" />
+                </th>
             </tr>
-        </thead>
-        <tbody>
-            @for(alumno of alumnos; track alumno.id) {
+        </ng-template>
+
+        <ng-template pTemplate="body" let-alumno>
             <tr>
-                <td>{{ alumno.id }}</td>
-                <td>{{ alumno.apellido1 }}</td>
-                <td>{{ alumno.apellido2 }}</td>
+                <td>
+                    <p-avatar label="{{ alumno.nombre.charAt(0)?.toUpperCase() }}"
+                        styleClass="avatar" size="large" shape="circle" />
+                    {{ alumno.nombre }} {{ alumno.apellido1 }} {{ alumno.apellido2 }}
+                </td>
+                <td>{{ alumno.email }}</td>
                 <td>{{ alumno.curso }}</td>
+                <td>{{ alumno.telefono }}</td>
+                <td>{{ alumno.direccion }}</td>
+                <td>{{ alumno.calificacionTotal }}</td>
             </tr>
-            }
-        </tbody>
-    </table>
+        </ng-template>
+
+        <ng-template pTemplate="emptymessage">
+            <tr>
+                <td colspan="6">No hay alumnos registrados.</td>
+            </tr>
+        </ng-template>
+    </p-table>
 </div>
-<br>

@@ -1,18 +1,26 @@
-<nav class="navbar nav navbar-expand-lg bg-white z-2" *ngIf="hayToken">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;400;500&display=swap" rel="stylesheet">
+
+<nav class="navbar nav navbar-expand-lg z-2" *ngIf="hayToken">
     <div class="container-fluid">
         <img src="logo.png" width="4%" />
 
 
         <div class="collapse navbar-collapse" id="navbarText">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" routerLink="/">INICIO</a>
+            <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                <li>
+                    <div class="menu">
+                        <div class="item">
+                            <a class="link">
+                                <span routerLink="/" class="nav1 cursor-pointer">INICIO</span>
+                            </a>
+                        </div>
+                    </div>
                 </li>
                 <li *ngIf="rol == 'PROFESOR'">
                     <div class="menu">
                         <div class="item">
                             <a class="link cursor-pointer">
-                                <span>ALUMNOS</span>
+                                <span class="nav1">ALUMNOS</span>
                                 <svg viewBox="0 0 360 360" xml:space="preserve">
                                     <g id="SVGRepo_iconCarrier">
                                         <path id="XMLID_225_"
@@ -23,24 +31,23 @@
                             </a>
                             <div class="submenu">
                                 <div class="submenu-item">
-                                    <a routerLink="/tribunales/asignados" class="submenu-link">Alumnos</a>
+                                    <a routerLink="/alumnos" class="submenu-link">Alumnos</a>
                                 </div>
                                 <div class="submenu-item">
                                     <a routerLink="/tribunales/asignados" class="submenu-link">Mis alumnos</a>
                                 </div>
                                 <div class="submenu-item" style="padding-bottom: 12px;">
-                                    <a routerLink="/tribunal/nuevo" class="submenu-link">Registrar alumno</a>
+                                    <a routerLink="/alumno/registro" class="submenu-link">Registrar alumno</a>
                                 </div>
                             </div>
                         </div>
                     </div>
-
                 </li>
                 <li *ngIf="rol == 'PROFESOR'">
                     <div class="menu">
                         <div class="item">
                             <a class="link cursor-pointer">
-                                <span>TRIBUNALES</span>
+                                <span class="nav1">TRIBUNALES</span>
                                 <svg viewBox="0 0 360 360" xml:space="preserve">
                                     <g id="SVGRepo_iconCarrier">
                                         <path id="XMLID_225_"
@@ -59,17 +66,31 @@
                             </div>
                         </div>
                     </div>
-
                 </li>
                 <li class="nav-item">
                     <a class="nav-link active" aria-current="page" *ngIf="rol == 'ADMINISTRADOR'"
                         routerLink="/profesores">PROFESORES</a>
                 </li>
             </ul>
-            <p-avatar label="{{ primeraLetra }}" styleClass="mr-2 cursor-pointer" size="large" shape="circle"
-                (click)="menu.toggle($event)" />
 
-            <p-menu #menu [popup]="true" [model]="items" />
+            <div class="menu menu-avatar">
+                <div class="item">
+                    <a class="link cursor-pointer">
+                        <p-avatar label="{{ primeraLetra }}" styleClass="mr-2 cursor-pointer" size="large"
+                            shape="circle" (click)="menu.toggle($event)" />
+                    </a>
+                    <div class="submenu submenu-avatar">
+                        <div class="submenu-item">
+                            <a (click)="editarDatos()" class="submenu-link cursor-pointer"><i class="pi pi-user"
+                                    style="margin-right: 10px;"></i>Editar</a>
+                        </div>
+                        <div class="submenu-item" style="padding-bottom: 10px;">
+                            <a (click)="logout()" class="submenu-link cursor-pointer" style="color:tomato;"><i
+                                    class="pi pi-sign-out" style="margin-right: 10px;"></i>Cerrar sesión</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 

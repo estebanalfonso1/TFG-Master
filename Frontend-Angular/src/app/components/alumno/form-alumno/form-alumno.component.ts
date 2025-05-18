@@ -144,7 +144,7 @@ export class FormAlumnoComponent implements OnInit {
                   detail: "Alumno actualizado correctamente",
                   life: 1900
                 })
-                window.location.href = "/";
+                window.location.reload;
               },
               error => { console.log(error); }
             );
@@ -158,7 +158,7 @@ export class FormAlumnoComponent implements OnInit {
                   detail: "Alumno creado correctamente",
                   life: 1900
                 })
-                this.router.navigateByUrl("/");
+                this.router.navigateByUrl("/alumno/registro");
               },
               error => {
                 this.messageService.add({
