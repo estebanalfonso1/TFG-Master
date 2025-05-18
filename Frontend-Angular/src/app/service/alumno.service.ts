@@ -26,8 +26,9 @@ export class AlumnoService {
         return this.http.put<void>(url, alumno);
     }
 
-    deleteAlumno(): Observable<void> {
-        return this.http.delete<void>(this.urlAPI);
+    deleteAlumno(id: number): Observable<void> {
+        const url = `${this.urlAPI}/${id}`;
+        return this.http.delete<void>(url);
     }
 
     getOneAlumno(id: number): Observable<Alumno> {

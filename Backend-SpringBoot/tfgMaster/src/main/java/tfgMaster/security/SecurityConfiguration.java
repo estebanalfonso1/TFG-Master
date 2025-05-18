@@ -60,7 +60,7 @@ public class SecurityConfiguration {
 				.requestMatchers(HttpMethod.POST, "/alumno").hasAuthority("PROFESOR")
 				.requestMatchers(HttpMethod.PUT, "/alumno").hasAuthority("ALUMNO")
 				.requestMatchers(HttpMethod.PUT, "/alumno/{id}").hasAuthority("PROFESOR")
-				.requestMatchers(HttpMethod.DELETE, "/alumno").hasAuthority("PROFESOR")
+				.requestMatchers(HttpMethod.DELETE, "/alumno/{id}").hasAuthority("PROFESOR")
 				.requestMatchers(HttpMethod.GET, "/alumno/{id}").hasAuthority("PROFESOR")
 				.requestMatchers(HttpMethod.GET, "/alumno").hasAuthority("PROFESOR")
 

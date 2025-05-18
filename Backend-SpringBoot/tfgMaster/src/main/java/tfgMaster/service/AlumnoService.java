@@ -85,10 +85,10 @@ public class AlumnoService {
 		
 		// Eliminar ALUMNO
 		@Transactional
-		public boolean deleteAlumno() {
-			Alumno alumno = JWTUtils.userLogin();
+		public boolean deleteAlumno(int id) {
+			Optional<Alumno> alumno = alumnoRepository.findById(id);
 			if (alumno != null) {
-				alumnoRepository.deleteById(alumno.getId());
+				alumnoRepository.deleteById(alumno.get().getId());
 				return true;
 			}
 			return false;

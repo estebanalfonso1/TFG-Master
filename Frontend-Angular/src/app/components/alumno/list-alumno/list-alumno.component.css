@@ -1,3 +1,32 @@
 .avatar {
     margin-right: 10px;
 }
+
+.fuenteTh {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 600;
+  font-size: 17px;
+}
+
+.fuenteTr {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 400;
+  font-size: 14px;
+}
+
+.fuenteBoton {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 100;
+  font-size: 2px;
+}
+
+.card {
+  background: #ffffff;
+  border-radius: 2rem;
+  padding: 2rem;
+  box-shadow: rgba(133, 189, 215, 0.9) 0px 30px 30px -20px;
+}  
+
+.bg-opacity-50 {
+    --bs-bg-opacity: 0.8;
+}

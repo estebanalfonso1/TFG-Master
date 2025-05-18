@@ -1,56 +1,94 @@
-<div class="card">
-    <p-table #dt1 [value]="alumnos" dataKey="id" [rows]="10" [rowsPerPageOptions]="[10, 25, 50]" [paginator]="true"
-        [globalFilterFields]="['nombre', 'email', 'curso', 'telefono', 'direccion', 'calificacionTotal']">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;300;400;600&display=swap" rel="stylesheet" />
+<p-toast position="top-center"></p-toast>
 
+<main style="background-image: url('actor/fondo.jpg');"
+    class="container-fluid d-flex justify-content-center align-items-center min-vh-100">
+    <div class="position-fixed top-0 start-0 w-100 h-100 bg-dark bg-opacity-50 z-1"></div>
 
-        <ng-template pTemplate="header">
-            <tr>
-                <th style="min-width:15rem">
-                    Alumno
-                    <p-columnFilter type="text" field="nombre" display="menu" />
-                </th>
-                <th style="min-width:15rem">
-                    Email
-                    <p-columnFilter type="text" field="email" display="menu" />
-                </th>
-                <th style="min-width:15rem">
-                    Curso
-                    <p-columnFilter type="text" field="curso" display="menu" />
-                </th>
-                <th style="min-width:10rem">
-                    Teléfono
-                    <p-columnFilter type="text" field="telefono" display="menu" />
-                </th>
-                <th style="min-width:10rem">
-                    Dirección
-                    <p-columnFilter type="text" field="direccion" display="menu" />
-                </th>
-                <th style="min-width:10rem">
-                    Calificación
-                    <p-columnFilter type="text" field="calificacionTotal" display="menu" />
-                </th>
-            </tr>
-        </ng-template>
+    <div class="card z-2">
+        <p-table #dt1 [value]="getAlumnosConFilasVacias()" dataKey="id" [rows]="10" [paginator]="true"
+            [globalFilterFields]="['nombre', 'email', 'curso', 'telefono', 'direccion', 'calificacionTotal']">
+            <ng-template pTemplate="header">
+                <tr>
+                    <th style="min-width:15rem" class="fuenteTh">
+                        Alumno
+                        <p-columnFilter type="text" field="nombre" display="menu"></p-columnFilter>
+                    </th>
+                    <th style="min-width:15rem" class="fuenteTh">
+                        Email
+                        <p-columnFilter type="text" field="email" display="menu"></p-columnFilter>
+                    </th>
+                    <th style="min-width:10rem" class="fuenteTh">
+                        Curso
+                        <p-columnFilter type="text" field="curso" display="menu"></p-columnFilter>
+                    </th>
+                    <th style="min-width:10rem" class="fuenteTh">
+                        Teléfono
+                        <p-columnFilter type="text" field="telefono" display="menu"></p-columnFilter>
+                    </th>
+                    <th style="min-width:10rem" class="fuenteTh">
+                        Dirección
+                        <p-columnFilter type="text" field="direccion" display="menu"></p-columnFilter>
+                    </th>
+                    <th style="min-width:10rem" class="fuenteTh">
+                        Calificación
+                        <p-columnFilter type="text" field="calificacionTotal" display="menu"></p-columnFilter>
+                    </th>
+                    <th style="min-width:10rem" class="fuenteTh">
+                        Acciones
+                        <p-columnFilter type="text" field="calificacionTotal" display="menu"></p-columnFilter>
+                    </th>
+                </tr>
+            </ng-template>
 
-        <ng-template pTemplate="body" let-alumno>
-            <tr>
-                <td>
-                    <p-avatar label="{{ alumno.nombre.charAt(0)?.toUpperCase() }}"
-                        styleClass="avatar" size="large" shape="circle" />
-                    {{ alumno.nombre }} {{ alumno.apellido1 }} {{ alumno.apellido2 }}
-                </td>
-                <td>{{ alumno.email }}</td>
-                <td>{{ alumno.curso }}</td>
-                <td>{{ alumno.telefono }}</td>
-                <td>{{ alumno.direccion }}</td>
-                <td>{{ alumno.calificacionTotal }}</td>
-            </tr>
-        </ng-template>
+            <ng-template pTemplate="body" let-alumno>
+                <tr *ngIf="alumno.id !== null; else filaVacia">
+                    <td class="fuenteTr">
+                        <p-avatar label="{{ alumno.nombre.charAt(0)?.toUpperCase() }}" styleClass="avatar" size="large"
+                            shape="circle"></p-avatar>
+                        {{ alumno.nombre }} {{ alumno.apellido1 }} {{ alumno.apellido2 }}
+                    </td>
+                    <td class="fuenteTr">{{ alumno.email }}</td>
+                    <td class="fuenteTr">
+                        <p-tag *ngIf="alumno.curso == 'AFI'" [value]="alumno.curso" severity="secondary"></p-tag>
+                        <p-tag *ngIf="alumno.curso == 'DAW'" [value]="alumno.curso" severity="info"></p-tag>
+                        <p-tag *ngIf="alumno.curso == 'ASIR'" [value]="alumno.curso" severity="warn"></p-tag>
+                    </td>
+                    <td class="fuenteTr">
+                        {{ alumno.telefono }} <span *ngIf="!alumno.telefono">No introducido</span>
+                    </td>
+                    <td class="fuenteTr">
+                        {{ alumno.direccion }} <span *ngIf="!alumno.direccion">No introducida</span>
+                    </td>
+                    <td style="text-align: center" class="fuenteTr">
+                        <p-tag [value]="alumno.calificacionTotal"
+                            [severity]="aprobado(alumno.calificacionTotal) ? 'success' : 'danger'"></p-tag>
+                    </td>
+                    <td class="fuenteBoton">
+                        <p-button label="" severity="info" variant="text"
+                            styleClass="p-button-primary rounded-pill py-1"
+                            [routerLink]="'/alumno/editar/' + alumno.id">
+                            <i class="pi pi-user"></i>Editar
+                        </p-button>
+                        <span style="margin-right: 10px"></span>
+                        <p-button label="" severity="danger" variant="text" styleClass="p-button-primary rounded-pill"
+                            (click)="eliminar(alumno.id)">
+                            <i class="pi pi-trash"></i>
+                        </p-button>
+                    </td>
+                </tr>
+                <ng-template #filaVacia>
+                    <tr>
+                        <td colspan="7" style="height: 68px"></td>
+                    </tr>
+                </ng-template>
+            </ng-template>
 
-        <ng-template pTemplate="emptymessage">
-            <tr>
-                <td colspan="6">No hay alumnos registrados.</td>
-            </tr>
-        </ng-template>
-    </p-table>
-</div>
+            <ng-template pTemplate="emptymessage">
+                <tr>
+                    <td colspan="7" class="fuenteTr">No hay alumnos registrados.</td>
+                </tr>
+            </ng-template>
+        </p-table>
+    </div>
+</main>

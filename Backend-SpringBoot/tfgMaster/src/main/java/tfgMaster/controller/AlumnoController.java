@@ -74,12 +74,12 @@ public class AlumnoController {
 		}
 	}
 
-	@DeleteMapping
+	@DeleteMapping("/{id}")
 	@Operation(summary = "Eliminar un alumno logueado")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Alumno eliminado exitosamente"),
 			@ApiResponse(responseCode = "404", description = "Alumno no encontrado") })
-	public void deleteAlumno() {
-		if (alumnoService.deleteAlumno()) {
+	public void deleteAlumno(@PathVariable int id) {
+		if (alumnoService.deleteAlumno(id)) {
 			ResponseEntity.status(HttpStatus.OK).body("Alumno eliminado exitosamente");
 		} else {
 			ResponseEntity.status(HttpStatus.NOT_FOUND).body("Alumno no encontrado");
