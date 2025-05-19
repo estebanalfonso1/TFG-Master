@@ -10,10 +10,19 @@
             <div class="col-md-4 d-flex">
                 <div class="card w-100 h-100">
                     <div class="card-body text-center position-relative">
-                        <p-avatar label="{{ profesorForm.get('nombre')?.value?.charAt(0)?.toUpperCase() }}"
-                            styleClass="mr-2 avatar" size="xlarge" shape="circle" />
-                        <input type="file" id="foto" accept="image/*" hidden (change)="onImageSelected($event)">
+                        <p-avatar *ngIf="profesorForm.get('foto')?.value" [image]="profesorForm.get('foto')?.value"
+                            size="xlarge" shape="circle" styleClass="avatar">
+                        </p-avatar>
+
+                        <p-avatar *ngIf="!profesorForm.get('foto')?.value"
+                            [label]="profesorForm.get('nombre')?.value?.charAt(0)?.toUpperCase()" size="xlarge"
+                            shape="circle" styleClass="avatar">
+                        </p-avatar>
+
+
                         <div class="position-absolute lapiz">
+                            <input type="file" id="foto" accept="image/*" hidden (change)="onImageSelected($event)" />
+
                             <label for="foto"
                                 class="btn btn-primary rounded-circle d-inline-flex align-items-center justify-content-center"
                                 style="width: 60px; height: 60px; cursor: pointer;">
@@ -225,7 +234,7 @@
                             </div>
 
                             <button type="submit" class="btn btn-primary w-25 py-2 mt-4 rounded-pill boton"
-                                [disabled]="formularioModificado() || profesorForm.pristine">GUARDAR</button>
+                                [disabled]="formularioModificado() || profesorForm.pristine || imagenSeleccionada == null">GUARDAR</button>
                         </form>
 
                     </div>

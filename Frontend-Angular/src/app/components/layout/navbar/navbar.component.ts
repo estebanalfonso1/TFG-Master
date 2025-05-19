@@ -24,6 +24,7 @@ export class NavbarComponent implements OnInit {
   nombreUsuario !: any;
   primeraLetra!: any;
   nombre !: any;
+  fotoUrl: string | null = null;
   @ViewChild('menu') menu!: Menu;
 
   constructor(private router: Router, private actorService: ActorService, private avatarEstado: AvatarEstadoService
@@ -41,6 +42,8 @@ export class NavbarComponent implements OnInit {
         this.nombre = usuario.nombre;
         const letra = this.nombre.charAt(0).toUpperCase();
         this.avatarEstado.setLetra(letra);
+        this.avatarEstado.foto$.subscribe(url => this.fotoUrl = url);
+        this.fotoUrl = usuario.foto || null;
       });
 
       this.avatarEstado.letra$.subscribe(letra => {

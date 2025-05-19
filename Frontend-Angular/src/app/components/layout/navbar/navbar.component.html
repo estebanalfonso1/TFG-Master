@@ -125,8 +125,16 @@
             <div class="menu menu-avatar d-none d-lg-block">
                 <div class="item">
                     <a class="link cursor-pointer">
-                        <p-avatar label="{{ primeraLetra }}" styleClass="mr-2 cursor-pointer" size="large"
-                            shape="circle" (click)="menu.toggle($event)" />
+                        <!-- <p-avatar label="{{ primeraLetra }}" styleClass="mr-2 cursor-pointer" size="large"
+                            shape="circle" (click)="menu.toggle($event)" /> -->
+
+                        <p-avatar *ngIf="fotoUrl != null" [image]="fotoUrl" (click)="menu.toggle($event)" size="large"
+                            shape="circle" styleClass="mr-2 cursor-pointer">
+                        </p-avatar>
+
+                        <p-avatar *ngIf="fotoUrl == null" label="{{ primeraLetra }}" size="large"
+                            styleClass="mr-2 cursor-pointer" shape="circle" (click)="menu.toggle($event)">
+                        </p-avatar>
                     </a>
                     <div class="submenu submenu-avatar">
                         <div class="submenu-item">

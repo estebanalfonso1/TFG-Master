@@ -9,6 +9,7 @@ import { AvatarModule } from 'primeng/avatar';
 import { AvatarEstadoService } from '../../../service/avatar.service';
 import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
+import { SupabaseService } from '../../../service/supabase.service';  // asegúrate de importarlo
 
 @Component({
   selector: 'app-form-profesor',
@@ -32,7 +33,8 @@ export class FormProfesorComponent implements OnInit {
     private actorService: ActorService,
     private router: Router,
     private avatarEstado: AvatarEstadoService,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private supabaseService: SupabaseService
   ) {
     this.profesorForm = this.fb.group({
       nombre: ['', Validators.required],
@@ -78,12 +80,34 @@ export class FormProfesorComponent implements OnInit {
     return !this.datosModificados() || this.profesorForm.invalid;
   }
 
-  save() {
-    const profesor = this.profesorForm.value;
+  async save() {
+    const profesor = this.profesorForm.getRawValue();
+
+    if (this.imagenSeleccionada) {
+      // 1) Si ya había foto previa, elimínala
+      if (profesor.foto) {
+        const match = profesor.foto.match(/\/avatares\/(.+)$/);
+        if (match?.[1]) {
+          await this.supabaseService.deleteImage(match[1]);
+        }
+      }
+
+      // 2) Genera nombre y sube la nueva
+      const ext = this.imagenSeleccionada.name.split('.').pop();
+      const fileName = `${profesor.username}_${Date.now()}.${ext}`;
+      const newUrl = await this.supabaseService.uploadImage(this.imagenSeleccionada, fileName);
+      if (!newUrl) return;  // aborta si falla
+
+      // 3) Actualiza el formulario y el payload
+      this.profesorForm.patchValue({ foto: newUrl });
+      profesor.foto = newUrl;
+      this.avatarEstado.setFoto(newUrl)
+      this.profesorForm.markAsDirty();
+    }
 
     this.actorService.actorExist(profesor.username).subscribe(
       exists => {
-        if (exists) {
+        if (exists && !this.isEditMode) {
           this.messageService.add({
             severity: "error",
             summary: "Error",
@@ -105,7 +129,8 @@ export class FormProfesorComponent implements OnInit {
                 })
 
                 this.datosFormulario = { ...profesor };
-
+                this.profesorForm.markAsPristine();
+                this.profesorForm.markAsUntouched();
               },
               error => { console.log(error); }
             );
@@ -158,10 +183,16 @@ export class FormProfesorComponent implements OnInit {
   }
 
   onImageSelected(event: any): void {
-    const file = event.target.files[0]; // Obtiene el primer archivo
+    const file: File = event.target.files[0];
     if (file) {
       this.imagenSeleccionada = file;
-      console.log('Imagen seleccionada:', file);
+      this.profesorForm.markAsDirty();
+      // opcional: previsualizar localmente
+      const reader = new FileReader();
+      reader.onload = () => {
+        // podrías almacenar reader.result en una variable para vista previa
+      };
+      reader.readAsDataURL(file);
     }
   }
 
