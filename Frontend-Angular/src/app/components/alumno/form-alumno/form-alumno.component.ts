@@ -9,6 +9,7 @@ import { AvatarModule } from 'primeng/avatar';
 import { AvatarEstadoService } from '../../../service/avatar.service';
 import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
+import { SupabaseService } from '../../../service/supabase.service';
 
 @Component({
   selector: 'app-form-alumno',
@@ -34,7 +35,8 @@ export class FormAlumnoComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     private avatarEstado: AvatarEstadoService,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private supabaseService: SupabaseService
   ) {
     this.alumnoForm = this.fb.group({
       nombre: ['', Validators.required],
@@ -107,8 +109,30 @@ export class FormAlumnoComponent implements OnInit {
     return !this.datosModificados() || this.alumnoForm.invalid;
   }
 
-  save() {
+  async save() {
     const alumno = this.alumnoForm.value;
+
+    if (this.imagenSeleccionada) {
+      // 1) Si ya había foto previa, elimínala
+      if (alumno.foto) {
+        const match = alumno.foto.match(/\/avatares\/(.+)$/);
+        if (match?.[1]) {
+          await this.supabaseService.deleteImage(match[1]);
+        }
+      }
+
+      // 2) Genera nombre y sube la nueva
+      const ext = this.imagenSeleccionada.name.split('.').pop();
+      const fileName = `${alumno.username}_${Date.now()}.${ext}`;
+      const newUrl = await this.supabaseService.uploadImage(this.imagenSeleccionada, fileName);
+      if (!newUrl) return;  // aborta si falla
+
+      // 3) Actualiza el formulario y el payload
+      this.alumnoForm.patchValue({ foto: newUrl });
+      alumno.foto = newUrl;
+      this.avatarEstado.setFoto(newUrl)
+      this.alumnoForm.markAsDirty();
+    }
 
     this.actorService.actorExist(alumno.username).subscribe(
       exists => {
@@ -198,24 +222,21 @@ export class FormAlumnoComponent implements OnInit {
   }
 
   onImageSelected(event: any): void {
-    const file = event.target.files[0]; // Obtiene el primer archivo
+    const file: File = event.target.files[0];
     if (file) {
       this.imagenSeleccionada = file;
-      console.log('Imagen seleccionada:', file);
-    }
-  }
-
-  uploadImage(): void {
-    if (this.imagenSeleccionada) {
-      // Aquí puedes manejar la carga de la imagen, por ejemplo, enviarla a un servidor
-      console.log('Subiendo imagen...', this.imagenSeleccionada);
-    } else {
-      console.log('No se ha seleccionado ninguna imagen.');
+      this.alumnoForm.markAsDirty();
+      // opcional: previsualizar localmente
+      const reader = new FileReader();
+      reader.onload = () => {
+        // podrías almacenar reader.result en una variable para vista previa
+      };
+      reader.readAsDataURL(file);
     }
   }
 
   volver() {
-      this.router.navigate(['/alumnos']);
+    this.router.navigate(['/alumnos']);
   }
 
 }

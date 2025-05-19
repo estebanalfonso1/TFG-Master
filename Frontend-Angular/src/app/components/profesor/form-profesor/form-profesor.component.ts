@@ -9,7 +9,7 @@ import { AvatarModule } from 'primeng/avatar';
 import { AvatarEstadoService } from '../../../service/avatar.service';
 import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
-import { SupabaseService } from '../../../service/supabase.service';  // asegúrate de importarlo
+import { SupabaseService } from '../../../service/supabase.service';
 
 @Component({
   selector: 'app-form-profesor',
@@ -196,12 +196,4 @@ export class FormProfesorComponent implements OnInit {
     }
   }
 
-  uploadImage(): void {
-    if (this.imagenSeleccionada) {
-      // Aquí puedes manejar la carga de la imagen, por ejemplo, enviarla a un servidor
-      console.log('Subiendo imagen...', this.imagenSeleccionada);
-    } else {
-      console.log('No se ha seleccionado ninguna imagen.');
-    }
-  }
 }

@@ -9,6 +9,7 @@ import { AvatarModule } from 'primeng/avatar';
 import { AvatarEstadoService } from '../../../service/avatar.service';
 import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
+import { SupabaseService } from '../../../service/supabase.service';
 
 @Component({
   selector: 'app-form-administrador',
@@ -32,7 +33,8 @@ export class FormAdministradorComponent implements OnInit {
     private actorService: ActorService,
     private router: Router,
     private avatarEstado: AvatarEstadoService,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private supabaseService: SupabaseService
   ) {
     this.administradorForm = this.fb.group({
       nombre: ['', Validators.required],
@@ -79,8 +81,30 @@ export class FormAdministradorComponent implements OnInit {
     return !this.datosModificados() || this.administradorForm.invalid;
   }
 
-  save() {
+  async save() {
     const admin = this.administradorForm.value;
+
+    if (this.imagenSeleccionada) {
+      // 1) Si ya había foto previa, elimínala
+      if (admin.foto) {
+        const match = admin.foto.match(/\/avatares\/(.+)$/);
+        if (match?.[1]) {
+          await this.supabaseService.deleteImage(match[1]);
+        }
+      }
+
+      // 2) Genera nombre y sube la nueva
+      const ext = this.imagenSeleccionada.name.split('.').pop();
+      const fileName = `${admin.username}_${Date.now()}.${ext}`;
+      const newUrl = await this.supabaseService.uploadImage(this.imagenSeleccionada, fileName);
+      if (!newUrl) return;  // aborta si falla
+
+      // 3) Actualiza el formulario y el payload
+      this.administradorForm.patchValue({ foto: newUrl });
+      admin.foto = newUrl;
+      this.avatarEstado.setFoto(newUrl)
+      this.administradorForm.markAsDirty();
+    }
 
     this.actorService.actorExist(admin.username).subscribe(
       exists => {
@@ -157,19 +181,16 @@ export class FormAdministradorComponent implements OnInit {
   }
 
   onImageSelected(event: any): void {
-    const file = event.target.files[0]; // Obtiene el primer archivo
+    const file: File = event.target.files[0];
     if (file) {
       this.imagenSeleccionada = file;
-      console.log('Imagen seleccionada:', file);
-    }
-  }
-
-  uploadImage(): void {
-    if (this.imagenSeleccionada) {
-      // Aquí puedes manejar la carga de la imagen, por ejemplo, enviarla a un servidor
-      console.log('Subiendo imagen...', this.imagenSeleccionada);
-    } else {
-      console.log('No se ha seleccionado ninguna imagen.');
+      this.administradorForm.markAsDirty();
+      // opcional: previsualizar localmente
+      const reader = new FileReader();
+      reader.onload = () => {
+        // podrías almacenar reader.result en una variable para vista previa
+      };
+      reader.readAsDataURL(file);
     }
   }
 

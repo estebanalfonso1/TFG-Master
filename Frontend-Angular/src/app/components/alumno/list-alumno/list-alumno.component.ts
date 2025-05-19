@@ -16,6 +16,7 @@ import { ButtonModule } from 'primeng/button';
 import { FormsModule } from '@angular/forms';
 import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
+import { SupabaseService } from '../../../service/supabase.service';
 
 @Component({
   selector: 'app-list-alumno',
@@ -33,7 +34,8 @@ export class ListAlumnoComponent implements OnInit {
   constructor(
     private alumnoService: AlumnoService,
     private router: Router,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private supabaseService: SupabaseService
   ) { }
 
   ngOnInit(): void {
@@ -66,28 +68,36 @@ export class ListAlumnoComponent implements OnInit {
     return Number(calificacion) >= 5;
   }
 
-  eliminar(id: number) {
-    this.alumnoService.deleteAlumno(id).subscribe(
-      result => {
-        this.messageService.add({
-          severity: "success",
-          summary: "Éxito",
-          detail: "Alumno eliminado correctamente",
-          life: 1900
-        });
-        this.alumnos = this.alumnos.filter(alumno => alumno.id !== id);
-      },
-      error => {
-        this.messageService.add({
-          severity: "error",
-          summary: "Error",
-          detail: "No se ha podido eliminar al alumno",
-          life: 1900
-        });
-      }
-    );
-  }
+  async eliminar(id: number) {
+    try {
+      const alumno = await this.alumnoService.getOneAlumno(id).toPromise();
 
-   
+      await this.alumnoService.deleteAlumno(id).toPromise();
+
+      if (alumno?.foto) {
+        const match = alumno.foto.match(/\/avatares\/(.+)$/);
+        if (match?.[1]) {
+          await this.supabaseService.deleteImage(match[1]);
+        }
+      }
+
+      this.messageService.add({
+        severity: "success",
+        summary: "Éxito",
+        detail: "Alumno eliminado correctamente",
+        life: 1900
+      });
+
+      this.alumnos = this.alumnos.filter(a => a.id !== id);
+
+    } catch (error) {
+      this.messageService.add({
+        severity: "error",
+        summary: "Error",
+        detail: "No se ha podido eliminar al alumno",
+        life: 1900
+      });
+    }
+  }
 
 }

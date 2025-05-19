@@ -14,10 +14,18 @@
             <div class="col-md-4 d-flex">
                 <div class="card w-100 h-100">
                     <div class="card-body text-center position-relative">
-                        <p-avatar label="{{ alumnoForm.get('nombre')?.value?.charAt(0)?.toUpperCase() }}"
-                            styleClass="mr-2 avatar" size="xlarge" shape="circle" />
-                        <input type="file" id="foto" accept="image/*" hidden (change)="onImageSelected($event)">
-                        <div class="position-absolute lapiz">
+                         <p-avatar *ngIf="alumnoForm.get('foto')?.value" [image]="alumnoForm.get('foto')?.value"
+                            size="xlarge" shape="circle" styleClass="avatar">
+                        </p-avatar>
+
+                        <p-avatar *ngIf="!alumnoForm.get('foto')?.value"
+                            [label]="alumnoForm.get('nombre')?.value?.charAt(0)?.toUpperCase()" size="xlarge"
+                            shape="circle" styleClass="avatar">
+                        </p-avatar>
+
+                        <div *ngIf="isEditMode || isEditModeId" class="position-absolute lapiz">
+                            <input type="file" id="foto" accept="image/*" hidden (change)="onImageSelected($event)" />
+
                             <label for="foto"
                                 class="btn btn-primary rounded-circle d-inline-flex align-items-center justify-content-center"
                                 style="width: 60px; height: 60px; cursor: pointer;">
