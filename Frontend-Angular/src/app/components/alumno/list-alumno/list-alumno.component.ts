@@ -16,7 +16,7 @@ import { ButtonModule } from 'primeng/button';
 import { FormsModule } from '@angular/forms';
 import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
-import { SupabaseService } from '../../../service/supabase.service';
+import { SupabaseService } from '../../../service/supabaseAvatar.service';
 
 @Component({
   selector: 'app-list-alumno',

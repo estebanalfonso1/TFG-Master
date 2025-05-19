@@ -1,0 +1,62 @@
+.avatar {
+    margin-right: 10px;
+}
+
+.fuenteTh {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 600;
+  font-size: 17px;
+}
+
+.fuenteTr {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 400;
+  font-size: 14px;
+}
+
+.fuenteBoton {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 100;
+  font-size: 2px;
+}
+
+.card {
+  background: #ffffff;
+  border-radius: 2rem;
+  padding: 2rem;
+  box-shadow: rgba(133, 189, 215, 0.9) 0px 30px 30px -20px;
+}  
+
+.bg-opacity-50 {
+    --bs-bg-opacity: 0.8;
+}
+
+@media (max-width: 768px) {
+  .fuenteTh {
+    font-size: 14px;
+  }
+
+  .fuenteTr {
+    font-size: 12px;
+  }
+
+  .card {
+    padding: 1rem;
+    border-radius: 1rem;
+  }
+
+  .p-button i {
+    font-size: 1rem;
+  }
+
+  .p-tag {
+    font-size: 0.8rem;
+  }
+}
+
+.titulo {
+  font-weight: bold;
+  color: rgb(16, 137, 211);
+  letter-spacing: 1.1px;
+  font-size: clamp(1.5rem, 4vw, 2.5rem);
+}

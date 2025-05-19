@@ -45,8 +45,10 @@
                 <ng-template pTemplate="body" let-alumno>
                     <tr>
                         <td class="fuenteTr">
-                            <p-avatar label="{{ alumno.nombre.charAt(0)?.toUpperCase() }}" styleClass="avatar"
-                                size="large" shape="circle"></p-avatar>
+                            <p-avatar *ngIf="!alumno.foto" label="{{ alumno.nombre.charAt(0)?.toUpperCase() }}"
+                                styleClass="avatar" size="large" shape="circle"></p-avatar>
+                            <p-avatar *ngIf="alumno.foto" [image]="alumno.foto" styleClass="avatar" size="large"
+                                shape="circle"></p-avatar>
                             {{ alumno.nombre }} {{ alumno.apellido1 }} {{ alumno.apellido2 }}
                         </td>
                         <td class="fuenteTr">{{ alumno.email }}</td>

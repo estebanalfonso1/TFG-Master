@@ -9,9 +9,13 @@
         <div>
             <h2 class="text-center titulo mb-4 z-2">Mis tribunales</h2>
             <p-table #dt1 [value]="listaTribunales" dataKey="id" [rows]="10" [paginator]="true"
-                [globalFilterFields]="['alumno', 'entrega', 'estado', 'fechaFin', 'fechaEntrega']">
+                [globalFilterFields]="['tribunal', 'alumno', 'entrega', 'estado', 'fechaFin', 'fechaEntrega']">
                 <ng-template pTemplate="header">
                     <tr>
+                        <th style="min-width:20rem" class="fuenteTh">
+                            Tribunal
+                            <p-columnFilter type="text" field="tribunal" display="menu"></p-columnFilter>
+                        </th>
                         <th style="min-width:20rem" class="fuenteTh">
                             Alumno
                             <p-columnFilter type="text" field="alumno" display="menu"></p-columnFilter>
@@ -42,7 +46,12 @@
                 <ng-template pTemplate="body" let-tribunal>
                     <tr>
                         <td class="fuenteTr">
-                            <p-avatar label="{{ tribunal.alumno.nombre.charAt(0)?.toUpperCase() }}" styleClass="avatar"
+                            {{ tribunal.nombre }}
+                        </td>
+                        <td class="fuenteTr">
+                            <p-avatar *ngIf="!tribunal.alumno.foto" label="{{ tribunal.alumno.nombre.charAt(0)?.toUpperCase() }}"
+                                styleClass="avatar" size="large" shape="circle"></p-avatar>
+                            <p-avatar *ngIf="tribunal.alumno.foto" [image]="tribunal.alumno.foto" styleClass="avatar"
                                 size="large" shape="circle"></p-avatar>
                             {{ tribunal.alumno.nombre }} {{ tribunal.alumno.apellido1 }} {{ tribunal.alumno.apellido2 }}
                         </td>

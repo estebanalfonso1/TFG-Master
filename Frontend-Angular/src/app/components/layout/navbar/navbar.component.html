@@ -68,7 +68,7 @@
                         </div>
                     </div>
                 </li>
-                <li *ngIf="rol == 'PROFESOR'">
+                <li>
                     <div class="menu">
                         <div class="item">
                             <a class="link cursor-pointer">
@@ -82,10 +82,13 @@
                                 </svg>
                             </a>
                             <div class="submenu">
-                                <div class="submenu-item">
+                                <div class="submenu-item" *ngIf="rol == 'PROFESOR'">
                                     <a routerLink="/tribunales/asignados" class="submenu-link">Mis tribunales</a>
                                 </div>
-                                <div class="submenu-item" style="padding-bottom: 10px;">
+                                <div class="submenu-item" *ngIf="rol == 'ALUMNO'" style="padding-bottom: 10px;">
+                                    <a routerLink="/tribunales/mistribunales" class="submenu-link">Mis tribunales</a>
+                                </div>
+                                <div class="submenu-item" style="padding-bottom: 10px;" *ngIf="rol == 'PROFESOR'">
                                     <a routerLink="/tribunal/nuevo" class="submenu-link">Crear tribunal</a>
                                 </div>
                             </div>

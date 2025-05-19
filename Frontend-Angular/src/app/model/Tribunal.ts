@@ -11,9 +11,10 @@ export class Tribunal {
     tieneProfesores: Set<Profesor>;
     alumno: Alumno;
     rubrica: Rubrica;
+    nombre: string;
 
     constructor(fechaEntrega: Date, fechaFin: Date, estado: string, archivo: string,
-        tieneProfesores: Set<Profesor>, alumno: Alumno, rubrica: Rubrica
+        tieneProfesores: Set<Profesor>, alumno: Alumno, rubrica: Rubrica, nombre: string
     ) {
         this.fechaEntrega = fechaEntrega;
         this.fechaFin = fechaFin;
@@ -22,5 +23,6 @@ export class Tribunal {
         this.tieneProfesores = tieneProfesores;
         this.alumno = alumno;
         this.rubrica = rubrica;
+        this.nombre = nombre;
     }
 }
