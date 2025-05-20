@@ -94,7 +94,7 @@ export class ListAlumnoComponent implements OnInit {
       this.messageService.add({
         severity: "error",
         summary: "Error",
-        detail: "No se ha podido eliminar al alumno",
+        detail: "El alumno tiene un tribunal asignado",
         life: 1900
       });
     }

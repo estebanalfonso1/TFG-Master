@@ -58,7 +58,13 @@
                                 severity="warn"></p-tag>
                         </td>
                         <td class="fuenteTr">
-                            {{ tribunal.archivo }} <span *ngIf="!tribunal.archivo">No entregado</span>
+                            <div *ngIf="urlArchivo[tribunal.id]">
+                                <p-button icon="pi pi-download" styleClass="p-button-text rounded-circle"
+                                    [attr.href]="urlArchivo[tribunal.id]" target="_blank" rel="noopener noreferrer"
+                                    [disabled]="!urlArchivo[tribunal.id]"
+                                    (click)="abrirArchivo(urlArchivo[tribunal.id])"></p-button>
+                            </div>
+                            <span *ngIf="!tribunal.archivo">No entregado</span>
                         </td>
                         <td class="fuenteTr">
                             {{ tribunal.fechaEntrega | date: 'dd-MM-yyyy' }} <span *ngIf="!tribunal.fechaEntrega">No

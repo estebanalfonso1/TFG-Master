@@ -36,9 +36,6 @@
                             Calificación
                             <p-columnFilter type="text" field="calificacionTotal" display="menu"></p-columnFilter>
                         </th>
-                        <th style="min-width:10rem" class="fuenteTh">
-                            Acciones
-                        </th>
                     </tr>
                 </ng-template>
 
@@ -66,14 +63,6 @@
                         <td style="text-align: center" class="fuenteTr">
                             <p-tag [value]="alumno.calificacionTotal"
                                 [severity]="aprobado(alumno.calificacionTotal) ? 'success' : 'danger'"></p-tag>
-                        </td>
-                        <td class="fuenteBoton">
-                            <p-button label="" severity="info" variant="text"
-                                styleClass="p-button-primary rounded-pill py-1"
-                                [routerLink]="'/alumno/editar/' + alumno.id">
-                                <i class="pi pi-clipboard"></i>Evaluar
-                            </p-button>
-                            <span style="margin-right: 10px"></span>
                         </td>
                     </tr>
                 </ng-template>
