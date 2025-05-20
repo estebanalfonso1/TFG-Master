@@ -10,10 +10,14 @@ import { Alumno } from '../../../model/Alumno';
 import { AlumnoService } from '../../../service/alumno.service';
 import { Rubrica } from '../../../model/Rubrica';
 import { RubricaService } from '../../../service/rubrica.service';
+import { FormsModule } from '@angular/forms';
+import { DatePicker } from 'primeng/datepicker';
+import { SelectModule } from 'primeng/select';
+import { MultiSelectModule } from 'primeng/multiselect';
 
 @Component({
   selector: 'app-form-tribunal',
-  imports: [ReactiveFormsModule, CommonModule],
+  imports: [ReactiveFormsModule, CommonModule, FormsModule, DatePicker, SelectModule, MultiSelectModule],
   templateUrl: './form-tribunal.component.html',
   styleUrl: './form-tribunal.component.css'
 })
@@ -62,12 +66,26 @@ export class FormTribunalComponent implements OnInit {
 
     if (!this.isEditMode) {
       this.profesorService.getAllProfesor().subscribe(
-        result => { this.profesores = result; },
+        result => {
+          this.profesores = result.map(
+            profesor => ({
+              ...profesor,
+              nombreCompleto: `${profesor.nombre} ${profesor.apellido1} ${profesor.apellido2}`
+            })
+          )
+        },
         error => { console.log(error) }
       );
 
       this.alumnoService.getAllAlumno().subscribe(
-        result => { this.alumnos = result; },
+        result => {
+          this.alumnos = result.map(
+            alumno => ({
+              ...alumno,
+              nombreCompleto: `${alumno.nombre} ${alumno.apellido1} ${alumno.apellido2}`
+            })
+          )
+        },
         error => { console.log(error) }
       );
 

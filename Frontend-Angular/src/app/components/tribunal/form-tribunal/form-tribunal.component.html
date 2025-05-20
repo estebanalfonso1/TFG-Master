@@ -1,62 +1,93 @@
-<h2>Formulario de Tribunales</h2>
+<main style="background-image: url('actor/fondo.jpg');"
+    class="container-fluid d-flex justify-content-center align-items-center min-vh-100 position-relative">
 
-<form (ngSubmit)="save()" [formGroup]="formTribunal">
-    <div *ngIf="!isEditMode">
-        <label for="fechaFin">Fecha fin</label>
-        <input type="date" formControlName="fechaFin" id="fechaFin">
-        <div *ngIf="formTribunal.get('fechaFin')?.touched && formTribunal.get('fechaFin')?.invalid">
-            <span *ngIf="formTribunal.get('fechaFin')?.errors?.['required']">Este campo es obligatorio.</span>
+    <div class="position-absolute top-0 start-0 w-100 h-100 bg-dark bg-opacity-50 z-1"></div>
+
+    <div class="z-3" style="width: 100%; max-width: 1000px;">
+
+        <!-- Card -->
+            <div class="card w-100 px-3" style="max-width: 1000px;">
+                <div class="card-body text-center">
+                    <h2 class="titulo mb-4">Crear tribunal</h2>
+
+                    <form [formGroup]="formTribunal" (ngSubmit)="save()">
+
+                        <div class="d-flex flex-column flex-md-row gap-4">
+                            <!-- Primera columna -->
+                            <div class="flex-fill">
+
+                                <div class="mb-3">
+                                    <label for="alumno" class="form-label text-secondary">Alumno</label>
+                                    <div>
+                                        <p-select [options]="alumnos" formControlName="alumno"
+                                            optionLabel="nombreCompleto" [filter]="true" filterBy="nombreCompleto"
+                                            [showClear]="true" placeholder="Selecciona un alumno"
+                                            class="w-full rounded-pill">
+
+                                        </p-select>
+                                    </div>
+                                    <small
+                                        *ngIf="formTribunal.get('alumno')?.invalid && formTribunal.get('alumno')?.touched"
+                                        class="text-danger">
+                                        El alumno es obligatorio.
+                                    </small>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="tieneProfesores" class="form-label text-secondary">Profesores</label>
+                                    <div>
+                                        <p-multiSelect [options]="profesores" formControlName="tieneProfesores"
+                                            optionLabel="nombreCompleto" [filter]="true" display="chip"
+                                            filterBy="nombreCompleto" [showClear]="true"
+                                            placeholder="Selecciona los profesores" class="w-full rounded-pill">
+
+                                        </p-multiSelect>
+                                    </div>
+                                    <small
+                                        *ngIf="formTribunal.get('tieneProfesores')?.invalid && formTribunal.get('tieneProfesores')?.touched"
+                                        class="text-danger">
+                                        Elegir al menos un profesor es obligatorio.
+                                    </small>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="rubrica" class="form-label text-secondary">Rubrica</label>
+                                    <div>
+                                        <p-select [options]="rubricas" formControlName="rubrica"
+                                            optionLabel="descripcion" [filter]="true" filterBy="descripcion"
+                                            [showClear]="true" placeholder="Selecciona una rubrica"
+                                            class="w-full rounded-pill">
+
+                                        </p-select>
+                                    </div>
+                                    <small
+                                        *ngIf="formTribunal.get('rubrica')?.invalid && formTribunal.get('rubrica')?.touched"
+                                        class="text-danger">
+                                        La rubrica es obligatoria.
+                                    </small>
+                                </div>
+                            </div>
+
+                            <!-- Segunda columna -->
+                            <div class="flex-fill">
+
+                                
+
+                                <div class="mb-3">
+                                    <div class="flex justify-center">
+                                        <p-datepicker class="max-w-full" formControlName="fechaFin" [inline]="true"
+                                            [showWeek]="true" />
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary w-100 w-md-25 py-2 mt-4 rounded-pill boton"
+                            [disabled]="formTribunal.invalid">GUARDAR</button>
+                    </form>
+
+            </div>
         </div>
     </div>
-
-    <div *ngIf="!isEditMode">
-        <label for="tieneProfesores">Profesores</label>
-        <select id="tieneProfesores" formControlName="tieneProfesores" multiple size="1">
-            @for(profesor of profesores; track profesor.id) {
-            <option [value]="profesor">
-                {{profesor.nombre }} {{ profesor.apellido1 }} {{ profesor.apellido2 }}</option>
-            }
-        </select>
-        <div *ngIf="formTribunal.get('tieneProfesores')?.touched && formTribunal.get('tieneProfesores')?.invalid">
-            <span *ngIf="formTribunal.get('tieneProfesores')?.errors?.['required']">Este campo es obligatorio.</span>
-        </div>
-    </div>
-
-    <div *ngIf="!isEditMode">
-        <label for="alumno">Alumno</label>
-        <select id="alumno" formControlName="alumno">
-            <option></option>
-            @for(alumno of alumnos; track alumno.id) {
-            <option [ngValue]="alumno">
-                {{alumno.nombre }} {{ alumno.apellido1 }} {{ alumno.apellido2 }}</option>
-            }
-        </select>
-        <div *ngIf="formTribunal.get('alumno')?.touched && formTribunal.get('alumno')?.invalid">
-            <span *ngIf="formTribunal.get('alumno')?.errors?.['required']">Este campo es obligatorio.</span>
-        </div>
-    </div>
-
-    <div *ngIf="!isEditMode">
-        <label for="rubrica">Rubrica</label>
-        <select id="rubrica" formControlName="rubrica">
-            <option></option>
-            @for(rubrica of rubricas; track rubrica.id) {
-            <option [ngValue]="rubrica">
-                {{rubrica.descripcion }}</option>
-            }
-        </select>
-        <div *ngIf="formTribunal.get('rubrica')?.touched && formTribunal.get('rubrica')?.invalid">
-            <span *ngIf="formTribunal.get('rubrica')?.errors?.['required']">Este campo es obligatorio.</span>
-        </div>
-    </div>
-
-    <div *ngIf="isEditMode">
-        <label for="archivo">Archivo</label>
-        <input type="text" formControlName="archivo" id="archivo">
-    </div>
-
-    <button type="submit" [disabled]="formTribunal.invalid">Guardar</button>
-    <button *ngIf="isEditMode" type="button" (click)="cancelarEntrega()">
-        Cancelar entrega
-    </button>
-</form>
+</main>
