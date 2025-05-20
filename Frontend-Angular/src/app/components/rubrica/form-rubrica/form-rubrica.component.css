@@ -1,0 +1,58 @@
+.titulo {
+    font-weight: bold;
+    color: rgb(16, 137, 211);
+    letter-spacing: 1.1px;
+    font-size: clamp(1.5rem, 4vw, 2.5rem);
+}
+
+.card {
+    background: #f8f9fd;
+    border-radius: 2rem;
+    padding: 2rem;
+    box-shadow: rgba(133, 189, 215, 0.9) 0px 30px 30px -20px;
+}
+
+.d-flex {
+    gap: 100px;
+}
+
+::placeholder {
+    font-size: clamp(0.85rem, 1vw, 1rem);
+    color: gray;
+    font-weight: 200;
+
+}
+
+label {
+    font-weight: 600;
+    letter-spacing: 0.65px;
+}
+
+.boton {
+    font-weight: 500;
+    font-size: clamp(1rem, 2vw, 1rem);
+    letter-spacing: 1px;
+}
+
+.bg-opacity-50 {
+    --bs-bg-opacity: 0.8;
+}
+
+@media (max-width: 768px) {
+    .card {
+        padding: 1rem;
+    }
+}
+
+@media (min-width: 768px) {
+    .w-md-25 {
+        width: 25% !important;
+    }
+}
+
+.tamaño-input {
+    width: 100%;
+    max-width: 400px;
+    margin-left: auto;
+    margin-right: auto;
+}

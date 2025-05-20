@@ -1,40 +1,77 @@
-<h2>Formulario de Rúbricas</h2>
+<main style="background-image: url('actor/fondo.jpg');"
+    class="container-fluid d-flex justify-content-center align-items-center min-vh-100 position-relative">
 
-<form (ngSubmit)="save()" [formGroup]="formRubrica">
-    <div>
-        <label for="descripcion">Descripción</label>
-        <input type="text" formControlName="descripcion" id="descripcion">
-        <div *ngIf="formRubrica.get('descripcion')?.touched && formRubrica.get('descripcion')?.invalid">
-            <span *ngIf="formRubrica.get('descripcion')?.errors?.['required']">Este campo es obligatorio.</span>
+    <div class="position-absolute top-0 start-0 w-100 h-100 bg-dark bg-opacity-50 z-1"></div>
+
+    <div class="z-3" style="width: 100%; max-width: 1000px;">
+
+        <!-- Card -->
+        <div class="card w-100 px-3" style="max-width: 1000px;">
+            <div class="card-body text-center">
+                <h2 *ngIf="!isEditMode" class="titulo mb-4">Crear rúbrica</h2>
+                <h2 *ngIf="isEditMode" class="titulo mb-4">Editar rúbrica</h2>
+
+                <form [formGroup]="formRubrica" (ngSubmit)="save()">
+
+                    <div class="d-flex flex-column flex-md-row gap-4 align-items-md-center">
+                        <!-- Primera columna -->
+                        <div class="flex-fill">
+
+                            <div class="mb-3">
+                                <label for="descripcion" class="form-label text-secondary">Descripción</label>
+                                <input id="descripcion" class="form-control rounded-pill tamaño-input"
+                                    formControlName="descripcion" type="text" placeholder="Introduce la descripción"
+                                    required />
+                                <small class="text-danger"
+                                    *ngIf="formRubrica.get('descripcion')?.invalid && formRubrica.get('descripcion')?.touched"
+                                    class="text-danger">
+                                    La descripción es obligatoria.
+                                </small>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="criterios" class="form-label text-secondary">Criterios</label>
+                                <div>
+                                    <p-multiSelect [options]="criterios" formControlName="criterios"
+                                        optionLabel="descripcion" [filter]="true" display="chip" filterBy="descripcion"
+                                        [showClear]="true" placeholder="Selecciona los criterios"
+                                        class="w-full rounded-pill tamaño-input">
+
+                                    </p-multiSelect>
+                                </div>
+                                <small
+                                    *ngIf="formRubrica.get('criterios')?.invalid && formRubrica.get('criterios')?.touched"
+                                    class="text-danger">
+                                    Elegir al menos un criterio es obligatorio.
+                                </small>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="fechaPublicacion" class="form-label text-secondary">¿Es borrador?</label>
+                                <div class="flex justify-center" class="tamaño-input">
+                                    <p-toggleswitch formControlName="esBorrador" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Segunda columna -->
+                        <div class="flex-fill">
+
+                            <div class="mb-3">
+                                <div class="flex justify-center">
+                                    <p-datepicker class="max-w-full" formControlName="fechaPublicacion" [inline]="true"
+                                        [showWeek]="true" />
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary w-100 w-md-25 py-2 mt-4 rounded-pill boton"
+                        [disabled]="formRubrica.invalid">GUARDAR</button>
+                </form>
+
+            </div>
         </div>
     </div>
-
-    <div>
-        <label for="fechaPublicacion">Fecha de publicación</label>
-        <input type="text" formControlName="fechaPublicacion" id="fechaPublicacion">
-    </div>
-
-    <div>
-        <label for="criterios">Criterios</label>
-        <select class="form-select" id="criterios" formControlName="criterios" multiple size="1">
-            @for(criterio of criterios; track criterio.id) {
-            <option [value]="criterio">
-                {{criterio.descripcion }}</option>
-            }
-        </select>
-    </div>
-
-    <div>
-        <span>¿Guardar como borrador?</span>
-        <label>
-            <input type="radio" id="esBorrador" formControlName="esBorrador" [value]="true">
-            Sí
-        </label>
-        <label>
-            <input type="radio" id="esBorrador" formControlName="esBorrador" [value]="false" checked>
-            No
-        </label>
-    </div>
-
-    <button type="submit" [disabled]="formRubrica.invalid">Guardar</button>
-</form>
+</main>

@@ -1,15 +1,18 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators, FormControl } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RubricaService } from '../../../service/rubrica.service';
 import { CommonModule } from '@angular/common';
 import { jwtDecode } from 'jwt-decode';
 import { CriterioService } from '../../../service/criterio.service';
 import { Criterio } from '../../../model/Criterio';
+import { MultiSelectModule } from 'primeng/multiselect';
+import { ToggleSwitch } from 'primeng/toggleswitch';
+import { DatePicker } from 'primeng/datepicker';
 
 @Component({
   selector: 'app-form-rubrica',
-  imports: [ReactiveFormsModule, CommonModule],
+  imports: [ReactiveFormsModule, CommonModule, MultiSelectModule, ToggleSwitch, DatePicker],
   templateUrl: './form-rubrica.component.html',
   styleUrl: './form-rubrica.component.css'
 })
@@ -18,8 +21,7 @@ export class FormRubricaComponent implements OnInit {
   id!: number;
   public criterios: Criterio[] = [];
   public criteriosIncluidos: Criterio[] = [];
-
-
+  isEditMode!: boolean;
 
   constructor(
     private criterioService: CriterioService,
@@ -30,7 +32,7 @@ export class FormRubricaComponent implements OnInit {
   ) {
     const hoy = new Date();
     const fechaFormateada = `${hoy.getDate().toString().padStart(2, '0')}-${(hoy.getMonth() + 1).toString().padStart(2, '0')}-${hoy.getFullYear()}`;
-    
+
 
     this.formRubrica = this.fb.group(
       {
@@ -42,6 +44,7 @@ export class FormRubricaComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.isEditMode = this.router.url.includes('editar');
     this.comprobarRol();
     this.formRubrica.get("fechaPublicacion")?.disable();
 
