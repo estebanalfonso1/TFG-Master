@@ -18,9 +18,6 @@ public class Tribunal extends DomainEntity {
 	private Date fechaFin;
 
 	@NotBlank
-	private String nombre;
-
-	@NotBlank
 	@Pattern(regexp = "PENDIENTE|ENTREGADO|CALIFICADO")
 	private String estado;
 
@@ -61,14 +58,6 @@ public class Tribunal extends DomainEntity {
 
 	public void setEstado(String estado) {
 		this.estado = estado;
-	}
-
-	public String getNombre() {
-		return nombre;
-	}
-
-	public void setNombre(String nombre) {
-		this.nombre = nombre;
 	}
 
 	public String getArchivo() {

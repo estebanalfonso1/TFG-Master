@@ -233,8 +233,10 @@
                                 </div>
                             </div>
 
-                            <button type="submit" class="btn btn-primary w-25 py-2 mt-4 rounded-pill boton"
+                            <button type="submit" class="btn btn-primary w-25 py-2 mt-4 rounded-pill boton" *ngIf="isEditMode"
                                 [disabled]="formularioModificado() || profesorForm.pristine || imagenSeleccionada == null">GUARDAR</button>
+                                <button type="submit" class="btn btn-primary w-25 py-2 mt-4 rounded-pill boton" *ngIf="!isEditMode"
+                                [disabled]="formularioModificado() || profesorForm.pristine">GUARDAR</button>
                         </form>
 
                     </div>

@@ -10,14 +10,6 @@
     </div>
 
     <div *ngIf="!isEditMode">
-        <label for="nombre">Nombre</label>
-        <input type="text" formControlName="nombre" id="nombre">
-        <div *ngIf="formTribunal.get('nombre')?.touched && formTribunal.get('nombre')?.invalid">
-            <span *ngIf="formTribunal.get('nombre')?.errors?.['required']">Este campo es obligatorio.</span>
-        </div>
-    </div>
-
-    <div *ngIf="!isEditMode">
         <label for="tieneProfesores">Profesores</label>
         <select id="tieneProfesores" formControlName="tieneProfesores" multiple size="1">
             @for(profesor of profesores; track profesor.id) {

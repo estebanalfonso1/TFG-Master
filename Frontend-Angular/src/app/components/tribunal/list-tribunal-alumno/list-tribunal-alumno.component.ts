@@ -29,7 +29,6 @@ import { FileUpload } from 'primeng/fileupload';
     CommonModule, AvatarModule, TableModule, InputTextModule, TagModule,
     SelectModule, MultiSelectModule, ButtonModule, IconFieldModule, InputIconModule,
     FormsModule, ToastModule, RouterLink
-    // Quité FileUpload porque ya no lo usas
   ],
   providers: [DatePipe, MessageService],
   templateUrl: './list-tribunal-alumno.component.html',
@@ -41,12 +40,9 @@ export class ListTribunalAlumnoComponent implements OnInit {
   token: string | null = sessionStorage.getItem("token");
   rol!: string;
   nombreUsuario!: any;
-
-  // Mapa tribunal.id -> URL firmada
-  public signedUrls: { [tribunalId: number]: string | null } = {};
-
-  // Cambio aquí: para guardar archivos seleccionados, ahora arreglo de archivos (solo 1 por tribunal)
-  public selectedFilesMap: { [tribunalId: number]: File[] } = {};
+  public urlArchivo: { [tribunalId: number]: string | null } = {};
+  public archivoSeleccionado: { [tribunalId: number]: File[] } = {};
+  public fechaActual = new Date();
 
   constructor(
     private tribunalService: TribunalService,
@@ -65,52 +61,52 @@ export class ListTribunalAlumnoComponent implements OnInit {
     this.comprobarRol();
   }
 
+  fechaActualEsAnterior(fechaFin: Date) {
+    return this.fechaActual < fechaFin;
+  }
+
   async findAllTribunalesByAlumno() {
     this.tribunalService.getAllTribunalByAlumno().subscribe(
       async result => {
         this.tribunales = result;
         this.listaTribunales = Array.from(this.tribunales);
 
-        // Para cada tribunal, cargar URL firmada si archivo existe
         for (const tribunal of this.listaTribunales) {
-          await this.loadSignedUrl(tribunal);
-          // Inicializa selección archivo como arreglo vacío
-          this.selectedFilesMap[tribunal.id] = [];
+          await this.cargarUrlArchivo(tribunal);
+          this.archivoSeleccionado[tribunal.id] = [];
         }
       },
       error => { console.log(error); }
     );
   }
 
-  async loadSignedUrl(tribunal: Tribunal) {
+  async cargarUrlArchivo(tribunal: Tribunal) {
     if (tribunal.archivo) {
-      const url = await this.supabaseService.getSignedUrl(tribunal.archivo);
-      this.signedUrls[tribunal.id] = url;
+      const url = await this.supabaseService.obtenerUrlSupabase(tribunal.archivo);
+      this.urlArchivo[tribunal.id] = url;
     } else {
-      this.signedUrls[tribunal.id] = null;
+      this.urlArchivo[tribunal.id] = null;
     }
   }
 
   editarTribunal(id: number, tribunal: Tribunal, callback?: () => void) {
     this.tribunalService.editTribunal(id, tribunal).subscribe(
       result => {
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Tribunal actualizado',
-          detail: 'Los cambios han sido guardados.'
-        });
+        console.log('Tribunal actualizado')
 
-        if (callback) callback(); // solo recarga URL si todo salió bien
+        if (callback) callback();
+
       },
       error => {
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Error',
-          detail: 'No se pudo actualizar el tribunal.'
-        });
-        console.log("Tribunal no actualizado", error);
+        console.log("El tribunal no se ha podido actualizar", error);
       }
     );
+  }
+
+  abrirArchivo(url: string | null) {
+    if (url) {
+      window.open(url, '_blank', 'noopener');
+    }
   }
 
 
@@ -128,71 +124,71 @@ export class ListTribunalAlumnoComponent implements OnInit {
     }
   }
 
-  // NUEVO método para cuando se elige archivo en el input file
-  onFileChosen(event: Event, tribunal: Tribunal): void {
-    const input = event.target as HTMLInputElement;
-    if (!input.files || input.files.length === 0) return;
+  elegirArchivo(evento: Event, tribunal: Tribunal): void {
+    const archivoSeleccionado = evento.target as HTMLInputElement;
 
-    const file = input.files[0];
-    const ext = file.name.split('.').pop()?.toLowerCase();
+    if (archivoSeleccionado.files && archivoSeleccionado.files.length != 0) {
 
-    if (ext !== 'zip') {
-      this.messageService.add({
-        severity: 'error',
-        summary: 'Archivo no permitido',
-        detail: 'Solo se permiten archivos con extensión .zip'
-      });
-      input.value = ''; // limpiar selección inválida
-      return;
-    }
+      const archivo = archivoSeleccionado.files[0];
+      const extensionArchivo = archivo.name.split('.').pop()?.toLowerCase();
 
-    this.selectedFilesMap[tribunal.id] = [file];
-  }
-
-  // Método para subir archivo (cuando presionan subir)
-  async uploadSelectedFile(tribunal: Tribunal): Promise<void> {
-    const files = this.selectedFilesMap[tribunal.id];
-    if (!files || files.length === 0) return;
-
-    const file = files[0];
-
-    // Borra archivo viejo si existe
-    if (tribunal.archivo) {
-      const deleted = await this.supabaseService.deleteArchivo(tribunal.archivo);
-      if (!deleted) {
+      if (extensionArchivo !== 'zip') {
         this.messageService.add({
           severity: 'error',
           summary: 'Error',
-          detail: 'No se pudo eliminar el archivo anterior.'
+          detail: 'Sólo se permiten archivos .ZIP'
+        });
+
+        archivoSeleccionado.value = '';
+        return;
+      }
+
+      this.archivoSeleccionado[tribunal.id] = [archivo];
+    }
+  }
+
+  async subirArchivoSeleccionado(tribunal: Tribunal): Promise<void> {
+    const archivo = this.archivoSeleccionado[tribunal.id];
+
+    if (archivo && archivo.length != 0) {
+
+      const archivoSubido = archivo[0];
+
+      const extension = archivoSubido.name.split('.').pop()?.toLowerCase();
+      const nombreArchivo = `${tribunal.alumno.username}_${Date.now()}.${extension}`;
+
+      const nuevoArchivo = await this.supabaseService.subirArchivo(archivoSubido, nombreArchivo);
+
+      if (!nuevoArchivo) {
+        console.log("No se ha subido el archivo")
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: 'El archivo seleccionado pesa más de 50MB',
         });
         return;
       }
-    }
 
-    const ext = file.name.split('.').pop()?.toLowerCase();
-    const fileName = `${tribunal.alumno.username}_${Date.now()}.${ext}`;
-    const newPath = await this.supabaseService.uploadArchivo(file, fileName);
-    if (!newPath) {
+      if (tribunal.archivo) {
+        await this.supabaseService.eliminarArchivo(tribunal.archivo);
+      }
+
+      tribunal.archivo = nombreArchivo;
+
+      this.editarTribunal(tribunal.id, tribunal);
+
+      await this.cargarUrlArchivo(tribunal);
+
       this.messageService.add({
-        severity: 'error',
-        summary: 'Error al subir',
-        detail: 'No se pudo subir el archivo.'
+        severity: 'success',
+        summary: 'Éxito',
+        detail: 'Entrega realizada con éxito.'
       });
-      return;
+
+      this.archivoSeleccionado[tribunal.id] = [];
+
+      this.findAllTribunalesByAlumno();
     }
-
-    tribunal.archivo = fileName;
-    this.editarTribunal(tribunal.id, tribunal);
-
-    this.messageService.add({
-      severity: 'success',
-      summary: 'Archivo subido',
-      detail: file.name
-    });
-
-    // Limpiar selección
-    this.selectedFilesMap[tribunal.id] = [];
   }
-
 }
 

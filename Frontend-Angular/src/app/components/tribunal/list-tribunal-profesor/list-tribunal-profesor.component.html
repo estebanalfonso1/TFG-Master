@@ -5,17 +5,13 @@
     class="container-fluid d-flex justify-content-center align-items-center min-vh-100">
     <div class="position-fixed top-0 start-0 w-100 h-100 bg-dark bg-opacity-50 z-1"></div>
 
-    <div class="card z-2">
+    <div class="card z-2 w-75">
         <div>
             <h2 class="text-center titulo mb-4 z-2">Mis tribunales</h2>
             <p-table #dt1 [value]="listaTribunales" dataKey="id" [rows]="10" [paginator]="true"
-                [globalFilterFields]="['tribunal', 'alumno', 'entrega', 'estado', 'fechaFin', 'fechaEntrega']">
+                [globalFilterFields]="['alumno', 'entrega', 'estado', 'fechaFin', 'fechaEntrega']">
                 <ng-template pTemplate="header">
                     <tr>
-                        <th style="min-width:20rem" class="fuenteTh">
-                            Tribunal
-                            <p-columnFilter type="text" field="tribunal" display="menu"></p-columnFilter>
-                        </th>
                         <th style="min-width:20rem" class="fuenteTh">
                             Alumno
                             <p-columnFilter type="text" field="alumno" display="menu"></p-columnFilter>
@@ -45,12 +41,10 @@
 
                 <ng-template pTemplate="body" let-tribunal>
                     <tr>
-                        <td class="fuenteTr">
-                            {{ tribunal.nombre }}
-                        </td>
-                        <td class="fuenteTr">
-                            <p-avatar *ngIf="!tribunal.alumno.foto" label="{{ tribunal.alumno.nombre.charAt(0)?.toUpperCase() }}"
-                                styleClass="avatar" size="large" shape="circle"></p-avatar>
+                        <td class="fuenteTr d-flex align-items-center">
+                            <p-avatar *ngIf="!tribunal.alumno.foto"
+                                label="{{ tribunal.alumno.nombre.charAt(0)?.toUpperCase() }}" styleClass="avatar"
+                                size="large" shape="circle"></p-avatar>
                             <p-avatar *ngIf="tribunal.alumno.foto" [image]="tribunal.alumno.foto" styleClass="avatar"
                                 size="large" shape="circle"></p-avatar>
                             {{ tribunal.alumno.nombre }} {{ tribunal.alumno.apellido1 }} {{ tribunal.alumno.apellido2 }}

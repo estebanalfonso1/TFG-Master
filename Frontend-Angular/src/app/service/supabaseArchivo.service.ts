@@ -14,55 +14,50 @@ export class SupabaseService {
         );
     }
 
-    /** Sube un archivo y devuelve solo el path si sube correctamente, o null si hay error */
-    async uploadArchivo(file: File, path: string): Promise<string | null> {
-        console.log('[SupabaseService] Subiendo a:', path, 'archivo:', file);
+    async subirArchivo(archivo: File, url: string): Promise<string | null> {
 
-        const { data: uploadData, error: uploadError } = await this.supabase.storage
+        const { data: archivoSubido, error: error } = await this.supabase.storage
             .from('archivos')
-            .upload(path, file, {
+            .upload(url, archivo, {
                 cacheControl: '3600',
                 upsert: true,
             });
 
-        console.log('[SupabaseService] uploadData:', uploadData, 'uploadError:', uploadError);
-        if (uploadError) {
-            console.error('[SupabaseService] Error al subir archivo:', uploadError);
+        if (error) {
+            console.error('Ha ocurrido un error: ', error);
             return null;
         }
 
-        // Retornamos solo el path para guardar en la base de datos
-        return path;
+        return url;
     }
 
-    /** Dado un path, devuelve la URL firmada para acceder al archivo (válida 1 hora) */
-    async getSignedUrl(path: string): Promise<string | null> {
-        if (!path) return null;
+    async obtenerUrlSupabase(url: string): Promise<string | null> {
+        if (!url) return null;
 
         const { data, error } = await this.supabase.storage
             .from('archivos')
-            .createSignedUrl(path, 60 * 60); // 1 hora
+            .createSignedUrl(url, 60 * 60);
 
         if (error || !data?.signedUrl) {
-            console.error('[SupabaseService] Error al obtener signedUrl:', error);
+            console.error('Ha ocurrido un error:', error);
             return null;
         }
 
         return data.signedUrl;
     }
 
-    async deleteArchivo(path: string): Promise<boolean> {
-        console.log('[SupabaseService] Eliminando:', path);
+    async eliminarArchivo(url: string): Promise<boolean> {
+        console.log('Eliminando archivo:', url);
         const { data, error } = await this.supabase.storage
             .from('archivos')
-            .remove([path]);
+            .remove([url]);
 
         if (error) {
-            console.error('[SupabaseService] Error al eliminar archivo:', error);
+            console.error('Ha ocurrido un error:', error);
             return false;
         }
 
-        console.log('[SupabaseService] Archivo eliminado:', data);
+        console.log('Archivo eliminado');
         return true;
     }
 }

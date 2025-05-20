@@ -86,7 +86,7 @@ public class AdministradorService {
 			defaultAdministrador.setApellido1("Administrador1");
 			defaultAdministrador.setApellido2("Administrador2");
 			defaultAdministrador.setEmail("administrador@default.com");
-			defaultAdministrador.setFoto("http://default.png");
+			defaultAdministrador.setFoto(null);
 			defaultAdministrador.setTelefono("623456789");
 			defaultAdministrador.setDireccion("Dirección por defecto");
 			defaultAdministrador.setRol(Rol.ADMINISTRADOR);

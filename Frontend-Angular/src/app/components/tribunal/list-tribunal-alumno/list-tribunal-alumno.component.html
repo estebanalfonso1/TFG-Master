@@ -5,17 +5,13 @@
     class="container-fluid d-flex justify-content-center align-items-center min-vh-100">
     <div class="position-fixed top-0 start-0 w-100 h-100 bg-dark bg-opacity-50 z-1"></div>
 
-    <div class="card z-2">
+    <div class="card z-2 w-75">
         <div>
             <h2 class="text-center titulo mb-4 z-2">Mis tribunales</h2>
             <p-table #dt1 [value]="listaTribunales" dataKey="id" [rows]="10" [paginator]="true"
                 [globalFilterFields]="['tribunal', 'entrega', 'estado', 'fechaFin', 'fechaEntrega']">
                 <ng-template pTemplate="header">
                     <tr>
-                        <th style="min-width:20rem" class="fuenteTh">
-                            Tribunal
-                            <p-columnFilter type="text" field="tribunal" display="menu"></p-columnFilter>
-                        </th>
                         <th style="min-width:15rem" class="fuenteTh">
                             Entrega
                             <p-columnFilter type="text" field="entrega" display="menu"></p-columnFilter>
@@ -42,55 +38,39 @@
                 <ng-template pTemplate="body" let-tribunal>
                     <tr>
                         <td class="fuenteTr">
-                            {{ tribunal.nombre }}
+                            <div class="d-flex gap-1 align-items-center">
+                                <div *ngIf="!fechaActualEsAnterior(tribunal.fechaFin)">
+                                    <input type="file" accept=".zip" style="display:none" #archivo
+                                        (change)="elegirArchivo($event, tribunal)" [disabled]="!tribunal?.alumno" />
+
+                                    <div class="button-group"
+                                        style="display:flex; gap: 8px; align-items:center; margin-top:8px;">
+
+                                        <p-button type="button" label="" severity="info" variant="text"
+                                            styleClass="p-button-primary rounded-pill py-1" (click)="archivo.click()"
+                                            [disabled]="!tribunal?.alumno"
+                                            *ngIf="!archivoSeleccionado[tribunal.id] || archivoSeleccionado[tribunal.id].length === 0">
+                                            <i class="pi pi-plus"></i>Seleccionar archivo
+
+                                        </p-button>
+
+                                        <p-button type="button" label="" severity="info" variant="text"
+                                            styleClass="p-button-primary rounded-pill py-1"
+                                            (click)="subirArchivoSeleccionado(tribunal)"
+                                            [disabled]="!archivoSeleccionado[tribunal.id] || archivoSeleccionado[tribunal.id].length === 0"
+                                            *ngIf="archivoSeleccionado[tribunal.id] && archivoSeleccionado[tribunal.id].length > 0">
+                                            <i class="pi pi-upload"></i>Subir archivo
+                                        </p-button>
+                                    </div>
+                                </div>
+                                <div *ngIf="urlArchivo[tribunal.id]">
+                                    <p-button icon="pi pi-download" styleClass="p-button-text rounded-circle"
+                                        [attr.href]="urlArchivo[tribunal.id]" target="_blank" rel="noopener noreferrer"
+                                        [disabled]="!urlArchivo[tribunal.id]"
+                                        (click)="abrirArchivo(urlArchivo[tribunal.id])"></p-button>
+                                </div>
+                            </div>
                         </td>
-<td class="fuenteTr">
-  <!-- Mostrar link para descargar archivo subido si existe -->
-  <div *ngIf="signedUrls[tribunal.id]">
-    <a [href]="signedUrls[tribunal.id]" target="_blank" rel="noopener noreferrer">
-      Descargar archivo subido
-    </a>
-  </div>
-
-  <!-- Input file oculto para seleccionar archivo -->
-  <input 
-    type="file" 
-    accept=".zip" 
-    style="display:none" 
-    #fileInput 
-    (change)="onFileChosen($event, tribunal)"
-    [disabled]="!tribunal?.alumno"
-  />
-
-  <div class="button-group" style="display:flex; gap: 8px; align-items:center; margin-top:8px;">
-    <!-- Botón Escoger archivo -->
-    <button 
-      type="button" 
-      (click)="fileInput.click()" 
-      [disabled]="!tribunal?.alumno"
-      *ngIf="!selectedFilesMap[tribunal.id] || selectedFilesMap[tribunal.id].length === 0"
-    >
-      Escoger archivo
-    </button>
-
-    <!-- Botón Subir archivo -->
-    <button 
-      type="button" 
-      (click)="uploadSelectedFile(tribunal)" 
-      [disabled]="!selectedFilesMap[tribunal.id] || selectedFilesMap[tribunal.id].length === 0"
-      *ngIf="selectedFilesMap[tribunal.id] && selectedFilesMap[tribunal.id].length > 0"
-    >
-      Subir archivo
-    </button>
-
-  </div>
-
-  <!-- Mostrar archivo seleccionado -->
- <span *ngIf="selectedFilesMap[tribunal.id]?.[0]">
-  Archivo seleccionado: {{ selectedFilesMap[tribunal.id][0].name }}
- </span>
-
-</td>
 
 
 

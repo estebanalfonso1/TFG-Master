@@ -130,9 +130,9 @@ public class TribunalService {
 
 			if (userLogin instanceof Alumno alumno && tribunalO.get().getAlumno().equals(alumno)) {
 				tribunalO.get().setArchivo(tribunal.getArchivo());
+
 				if (tribunalO.get().getArchivo().length() > 0) {
 					Date fechaHoy = new Date();
-
 					tribunalO.get().setFechaEntrega(fechaHoy);
 					tribunalO.get().setEstado("ENTREGADO");
 				} else {

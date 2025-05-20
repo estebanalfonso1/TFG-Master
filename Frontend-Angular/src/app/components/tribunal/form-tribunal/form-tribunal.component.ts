@@ -36,7 +36,6 @@ export class FormTribunalComponent implements OnInit {
   ) {
     this.formTribunal = this.fb.group(
       {
-        nombre: ['', [Validators.required]],
         fechaEntrega: [''],
         fechaFin: ['', [Validators.required]],
         estado: ['PENDIENTE', [Validators.required]],

@@ -5,7 +5,7 @@
     class="container-fluid d-flex justify-content-center align-items-center min-vh-100">
     <div class="position-fixed top-0 start-0 w-100 h-100 bg-dark bg-opacity-50 z-1"></div>
 
-    <div class="card z-2">
+    <div class="card z-2 w-75">
         <div>
             <h2 class="text-center titulo mb-4 z-2">Mis alumnos</h2>
             <p-table #dt1 [value]="alumnos" dataKey="id" [rows]="10" [paginator]="true"
@@ -44,7 +44,7 @@
 
                 <ng-template pTemplate="body" let-alumno>
                     <tr>
-                        <td class="fuenteTr">
+                        <td class="fuenteTr d-flex align-items-center">
                             <p-avatar *ngIf="!alumno.foto" label="{{ alumno.nombre.charAt(0)?.toUpperCase() }}"
                                 styleClass="avatar" size="large" shape="circle"></p-avatar>
                             <p-avatar *ngIf="alumno.foto" [image]="alumno.foto" styleClass="avatar" size="large"

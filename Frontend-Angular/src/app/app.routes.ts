@@ -46,7 +46,6 @@ export const routes: Routes = [
 
     // TRIBUNAL
     { path: "tribunal/nuevo", component: FormTribunalComponent },
-    { path: "tribunal/editar/:id", component: FormTribunalComponent },
     { path: "tribunales/asignados", component: ListTribunalProfesorComponent },
     { path: "tribunales/mistribunales", component: ListTribunalAlumnoComponent },
 
