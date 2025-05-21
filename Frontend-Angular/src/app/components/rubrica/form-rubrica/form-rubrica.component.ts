@@ -22,6 +22,8 @@ export class FormRubricaComponent implements OnInit {
   public criterios: Criterio[] = [];
   public criteriosIncluidos: Criterio[] = [];
   isEditMode!: boolean;
+  hoy = new Date();
+  datosFormulario: any;
 
   constructor(
     private criterioService: CriterioService,
@@ -30,13 +32,12 @@ export class FormRubricaComponent implements OnInit {
     private route: ActivatedRoute,
     private fb: FormBuilder
   ) {
-    const hoy = new Date();
 
     this.formRubrica = this.fb.group(
       {
         descripcion: ['', [Validators.required]],
         esBorrador: [true],
-        fechaPublicacion: [hoy],
+        fechaPublicacion: [this.hoy],
         criterios: [[], [Validators.required]]
       });
   }
@@ -49,16 +50,25 @@ export class FormRubricaComponent implements OnInit {
     this.id = Number(this.route.snapshot.paramMap.get('id'));
     if (this.id > 0) {
       this.rubricaService.getOneRubrica(this.id).subscribe(
-        result => { this.formRubrica.patchValue(result) },
+        result => {
+          this.formRubrica.patchValue(result);
+          this.datosFormulario = { ...result };
+        },
         error => { console.log("Rubrica no encontrada") }
       );
     }
-
     this.criterioService.getAllCriterio().subscribe(
       result => { this.criterios = result; },
       error => { console.log(error) }
     );
+  }
 
+  datosModificados(): boolean {
+    return JSON.stringify(this.formRubrica.value) !== JSON.stringify(this.datosFormulario);
+  }
+
+  formularioModificado(): boolean {
+    return !this.datosModificados() || this.formRubrica.invalid;
   }
 
   save() {
@@ -67,16 +77,24 @@ export class FormRubricaComponent implements OnInit {
     if (this.id > 0) {
       this.rubricaService.editRubrica(this.id, rubrica).subscribe(
         result => {
-          this.router.navigateByUrl("/rubrica");
-          this.router.navigateByUrl("/");
+          this.datosFormulario = { ...rubrica };
+
+          this.formRubrica.markAsPristine();
+          this.formRubrica.markAsUntouched();
+
         },
         error => { console.log("Rubrica no actualizada") }
       );
     } else {
       this.rubricaService.saveRubrica(rubrica).subscribe(
         result => {
-          this.router.navigateByUrl("/rubrica")
-          this.router.navigateByUrl("/");
+          this.formRubrica.reset({
+            descripcion: '',
+            esBorrador: true,
+            fechaPublicacion: this.hoy,
+            criterios: []
+          });
+
         },
         error => { console.log("Rubrica no creada") }
       );

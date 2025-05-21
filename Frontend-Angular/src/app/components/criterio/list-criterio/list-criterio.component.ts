@@ -14,24 +14,24 @@ import { ButtonModule } from 'primeng/button';
 import { FormsModule } from '@angular/forms';
 import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
-import { Rubrica } from '../../../model/Rubrica';
-import { RubricaService } from '../../../service/rubrica.service';
+import { Criterio } from '../../../model/Criterio';
+import { CriterioService } from '../../../service/criterio.service';
 
 @Component({
-  selector: 'app-list-rubrica',
+  selector: 'app-list-criterio',
   imports: [CommonModule, AvatarModule, TableModule, InputTextModule, TagModule,
     SelectModule, MultiSelectModule, ButtonModule, IconFieldModule, InputIconModule, FormsModule, RouterLink, ToastModule],
   providers: [MessageService],
-  templateUrl: './list-rubrica.component.html',
-  styleUrl: './list-rubrica.component.css'
+  templateUrl: './list-criterio.component.html',
+  styleUrl: './list-criterio.component.css'
 })
-export class ListRubricaComponent implements OnInit {
-  public rubricas: Rubrica[] = [];
-  searchValue: string | undefined;
+export class ListCriterioComponent implements OnInit {
+  public criterios: Criterio[] = [];
+  buscarValor: string | undefined;
 
 
   constructor(
-    private rubricaService: RubricaService,
+    private criterioService: CriterioService,
     private router: Router,
     private messageService: MessageService
   ) { }
@@ -41,14 +41,9 @@ export class ListRubricaComponent implements OnInit {
   }
 
   findAllRubricas() {
-    this.rubricaService.getAllRubrica().subscribe(
+    this.criterioService.getAllCriterio().subscribe(
       result => {
-        this.rubricas = result.map(
-          rubrica => ({
-            ...rubrica,
-            fechaPublicacion: new Date(rubrica.fechaPublicacion)
-          })
-        )
+        this.criterios = result;
       },
       error => { console.log(error) }
     );
@@ -70,21 +65,21 @@ export class ListRubricaComponent implements OnInit {
   }
 
   eliminar(id: number) {
-    this.rubricaService.deleteRubrica(id).subscribe(
+    this.criterioService.deleteCriterio(id).subscribe(
       result => {
         this.messageService.add({
           severity: "success",
           summary: "Éxito",
-          detail: "Rúbrica eliminada correctamente",
+          detail: "Criterio eliminado correctamente",
           life: 1900
         });
-        this.rubricas = this.rubricas.filter(rubrica => rubrica.id !== id);
+        this.criterios = this.criterios.filter(criterio => criterio.id !== id);
       },
       error => {
         this.messageService.add({
           severity: "error",
           summary: "Error",
-          detail: "No se ha podido eliminar la rúbrica",
+          detail: "No se ha podido eliminar el criterio",
           life: 1900
         });
       }

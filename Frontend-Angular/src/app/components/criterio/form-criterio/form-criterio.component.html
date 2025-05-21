@@ -1,47 +1,75 @@
-<h2>Formulario de Criterios</h2>
+<main style="background-image: url('actor/fondo.jpg');"
+    class="container-fluid d-flex justify-content-center align-items-center min-vh-100 position-relative">
 
-<form (ngSubmit)="save()" [formGroup]="formCriterio">
-    <div>
-        <label for="descripcion">Descripción</label>
-        <input type="text" formControlName="descripcion" id="descripcion">
-        <div *ngIf="formCriterio.get('descripcion')?.touched && formCriterio.get('descripcion')?.invalid">
-            <span *ngIf="formCriterio.get('descripcion')?.errors?.['required']">Este campo es obligatorio.</span>
+    <div class="position-absolute top-0 start-0 w-100 h-100 bg-dark bg-opacity-50 z-1"></div>
+
+    <div class="z-3" style="width: 100%; max-width: 1000px;">
+
+        <!-- Card -->
+        <div class="card w-100 px-3" style="max-width: 1000px;">
+            <div class="card-body text-center">
+                <h2 *ngIf="!isEditMode" class="titulo mb-4">Crear criterio</h2>
+                <h2 *ngIf="isEditMode" class="titulo mb-4">Editar criterio</h2>
+
+                <form [formGroup]="formCriterio" (ngSubmit)="save()">
+
+                    <div class="d-flex flex-column flex-md-row gap-4 align-items-md-center">
+                        <!-- Primera columna -->
+                        <div class="flex-fill">
+
+                            <div class="mb-3">
+                                <label for="descripcion" class="form-label text-secondary">Descripción</label>
+                                <input id="descripcion" class="form-control rounded-pill tamaño-input"
+                                    formControlName="descripcion" type="text" placeholder="Introduce la descripción"
+                                    required />
+                                <small class="text-danger"
+                                    *ngIf="formCriterio.get('descripcion')?.invalid && formCriterio.get('descripcion')?.touched"
+                                    class="text-danger">
+                                    La descripción es obligatoria.
+                                </small>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="valoracionMinima" class="form-label text-secondary">Valoración
+                                    minima</label>
+                                <input id="valoracionMinima" class="form-control rounded-pill tamaño-input"
+                                    formControlName="valoracionMinima" type="text"
+                                    placeholder="Introduce la valoración mínima" required />
+                                <small class="text-danger"
+                                    *ngIf="formCriterio.get('valoracionMinima')?.invalid && formCriterio.get('valoracionMinima')?.touched"
+                                    class="text-danger">
+                                    La valoración mínima es obligatoria.
+                                </small>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="valoracionMaxima" class="form-label text-secondary">Valoración
+                                    máxima</label>
+                                <input id="valoracionMaxima" class="form-control rounded-pill tamaño-input"
+                                    formControlName="valoracionMaxima" type="text"
+                                    placeholder="Introduce la valoración máxima" required />
+                                <small class="text-danger"
+                                    *ngIf="formCriterio.get('valoracionMaxima')?.invalid && formCriterio.get('valoracionMaxima')?.touched"
+                                    class="text-danger">
+                                    La valoración máxima es obligatoria.
+                                </small>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="deTutor" class="form-label text-secondary">¿Es específico de tutor?</label>
+                                <div class="flex justify-center" class="tamaño-input">
+                                    <p-toggleswitch formControlName="deTutor" />
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <button type="submit" class="btn btn-primary w-100 w-md-25 py-2 mt-4 rounded-pill boton"
+                        [disabled]="formularioModificado() || formCriterio.pristine">GUARDAR</button>
+                </form>
+
+            </div>
         </div>
     </div>
-
-    <div>
-        <label for="valoracionMaxima">Valoración máxima</label>
-        <input type="text" formControlName="valoracionMaxima" id="valoracionMaxima">
-        <div *ngIf="formCriterio.get('valoracionMaxima')?.errors?.['min']">
-            La valoración máxima no puede ser menor que 0.
-        </div>
-        <div *ngIf="formCriterio.get('valoracionMaxima')?.errors?.['max']">
-            La valoración máxima no puede ser mayor que 10.
-        </div>
-    </div>
-
-    <div>
-        <label for="valoracionMinima">Valoración mínima</label>
-        <input type="text" formControlName="valoracionMinima" id="valoracionMinima">
-        <div *ngIf="formCriterio.get('valoracionMinima')?.errors?.['min']">
-            La valoración mínima no puede ser menor que 0.
-        </div>
-        <div *ngIf="formCriterio.get('valoracionMinima')?.errors?.['max']">
-            La valoración mínima no puede ser mayor que 10.
-        </div>
-    </div>
-
-    <div>
-        <span>¿Valoración de tutor?</span>
-        <label>
-            <input type="radio" id="deTutor" formControlName="deTutor" [value]="true">
-            Sí
-        </label>
-        <label>
-            <input type="radio" id="deTutor" formControlName="deTutor" [value]="false" checked>
-            No
-        </label>
-    </div>
-
-    <button type="submit" [disabled]="formCriterio.invalid">Guardar</button>
-</form>
+</main>

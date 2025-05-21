@@ -4,16 +4,19 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { CriterioService } from '../../../service/criterio.service';
 import { CommonModule } from '@angular/common';
 import { jwtDecode } from 'jwt-decode';
+import { ToggleSwitch } from 'primeng/toggleswitch';
 
 @Component({
   selector: 'app-form-criterio',
-  imports: [ReactiveFormsModule, CommonModule],
+  imports: [ReactiveFormsModule, CommonModule, ToggleSwitch],
   templateUrl: './form-criterio.component.html',
   styleUrl: './form-criterio.component.css'
 })
 export class FormCriterioComponent implements OnInit {
   formCriterio!: FormGroup;
   id!: number;
+  isEditMode!: boolean;
+  datosFormulario: any;
 
   constructor(
     private criterioService: CriterioService,
@@ -31,14 +34,27 @@ export class FormCriterioComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.isEditMode = this.router.url.includes('editar');
     this.comprobarRol();
     this.id = Number(this.route.snapshot.paramMap.get('id'));
     if (this.id > 0) {
       this.criterioService.getOneCriterio(this.id).subscribe(
-        result => { this.formCriterio.patchValue(result) },
+        result => {
+          this.formCriterio.patchValue(result);
+          this.datosFormulario = { ...result };
+
+        },
         error => { console.log("Criterio no encontrado") }
       );
     }
+  }
+
+  datosModificados(): boolean {
+    return JSON.stringify(this.formCriterio.value) !== JSON.stringify(this.datosFormulario);
+  }
+
+  formularioModificado(): boolean {
+    return !this.datosModificados() || this.formCriterio.invalid;
   }
 
   save() {
@@ -47,16 +63,19 @@ export class FormCriterioComponent implements OnInit {
     if (this.id > 0) {
       this.criterioService.editCriterio(this.id, criterio).subscribe(
         result => {
-          this.router.navigateByUrl("/criterio");
-          this.router.navigateByUrl("/");
+          this.datosFormulario = { ...criterio };
         },
         error => { console.log("Criterio no actualizado") }
       );
     } else {
       this.criterioService.saveCriterio(criterio).subscribe(
         result => {
-          this.router.navigateByUrl("/criterio")
-          this.router.navigateByUrl("/");
+          this.formCriterio.reset({
+            valoracionMaxima: '',
+            valoracionMinima: '',
+            deTutor: false,
+            descripcion: ''
+          });
         },
         error => { console.log("Criterio no creado") }
       );

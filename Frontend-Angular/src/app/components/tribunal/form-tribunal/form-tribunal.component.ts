@@ -14,10 +14,12 @@ import { FormsModule } from '@angular/forms';
 import { DatePicker } from 'primeng/datepicker';
 import { SelectModule } from 'primeng/select';
 import { MultiSelectModule } from 'primeng/multiselect';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-form-tribunal',
   imports: [ReactiveFormsModule, CommonModule, FormsModule, DatePicker, SelectModule, MultiSelectModule],
+  providers: [MessageService],
   templateUrl: './form-tribunal.component.html',
   styleUrl: './form-tribunal.component.css'
 })
@@ -36,6 +38,7 @@ export class FormTribunalComponent implements OnInit {
     private rubricaService: RubricaService,
     private router: Router,
     private route: ActivatedRoute,
+    private messageService: MessageService,
     private fb: FormBuilder
   ) {
     this.formTribunal = this.fb.group(
@@ -118,19 +121,54 @@ export class FormTribunalComponent implements OnInit {
     if (this.id > 0) {
       this.tribunalService.editTribunal(this.id, tribunal).subscribe(
         result => {
+          this.messageService.add({
+            severity: "success",
+            summary: "Éxito",
+            detail: "Tribunal actualizado correctamente",
+            life: 1900
+          })
           this.router.navigateByUrl("/tribunal");
           this.router.navigateByUrl("/");
         },
-        error => { console.log("Tribunal no actualizado") }
+        error => {
+          this.messageService.add({
+            severity: "error",
+            summary: "Error",
+            detail: "No se ha podido actualizar el tribunal",
+            life: 1900
+          })
+        }
       );
     } else {
       this.tribunalService
         .saveTribunal(tribunal).subscribe(
           result => {
-            this.router.navigateByUrl("/tribunal")
-            this.router.navigateByUrl("/");
+            this.messageService.add({
+              severity: "success",
+              summary: "Éxito",
+              detail: "Tribunal creado correctamente",
+              life: 1900
+            })
+
+            this.formTribunal.reset({
+              fechaEntrega: '',
+              fechaFin: '',
+              estado: 'PENDIENTE',
+              archivo: '',
+              tieneProfesores: [],
+              alumno: '',
+              rubrica: '',
+            });
+
           },
-          error => { console.log("Tribunal no creado") }
+          error => {
+            this.messageService.add({
+              severity: "error",
+              summary: "Error",
+              detail: "No se ha podido crear el tribunal",
+              life: 1900
+            })
+          }
         );
     }
   }

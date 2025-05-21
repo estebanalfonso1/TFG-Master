@@ -37,6 +37,7 @@ export class ListTribunalProfesorComponent implements OnInit {
   rol!: string;
   nombreUsuario !: any;
   public urlArchivo: { [tribunalId: number]: string | null } = {};
+  fechaNula = 0;
 
   constructor(
     private tribunalService: TribunalService,
@@ -75,6 +76,10 @@ export class ListTribunalProfesorComponent implements OnInit {
       },
       error => { console.log(error) }
     );
+  }
+
+  fechaEntregaNula(fecha: Date | null): boolean {
+    return !!fecha && fecha.getTime() === this.fechaNula;
   }
 
   private comprobarRol() {

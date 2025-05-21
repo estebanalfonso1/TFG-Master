@@ -65,14 +65,18 @@
                             <span *ngIf="!tribunal.archivo">No entregado</span>
                         </td>
                         <td class="fuenteTr">
-                            {{ tribunal.fechaEntrega | date: 'dd-MM-yyyy' }} <span *ngIf="!tribunal.fechaEntrega">No
-                                entregado</span>
+                            <span *ngIf="!fechaEntregaNula(tribunal.fechaEntrega)">
+                                {{ tribunal.fechaEntrega | date: 'dd-MM-yyyy' }}
+                            </span>
+                            <span *ngIf="fechaEntregaNula(tribunal.fechaEntrega)">
+                                No entregado
+                            </span>
                         </td>
                         <td class="fuenteTr">
                             {{ tribunal.fechaFin | date: 'dd-MM-yyyy' }}
                         </td>
                         <td class="fuenteBoton">
-                            <p-button label="" severity="info" variant="text"
+                            <p-button label="" severity="info" variant="text" [disabled]="!tribunal.archivo"
                                 styleClass="p-button-primary rounded-pill py-1"
                                 [routerLink]="'/tribunales/asignados/valorar/' + tribunal.id">
                                 <i class="pi pi-clipboard"></i>Evaluar

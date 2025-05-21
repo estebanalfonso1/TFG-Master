@@ -14,6 +14,7 @@ import { FormValoracionComponent } from './components/valoracion/form-valoracion
 import { ListTribunalAlumnoComponent } from './components/tribunal/list-tribunal-alumno/list-tribunal-alumno.component';
 import { ListAlumnoProfesorComponent } from './components/alumno/list-alumno-profesor/list-alumno-profesor.component';
 import { ListRubricaComponent } from './components/rubrica/list-rubrica/list-rubrica.component';
+import { ListCriterioComponent } from './components/criterio/list-criterio/list-criterio.component';
 
 export const routes: Routes = [
     { path: '', component: HomeComponent },
@@ -38,6 +39,7 @@ export const routes: Routes = [
     // CRITERIO
     { path: "criterio/nuevo", component: FormCriterioComponent },
     { path: "criterio/editar/:id", component: FormCriterioComponent },
+    { path: "criterios", component: ListCriterioComponent},
 
     // RUBRICA
     { path: "rubrica/nueva", component: FormRubricaComponent },

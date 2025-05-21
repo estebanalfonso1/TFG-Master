@@ -68,7 +68,7 @@
                     </div>
 
                     <button type="submit" class="btn btn-primary w-100 w-md-25 py-2 mt-4 rounded-pill boton"
-                        [disabled]="formRubrica.invalid">GUARDAR</button>
+                        [disabled]="formularioModificado() || formRubrica.pristine">GUARDAR</button>
                 </form>
 
             </div>

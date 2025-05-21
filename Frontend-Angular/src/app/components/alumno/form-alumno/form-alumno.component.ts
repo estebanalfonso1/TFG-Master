@@ -186,7 +186,7 @@ export class FormAlumnoComponent implements OnInit {
                   detail: "Alumno creado correctamente",
                   life: 1900
                 })
-                this.router.navigateByUrl("/alumno/registro");
+                this.alumnoForm.reset();
               },
               error => {
                 this.messageService.add({

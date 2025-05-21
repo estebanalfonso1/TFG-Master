@@ -1,0 +1,76 @@
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;300;400;600&display=swap" rel="stylesheet" />
+<p-toast position="top-center"></p-toast>
+
+<main style="background-image: url('actor/fondo.jpg');"
+    class="container-fluid d-flex justify-content-center align-items-center min-vh-100">
+    <div class="position-fixed top-0 start-0 w-100 h-100 bg-dark bg-opacity-50 z-1"></div>
+
+    <div class="card z-2 w-75">
+        <div>
+            <h2 class="text-center titulo mb-4 z-2">Criterios</h2>
+            <p-table #dt1 [value]="criterios" dataKey="id" [rows]="10" [paginator]="true"
+                [globalFilterFields]="['descripcion', 'valoracionMinima', 'valoracionMaxima', 'deTutor']">
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th style="min-width:10rem" class="fuenteTh">
+                            Descripción
+                            <p-columnFilter type="text" field="descripcion" display="menu"></p-columnFilter>
+                        </th>
+                        <th style="min-width:15rem" class="fuenteTh">
+                            Valoración mínima
+                            <p-columnFilter type="date" field="valoracionMinima" display="menu"></p-columnFilter>
+                        </th>
+                        <th style="min-width:15rem" class="fuenteTh">
+                            Valoración máxima
+                            <p-columnFilter type="text" field="valoracionMaxima" display="menu"></p-columnFilter>
+                        </th>
+                        <th style="min-width:15rem" class="fuenteTh">
+                            ¿Específico para tutor?
+                            <p-columnFilter type="text" field="deTutor" display="menu"></p-columnFilter>
+                        </th>
+                        <th style="min-width:10rem" class="fuenteTh">
+                            Acciones
+                        </th>
+                    </tr>
+                </ng-template>
+
+                <ng-template pTemplate="body" let-criterio>
+                    <tr>
+                        <td class="fuenteTr">
+                            {{ criterio.descripcion }}
+                        </td>
+                        <td class="fuenteTr">
+                            {{ criterio.valoracionMinima }}
+                        </td>
+                        <td class="fuenteTr">
+                            {{ criterio.valoracionMaxima }}
+                        </td>
+                        <td class="fuenteTr">
+                            <p-tag [severity]="criterio.deTutor ? 'info' : 'warn'">
+                                {{ criterio.deTutor ? 'Sí' : 'No' }}
+                            </p-tag>
+                        </td>
+                        <td class="fuenteBoton">
+                            <p-button label="" severity="info" variant="text"
+                                styleClass="p-button-primary rounded-pill py-1"
+                                [routerLink]="'/criterio/editar/' + criterio.id">
+                                <i class="pi pi-clipboard"></i>Editar
+                            </p-button>
+                            <span style="margin-right: 10px"></span>
+                            <p-button label="" severity="danger" variant="text"
+                                styleClass="p-button-primary rounded-pill" (click)="eliminar(criterio.id)">
+                                <i class="pi pi-trash"></i>
+                            </p-button>
+                        </td>
+                    </tr>
+                </ng-template>
+
+                <ng-template pTemplate="emptymessage">
+                    <tr>
+                        <td colspan="7" class="fuenteTr">No hay criterios registrados.</td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div>
+    </div>
+</main>
