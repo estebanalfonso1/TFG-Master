@@ -9,7 +9,7 @@ import { AvatarModule } from 'primeng/avatar';
 import { AvatarEstadoService } from '../../../service/avatar.service';
 import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
-import { SupabaseService } from '../../../service/supabaseAvatar.service';
+import { SupabaseServiceAvatar } from '../../../service/supabaseAvatar.service';
 
 @Component({
   selector: 'app-form-profesor',
@@ -34,7 +34,7 @@ export class FormProfesorComponent implements OnInit {
     private router: Router,
     private avatarEstado: AvatarEstadoService,
     private messageService: MessageService,
-    private supabaseService: SupabaseService
+    private supabaseService: SupabaseServiceAvatar
   ) {
     this.profesorForm = this.fb.group({
       nombre: ['', Validators.required],
@@ -58,6 +58,7 @@ export class FormProfesorComponent implements OnInit {
         result => {
           this.profesorForm.patchValue(result);
           this.profesorForm.get("password")?.disable();
+          this.profesorForm.get("passconfirm")?.disable();
           this.profesorForm.get('username')?.disable();
 
           this.datosFormulario = { ...result };
@@ -81,33 +82,36 @@ export class FormProfesorComponent implements OnInit {
   }
 
   async save() {
-    const profesor = this.profesorForm.getRawValue();
+    const profesor = this.profesorForm.value;
 
     if (this.imagenSeleccionada) {
-      // 1) Si ya había foto previa, elimínala
+
       if (profesor.foto) {
-        const match = profesor.foto.match(/\/avatares\/(.+)$/);
-        if (match?.[1]) {
-          await this.supabaseService.deleteImage(match[1]);
+        const imagen = profesor.foto.match(/\/avatares\/(.+)$/);
+        if (imagen?.[1]) {
+          await this.supabaseService.eliminarImagen(imagen[1]);
         }
       }
 
-      // 2) Genera nombre y sube la nueva
-      const ext = this.imagenSeleccionada.name.split('.').pop();
-      const fileName = `${profesor.username}_${Date.now()}.${ext}`;
-      const newUrl = await this.supabaseService.uploadImage(this.imagenSeleccionada, fileName);
-      if (!newUrl) return;  // aborta si falla
+      const extension = this.imagenSeleccionada.name.split('.').pop();
+      const nombreArchivo = `${profesor.username}_${Date.now()}.${extension}`;
 
-      // 3) Actualiza el formulario y el payload
-      this.profesorForm.patchValue({ foto: newUrl });
-      profesor.foto = newUrl;
-      this.avatarEstado.setFoto(newUrl)
+      const nuevaUrl = await this.supabaseService.subirImagen(this.imagenSeleccionada, nombreArchivo);
+
+      if (nuevaUrl) {
+      this.profesorForm.patchValue({ foto: nuevaUrl });
+
+      profesor.foto = nuevaUrl;
+
+      this.avatarEstado.setFoto(nuevaUrl)
+
       this.profesorForm.markAsDirty();
+      }
     }
 
     this.actorService.actorExist(profesor.username).subscribe(
       exists => {
-        if (exists && !this.isEditMode) {
+        if (exists) {
           this.messageService.add({
             severity: "error",
             summary: "Error",
@@ -129,8 +133,7 @@ export class FormProfesorComponent implements OnInit {
                 })
 
                 this.datosFormulario = { ...profesor };
-                this.profesorForm.markAsPristine();
-                this.profesorForm.markAsUntouched();
+
               },
               error => { console.log(error); }
             );
@@ -158,7 +161,7 @@ export class FormProfesorComponent implements OnInit {
         }
       },
       error => {
-        console.error("Error al verificar existencia de usuario:", error);
+        console.error(error);
       }
     );
   }
@@ -182,17 +185,20 @@ export class FormProfesorComponent implements OnInit {
     this.passwordVisible = !this.passwordVisible;
   }
 
-  onImageSelected(event: any): void {
-    const file: File = event.target.files[0];
-    if (file) {
-      this.imagenSeleccionada = file;
+  subirImagen(event: any): void {
+    const imagen: File = event.target.files[0];
+
+    if (imagen) {
+
+      this.imagenSeleccionada = imagen;
+
+      const nuevaUrl = URL.createObjectURL(imagen);
+      this.profesorForm.patchValue({ foto: nuevaUrl });
+
+      this.profesorForm.get('foto')?.markAsDirty();
       this.profesorForm.markAsDirty();
-      // opcional: previsualizar localmente
-      const reader = new FileReader();
-      reader.onload = () => {
-        // podrías almacenar reader.result en una variable para vista previa
-      };
-      reader.readAsDataURL(file);
+  
+      event.target.markAsDirty();
     }
   }
 

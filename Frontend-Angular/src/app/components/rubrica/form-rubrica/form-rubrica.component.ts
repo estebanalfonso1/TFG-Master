@@ -31,14 +31,12 @@ export class FormRubricaComponent implements OnInit {
     private fb: FormBuilder
   ) {
     const hoy = new Date();
-    const fechaFormateada = `${hoy.getDate().toString().padStart(2, '0')}-${(hoy.getMonth() + 1).toString().padStart(2, '0')}-${hoy.getFullYear()}`;
-
 
     this.formRubrica = this.fb.group(
       {
         descripcion: ['', [Validators.required]],
         esBorrador: [true],
-        fechaPublicacion: [fechaFormateada],
+        fechaPublicacion: [hoy],
         criterios: [[], [Validators.required]]
       });
   }

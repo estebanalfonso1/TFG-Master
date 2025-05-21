@@ -4,7 +4,7 @@ import { createClient, SupabaseClient } from '@supabase/supabase-js';
 @Injectable({
   providedIn: 'root',
 })
-export class SupabaseService {
+export class SupabaseServiceAvatar {
   private supabase: SupabaseClient;
 
   constructor() {
@@ -14,51 +14,42 @@ export class SupabaseService {
     );
   }
 
-  /** Sube un archivo y devuelve la URL pública o null si hay error */
-  async uploadImage(file: File, path: string): Promise<string | null> {
-    console.log('[SupabaseService] Subiendo a:', path, 'archivo:', file);
+  async subirImagen(archivo: File, url: string): Promise<string | null> {
 
-    // 1) Upload
-    const { data: uploadData, error: uploadError } = await this.supabase.storage
+    const { data: imagenSubida, error: error } = await this.supabase.storage
       .from('avatares')
-      .upload(path, file, {
+      .upload(url, archivo, {
         cacheControl: '3600',
         upsert: true,
       });
 
-    console.log('[SupabaseService] uploadData:', uploadData, 'uploadError:', uploadError);
-    if (uploadError) {
-      console.error('[SupabaseService] Error al subir imagen:', uploadError);
+    if (error) {
+      console.error('Ha ocurrido un error: ', error);
       return null;
     }
 
-    // 2) Obtener URL pública
-    // getPublicUrl devuelve { data: { publicUrl: string } }
-    const { data: publicUrlData } = this.supabase.storage
+    const { data: urlSupabase } = this.supabase.storage
       .from('avatares')
-      .getPublicUrl(path);
+      .getPublicUrl(url);
 
-    if (!publicUrlData?.publicUrl) {
-      console.error('[SupabaseService] No se obtuvo publicUrl para:', path);
+    if (!urlSupabase?.publicUrl) {
+      console.error('No hay url para la image');
       return null;
     }
 
-    console.log('[SupabaseService] publicUrl:', publicUrlData.publicUrl);
-    return publicUrlData.publicUrl;
+    return urlSupabase.publicUrl;
   }
 
-  async deleteImage(path: string): Promise<boolean> {
-    console.log('[SupabaseService] Eliminando:', path);
+  async eliminarImagen(url: string): Promise<boolean> {
     const { data, error } = await this.supabase.storage
       .from('avatares')
-      .remove([path]);
+      .remove([url]);
 
     if (error) {
-      console.error('[SupabaseService] Error al eliminar imagen:', error);
+      console.error('Ha ocurrido un error', error);
       return false;
     }
 
-    console.log('[SupabaseService] Imagen eliminada:', data);
     return true;
   }
 }

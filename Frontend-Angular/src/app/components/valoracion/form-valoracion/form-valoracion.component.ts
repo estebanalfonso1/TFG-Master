@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { jwtDecode } from 'jwt-decode';
 import { TribunalService } from '../../../service/tribunal.service';
@@ -24,7 +24,7 @@ import { MessageService } from 'primeng/api';
   selector: 'app-form-valoracion',
   standalone: true,
   imports: [ReactiveFormsModule, CommonModule, TableModule, InputTextModule, TagModule,
-    SelectModule, MultiSelectModule, ButtonModule, IconFieldModule, InputIconModule, FormsModule, RouterLink, ToastModule],
+    SelectModule, MultiSelectModule, ButtonModule, IconFieldModule, InputIconModule, FormsModule, ToastModule],
   providers: [MessageService],
   templateUrl: './form-valoracion.component.html',
   styleUrl: './form-valoracion.component.css'

@@ -3,8 +3,6 @@ package tfgMaster.entity;
 import java.util.Date;
 import java.util.Set;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToMany;
 import jakarta.validation.constraints.NotBlank;
@@ -16,7 +14,6 @@ public class Rubrica extends DomainEntity {
 
 	private boolean esBorrador;
 
-	@JsonFormat(pattern = "dd-MM-yyyy")
 	private Date fechaPublicacion;
 
 	@ManyToMany

@@ -9,32 +9,30 @@
         <div>
             <h2 class="text-center titulo mb-4 z-2">Mis tribunales</h2>
             <p-table #dt1 [value]="listaTribunales" dataKey="id" [rows]="10" [paginator]="true"
-                [globalFilterFields]="['alumno', 'entrega', 'estado', 'fechaFin', 'fechaEntrega']">
+                [globalFilterFields]="['nombreAlumnoCompleto', 'estado', 'fechaEntrega', 'fechaFin']">
                 <ng-template pTemplate="header">
                     <tr>
-                        <th style="min-width:20rem" class="fuenteTh">
+                        <th style="min-width:13rem" class="fuenteTh">
                             Alumno
-                            <p-columnFilter type="text" field="alumno" display="menu"></p-columnFilter>
+                            <p-columnFilter type="text" field="nombreAlumnoCompleto" display="menu"></p-columnFilter>
                         </th>
-                        <th style="min-width:15rem" class="fuenteTh">
+                        <th style="min-width:13rem" class="fuenteTh">
                             Estado
                             <p-columnFilter type="text" field="estado" display="menu"></p-columnFilter>
                         </th>
-                        <th style="min-width:15rem" class="fuenteTh">
+                        <th style="min-width:13rem" class="fuenteTh">
                             Entrega
-                            <p-columnFilter type="text" field="entrega" display="menu"></p-columnFilter>
                         </th>
-                        <th style="min-width:10rem" class="fuenteTh">
+                        <th style="min-width:13rem" class="fuenteTh">
                             Fecha entrega
-                            <p-columnFilter type="text" field="fechaEntrega" display="menu"></p-columnFilter>
+                            <p-columnFilter type="date" field="fechaEntrega" display="menu"></p-columnFilter>
                         </th>
-                        <th style="min-width:10rem" class="fuenteTh">
+                        <th style="min-width:13rem" class="fuenteTh">
                             Fecha fin
-                            <p-columnFilter type="text" field="fechaFin" display="menu"></p-columnFilter>
+                            <p-columnFilter type="date" field="fechaFin" display="menu"></p-columnFilter>
                         </th>
                         <th style="min-width:10rem" class="fuenteTh">
                             Acciones
-                            <p-columnFilter type="text" field="calificacionTotal" display="menu"></p-columnFilter>
                         </th>
                     </tr>
                 </ng-template>

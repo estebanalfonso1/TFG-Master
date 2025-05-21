@@ -4,7 +4,7 @@ import { createClient, SupabaseClient } from '@supabase/supabase-js';
 @Injectable({
     providedIn: 'root',
 })
-export class SupabaseService {
+export class SupabaseServiceArchivo {
     private supabase: SupabaseClient;
 
     constructor() {

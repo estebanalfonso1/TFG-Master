@@ -18,7 +18,7 @@
                         </th>
                         <th style="min-width:15rem" class="fuenteTh">
                             Fecha publicación
-                            <p-columnFilter type="text" field="fechaPublicacion" display="menu"></p-columnFilter>
+                            <p-columnFilter type="date" field="fechaPublicacion" display="menu"></p-columnFilter>
                         </th>
                         <th style="min-width:10rem" class="fuenteTh">
                             Estado
@@ -36,7 +36,7 @@
                             {{ rubrica.descripcion }}
                         </td>                        
                         <td class="fuenteTr">
-                            {{ rubrica.fechaPublicacion }}
+                            {{ rubrica.fechaPublicacion | date: 'dd-MM-yyyy' }}
                         </td>
                         <td class="fuenteTr">
                             <p-tag [severity]="rubrica.esBorrador ? 'info' : 'success'">

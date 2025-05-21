@@ -16,7 +16,7 @@ import { ButtonModule } from 'primeng/button';
 import { FormsModule } from '@angular/forms';
 import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
-import { SupabaseService } from '../../../service/supabaseAvatar.service';
+import { SupabaseServiceAvatar } from '../../../service/supabaseAvatar.service';
 
 @Component({
   selector: 'app-list-alumno',
@@ -35,7 +35,7 @@ export class ListAlumnoComponent implements OnInit {
     private alumnoService: AlumnoService,
     private router: Router,
     private messageService: MessageService,
-    private supabaseService: SupabaseService
+    private supabaseService: SupabaseServiceAvatar
   ) { }
 
   ngOnInit(): void {
@@ -77,7 +77,7 @@ export class ListAlumnoComponent implements OnInit {
       if (alumno?.foto) {
         const match = alumno.foto.match(/\/avatares\/(.+)$/);
         if (match?.[1]) {
-          await this.supabaseService.deleteImage(match[1]);
+          await this.supabaseService.eliminarImagen(match[1]);
         }
       }
 

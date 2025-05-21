@@ -20,7 +20,7 @@ import { ButtonModule } from 'primeng/button';
 import { FormsModule } from '@angular/forms';
 import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
-import { SupabaseService } from '../../../service/supabaseArchivo.service';
+import { SupabaseServiceArchivo } from '../../../service/supabaseArchivo.service';
 
 @Component({
   selector: 'app-list-tribunal-profesor',
@@ -43,7 +43,7 @@ export class ListTribunalProfesorComponent implements OnInit {
     private valoracionService: ValoracionService,
     private router: Router,
     private messageService: MessageService,
-    private supabaseService: SupabaseService
+    private supabaseService: SupabaseServiceArchivo
   ) {
     if (this.token !== null && this.token) {
       this.nombreUsuario = jwtDecode(this.token).sub;
@@ -57,10 +57,18 @@ export class ListTribunalProfesorComponent implements OnInit {
 
   findAllTribunalesByProfesor() {
     this.tribunalService.getAllTribunalByProfesor().subscribe(
-      result => { 
-        this.tribunales = result; 
-        this.listaTribunales = Array.from(this.tribunales); 
-      
+      result => {
+        this.tribunales = result;
+        this.listaTribunales = Array.from(this.tribunales).map(
+          tribunal => ({
+            ...tribunal,
+            nombreAlumnoCompleto: `${tribunal.alumno.nombre} ${tribunal.alumno.apellido1} ${tribunal.alumno.apellido2}`,
+            fechaEntrega: new Date(tribunal.fechaEntrega),
+            fechaFin: new Date(tribunal.fechaFin)
+          })
+        )
+
+
         for (const tribunal of this.listaTribunales) {
           this.cargarUrlArchivo(tribunal);
         }
@@ -126,13 +134,13 @@ export class ListTribunalProfesorComponent implements OnInit {
     )
   }
 
-   abrirArchivo(url: string | null) {
+  abrirArchivo(url: string | null) {
     if (url) {
       window.open(url, '_blank', 'noopener');
     }
   }
 
-   async cargarUrlArchivo(tribunal: Tribunal) {
+  async cargarUrlArchivo(tribunal: Tribunal) {
     if (tribunal.archivo) {
       const url = await this.supabaseService.obtenerUrlSupabase(tribunal.archivo);
       this.urlArchivo[tribunal.id] = url;

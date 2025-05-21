@@ -9,7 +9,7 @@ import { AvatarModule } from 'primeng/avatar';
 import { AvatarEstadoService } from '../../../service/avatar.service';
 import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
-import { SupabaseService } from '../../../service/supabaseAvatar.service';
+import { SupabaseServiceAvatar } from '../../../service/supabaseAvatar.service';
 
 @Component({
   selector: 'app-form-administrador',
@@ -34,7 +34,7 @@ export class FormAdministradorComponent implements OnInit {
     private router: Router,
     private avatarEstado: AvatarEstadoService,
     private messageService: MessageService,
-    private supabaseService: SupabaseService
+    private supabaseService: SupabaseServiceAvatar
   ) {
     this.administradorForm = this.fb.group({
       nombre: ['', Validators.required],
@@ -85,25 +85,29 @@ export class FormAdministradorComponent implements OnInit {
     const admin = this.administradorForm.value;
 
     if (this.imagenSeleccionada) {
-      // 1) Si ya había foto previa, elimínala
       if (admin.foto) {
-        const match = admin.foto.match(/\/avatares\/(.+)$/);
-        if (match?.[1]) {
-          await this.supabaseService.deleteImage(match[1]);
+        const imagen = admin.foto.match(/\/avatares\/(.+)$/);
+
+        if (imagen?.[1]) {
+          await this.supabaseService.eliminarImagen(imagen[1]);
         }
+
       }
 
-      // 2) Genera nombre y sube la nueva
-      const ext = this.imagenSeleccionada.name.split('.').pop();
-      const fileName = `${admin.username}_${Date.now()}.${ext}`;
-      const newUrl = await this.supabaseService.uploadImage(this.imagenSeleccionada, fileName);
-      if (!newUrl) return;  // aborta si falla
+      const extension = this.imagenSeleccionada.name.split('.').pop();
+      const nombreArchivo = `${admin.username}_${Date.now()}.${extension}`;
 
-      // 3) Actualiza el formulario y el payload
-      this.administradorForm.patchValue({ foto: newUrl });
-      admin.foto = newUrl;
-      this.avatarEstado.setFoto(newUrl)
-      this.administradorForm.markAsDirty();
+      const nuevaUrl = await this.supabaseService.subirImagen(this.imagenSeleccionada, nombreArchivo);
+
+      if (nuevaUrl) {
+        this.administradorForm.patchValue({ foto: nuevaUrl });
+
+        admin.foto = nuevaUrl;
+
+        this.avatarEstado.setFoto(nuevaUrl)
+
+        this.administradorForm.markAsDirty();
+      }
     }
 
     this.actorService.actorExist(admin.username).subscribe(
@@ -130,6 +134,7 @@ export class FormAdministradorComponent implements OnInit {
                 })
 
                 this.datosFormulario = { ...admin };
+
               },
               error => { console.log(error); }
             );
@@ -169,10 +174,10 @@ export class FormAdministradorComponent implements OnInit {
     if (token) {
       const decodedToken = jwtDecode<{ rol: string }>(token);
       if (decodedToken.rol != "ADMINISTRADOR") {
-        window.location.href = "/";
+        this.router.navigate(['/']);
       }
     } else {
-      window.location.href = "/";
+      this.router.navigate(['/']);
     }
   }
 
@@ -180,17 +185,20 @@ export class FormAdministradorComponent implements OnInit {
     this.passwordVisible = !this.passwordVisible;
   }
 
-  onImageSelected(event: any): void {
-    const file: File = event.target.files[0];
-    if (file) {
-      this.imagenSeleccionada = file;
+  subirImagen(event: any): void {
+    const imagen: File = event.target.files[0];
+
+    if (imagen) {
+
+      this.imagenSeleccionada = imagen;
+
+      const nuevaUrl = URL.createObjectURL(imagen);
+      this.administradorForm.patchValue({ foto: nuevaUrl });
+
+      this.administradorForm.get('foto')?.markAsDirty();
       this.administradorForm.markAsDirty();
-      // opcional: previsualizar localmente
-      const reader = new FileReader();
-      reader.onload = () => {
-        // podrías almacenar reader.result en una variable para vista previa
-      };
-      reader.readAsDataURL(file);
+
+      event.target.value = '';
     }
   }
 

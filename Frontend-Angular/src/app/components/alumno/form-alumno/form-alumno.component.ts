@@ -9,7 +9,7 @@ import { AvatarModule } from 'primeng/avatar';
 import { AvatarEstadoService } from '../../../service/avatar.service';
 import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
-import { SupabaseService } from '../../../service/supabaseAvatar.service';
+import { SupabaseServiceAvatar } from '../../../service/supabaseAvatar.service';
 
 @Component({
   selector: 'app-form-alumno',
@@ -36,7 +36,7 @@ export class FormAlumnoComponent implements OnInit {
     private route: ActivatedRoute,
     private avatarEstado: AvatarEstadoService,
     private messageService: MessageService,
-    private supabaseService: SupabaseService
+    private supabaseService: SupabaseServiceAvatar
   ) {
     this.alumnoForm = this.fb.group({
       nombre: ['', Validators.required],
@@ -113,25 +113,29 @@ export class FormAlumnoComponent implements OnInit {
     const alumno = this.alumnoForm.value;
 
     if (this.imagenSeleccionada) {
-      // 1) Si ya había foto previa, elimínala
+
       if (alumno.foto) {
         const match = alumno.foto.match(/\/avatares\/(.+)$/);
+
         if (match?.[1]) {
-          await this.supabaseService.deleteImage(match[1]);
+          await this.supabaseService.eliminarImagen(match[1]);
         }
       }
 
-      // 2) Genera nombre y sube la nueva
-      const ext = this.imagenSeleccionada.name.split('.').pop();
-      const fileName = `${alumno.username}_${Date.now()}.${ext}`;
-      const newUrl = await this.supabaseService.uploadImage(this.imagenSeleccionada, fileName);
-      if (!newUrl) return;  // aborta si falla
+      const extension = this.imagenSeleccionada.name.split('.').pop();
+      const nombreArchivo = `${alumno.username}_${Date.now()}.${extension}`;
 
-      // 3) Actualiza el formulario y el payload
-      this.alumnoForm.patchValue({ foto: newUrl });
-      alumno.foto = newUrl;
-      this.avatarEstado.setFoto(newUrl)
-      this.alumnoForm.markAsDirty();
+      const nuevaUrl = await this.supabaseService.subirImagen(this.imagenSeleccionada, nombreArchivo);
+
+      if (nuevaUrl) {
+
+        this.alumnoForm.patchValue({ foto: nuevaUrl });
+
+        alumno.foto = nuevaUrl;
+
+        this.avatarEstado.setFoto(nuevaUrl)
+        this.alumnoForm.markAsDirty();
+      }
     }
 
     this.actorService.actorExist(alumno.username).subscribe(
@@ -221,17 +225,20 @@ export class FormAlumnoComponent implements OnInit {
     this.passwordVisible = !this.passwordVisible;
   }
 
-  onImageSelected(event: any): void {
-    const file: File = event.target.files[0];
-    if (file) {
-      this.imagenSeleccionada = file;
+  subirImagen(event: any): void {
+    const imagen: File = event.target.files[0];
+
+    if (imagen) {
+
+      this.imagenSeleccionada = imagen;
+
+      const nuevaUrl = URL.createObjectURL(imagen);
+      this.alumnoForm.patchValue({ foto: nuevaUrl });
+
+      this.alumnoForm.get('foto')?.markAsDirty();
       this.alumnoForm.markAsDirty();
-      // opcional: previsualizar localmente
-      const reader = new FileReader();
-      reader.onload = () => {
-        // podrías almacenar reader.result en una variable para vista previa
-      };
-      reader.readAsDataURL(file);
+
+      event.target.value = '';
     }
   }
 

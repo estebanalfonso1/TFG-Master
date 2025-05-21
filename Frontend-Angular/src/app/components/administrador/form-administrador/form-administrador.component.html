@@ -10,9 +10,17 @@
             <div class="col-md-4 d-flex">
                 <div class="card w-100 h-100">
                     <div class="card-body text-center position-relative">
-                        <p-avatar label="{{ administradorForm.get('nombre')?.value?.charAt(0)?.toUpperCase() }}"
-                            styleClass="mr-2 avatar" size="xlarge" shape="circle" />
-                        <input type="file" id="foto" accept="image/*" hidden (change)="onImageSelected($event)">
+                        <p-avatar *ngIf="administradorForm.get('foto')?.value"
+                            [image]="administradorForm.get('foto')?.value" size="xlarge" shape="circle"
+                            styleClass="avatar">
+                        </p-avatar>
+
+                        <p-avatar *ngIf="!administradorForm.get('foto')?.value"
+                            [label]="administradorForm.get('nombre')?.value?.charAt(0)?.toUpperCase()" size="xlarge"
+                            shape="circle" styleClass="avatar">
+                        </p-avatar>
+
+                        <input type="file" id="foto" accept="image/*" hidden (change)="subirImagen($event)">
                         <div class="position-absolute lapiz">
                             <label for="foto"
                                 class="btn btn-primary rounded-circle d-inline-flex align-items-center justify-content-center"

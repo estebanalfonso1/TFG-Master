@@ -44,7 +44,14 @@ export class ListRubricaComponent implements OnInit {
 
   findAllRubricas() {
     this.rubricaService.getAllRubrica().subscribe(
-      result => { this.rubricas = result; },
+      result => {
+        this.rubricas = result.map(
+          rubrica => ({
+            ...rubrica,
+            fechaPublicacion: new Date(rubrica.fechaPublicacion)
+          })
+        )
+      },
       error => { console.log(error) }
     );
   }
@@ -86,6 +93,6 @@ export class ListRubricaComponent implements OnInit {
     );
   }
 
-   
+
 
 }

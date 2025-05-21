@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Alumno } from '../../../model/Alumno';
 import { AlumnoService } from '../../../service/alumno.service';
-import { Router, RouterLink } from '@angular/router';
+import { Router } from '@angular/router';
 import { jwtDecode } from 'jwt-decode';
 import { CommonModule } from '@angular/common';
 import { AvatarModule } from 'primeng/avatar';
@@ -21,7 +21,7 @@ import {CardModule} from 'primeng/card';
 @Component({
   selector: 'app-list-alumno-profesor',
   imports: [CommonModule, AvatarModule, TableModule, InputTextModule, TagModule,
-    SelectModule, MultiSelectModule, ButtonModule, IconFieldModule, InputIconModule, FormsModule, RouterLink, ToastModule, CardModule],
+    SelectModule, MultiSelectModule, ButtonModule, IconFieldModule, InputIconModule, FormsModule, ToastModule, CardModule],
   providers: [MessageService],
   templateUrl: './list-alumno-profesor.component.html',
   styleUrl: './list-alumno-profesor.component.css'

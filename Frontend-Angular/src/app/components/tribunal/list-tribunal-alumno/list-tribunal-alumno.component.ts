@@ -20,7 +20,7 @@ import { ButtonModule } from 'primeng/button';
 import { FormsModule } from '@angular/forms';
 import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
-import { SupabaseService } from '../../../service/supabaseArchivo.service';
+import { SupabaseServiceArchivo } from '../../../service/supabaseArchivo.service';
 import { FileUpload } from 'primeng/fileupload';
 
 @Component({
@@ -49,7 +49,7 @@ export class ListTribunalAlumnoComponent implements OnInit {
     private valoracionService: ValoracionService,
     private router: Router,
     private messageService: MessageService,
-    private supabaseService: SupabaseService
+    private supabaseService: SupabaseServiceArchivo
   ) {
     if (this.token !== null && this.token) {
       this.nombreUsuario = jwtDecode(this.token).sub;

@@ -24,7 +24,7 @@
                         </p-avatar>
 
                         <div *ngIf="isEditMode || isEditModeId" class="position-absolute lapiz">
-                            <input type="file" id="foto" accept="image/*" hidden (change)="onImageSelected($event)" />
+                            <input type="file" id="foto" accept="image/*" hidden (change)="subirImagen($event)" />
 
                             <label for="foto"
                                 class="btn btn-primary rounded-circle d-inline-flex align-items-center justify-content-center"
