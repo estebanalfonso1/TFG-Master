@@ -26,6 +26,7 @@ public class TribunalService {
 	@Autowired
 	private ValoracionService valoracionService;
 
+
 	@Autowired
 	private JWTUtils JWTUtils;
 

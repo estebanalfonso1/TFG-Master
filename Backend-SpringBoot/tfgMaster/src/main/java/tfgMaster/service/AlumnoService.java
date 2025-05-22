@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 
 import jakarta.transaction.Transactional;
 import tfgMaster.entity.Alumno;
-import tfgMaster.entity.Profesor;
 import tfgMaster.entity.Rol;
 import tfgMaster.entity.Tribunal;
 import tfgMaster.repository.AlumnoRepository;

@@ -1,13 +1,17 @@
 package tfgMaster.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import jakarta.transaction.Transactional;
+import tfgMaster.entity.Alumno;
 import tfgMaster.entity.Profesor;
+import tfgMaster.entity.Tribunal;
 import tfgMaster.entity.Valoracion;
 import tfgMaster.repository.ValoracionRepository;
 import tfgMaster.security.JWTUtils;
@@ -16,6 +20,10 @@ import tfgMaster.security.JWTUtils;
 public class ValoracionService {
     @Autowired
     private ValoracionRepository valoracionRepository;
+
+    @Autowired
+    @Lazy
+    private AlumnoService alumnoService;
 
     @Autowired
     private JWTUtils JWTUtils;
@@ -61,6 +69,7 @@ public class ValoracionService {
                 return valoracionRepository.save(valoracionO.get());
             }
         }
+
         return null;
     }
 
@@ -83,6 +92,49 @@ public class ValoracionService {
                 res = true;
             }
         }
+        return res;
+    }
+
+    public boolean cargarCalificacion(int idTribunal) {
+        boolean tribunalExiste = false;
+        Alumno alumno = new Alumno();
+        Tribunal tribunal = new Tribunal();
+
+        for (Valoracion valoracion : getAllValoraciones()) {
+            if (valoracion.getTribunal().getId() == idTribunal) {
+                tribunalExiste = true;
+                alumno = valoracion.getTribunal().getAlumno();
+                tribunal = valoracion.getTribunal();
+            }
+        }
+
+        ArrayList<Double> valoracionesObtenidas = new ArrayList<>();
+        double sumaNotas = 0;
+
+        boolean res = false;
+
+        if (tribunalExiste) {
+            for (Valoracion valoracion : getAllValoraciones()) {
+                if (valoracion.getTribunal().equals(tribunal)) {
+                    valoracionesObtenidas.add(valoracion.getValoracion());
+                    sumaNotas += valoracion.getCriterio().getValoracionMaxima();
+                }
+            }
+
+            double mediaObtenida = 0;
+
+            for (int i = 0; i < valoracionesObtenidas.size(); i++) {
+                mediaObtenida += valoracionesObtenidas.get(i);
+            }
+
+            double notaFinal = (mediaObtenida * 10) / sumaNotas;
+            System.out.print(sumaNotas);
+            alumno.setCalificacionTotal(notaFinal);
+            alumnoService.updateAlumnoById(alumno.getId(), alumno);
+
+            res = true;
+        }
+
         return res;
     }
 }

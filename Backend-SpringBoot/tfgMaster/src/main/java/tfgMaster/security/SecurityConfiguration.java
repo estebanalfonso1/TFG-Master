@@ -97,6 +97,7 @@ public class SecurityConfiguration {
 				.requestMatchers(HttpMethod.GET, "/valoracion/{id}").hasAuthority("PROFESOR")
 				.requestMatchers(HttpMethod.GET, "/valoracion").hasAuthority("PROFESOR")
 				.requestMatchers(HttpMethod.GET, "/valoracion/deProfesor/{id}").hasAuthority("PROFESOR")
+				.requestMatchers(HttpMethod.GET, "/tribunal/calificacion/{id}").hasAuthority("PROFESOR")
 
 				// SWAGGER
 				.requestMatchers("/swagger-ui/**").permitAll()

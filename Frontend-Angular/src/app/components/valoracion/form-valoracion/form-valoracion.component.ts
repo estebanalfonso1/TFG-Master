@@ -111,13 +111,17 @@ export class FormValoracionComponent implements OnInit {
 
     this.valoracionService.editValoracion(payload.id, payload).subscribe({
       next: () => {
-        this.listaValoraciones[i].valoracion = nuevaValoracion; // actualiza visual
+        this.listaValoraciones[i].valoracion = nuevaValoracion; 
         this.messageService.add({
           severity: "success",
           summary: "Éxito",
           detail: "Valoración guardada correctamente",
           life: 1900
-        }); formValoracion.markAsPristine();
+        }); 
+
+this.valoracionService.cargarCalificacion(this.idTribunal).subscribe();
+
+        formValoracion.markAsPristine();
       },
       error: err => {
         console.error(`Error al actualizar valoración ${payload.id}`, err);

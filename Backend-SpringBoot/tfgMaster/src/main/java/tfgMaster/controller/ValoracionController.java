@@ -104,4 +104,17 @@ public class ValoracionController {
         List<Valoracion> listValoraciones = valoracionService.getAllValoraciones();
         return ResponseEntity.ok(listValoraciones);
     }
+
+    @GetMapping("/calificacion/{id}")
+    @Operation(summary = "Cargar la calificación del alumno de un tribunal por ID")
+    @ApiResponses(value = { @ApiResponse(responseCode = "202", description = "Calificación cargada exitosamente"),
+            @ApiResponse(responseCode = "400", description = "Error al cargar la calificación") })
+    public ResponseEntity<Void> cargarCalificacion(@PathVariable int id) {
+        Boolean res = valoracionService.cargarCalificacion(id);
+        if (res == false) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        } else {
+            return ResponseEntity.status(HttpStatus.ACCEPTED).build();
+        }
+    }
 }
