@@ -1,7 +1,12 @@
 <main style="background-image: url('actor/fondo.jpg');"
     class="container-fluid d-flex justify-content-center align-items-center min-vh-100 position-relative">
 
-    <div class="position-absolute top-0 start-0 w-100 h-100 bg-dark bg-opacity-50 z-1"></div>
+    <button *ngIf="isEditMode" class="position-absolute top-0 start-0 z-3 d-none d-lg-block" (click)="volver()"
+        style="margin-top: 150px; margin-left: 80px; border: none; background: none;">
+        <i class="pi pi-arrow-left" style="font-size: 2rem; color: #fff;"></i>
+    </button>
+
+    <div class="position-fixed top-0 start-0 w-100 h-100 bg-dark bg-opacity-50 z-1"></div>
 
     <div class="z-3" style="width: 100%; max-width: 1000px;">
 
@@ -33,7 +38,7 @@
                                 <label for="valoracionMinima" class="form-label text-secondary">Valoración
                                     minima</label>
                                 <input id="valoracionMinima" class="form-control rounded-pill tamaño-input"
-                                    formControlName="valoracionMinima" type="text"
+                                    formControlName="valoracionMinima" type="number"
                                     placeholder="Introduce la valoración mínima" required />
                                 <small class="text-danger"
                                     *ngIf="formCriterio.get('valoracionMinima')?.invalid && formCriterio.get('valoracionMinima')?.touched"
@@ -46,13 +51,18 @@
                                 <label for="valoracionMaxima" class="form-label text-secondary">Valoración
                                     máxima</label>
                                 <input id="valoracionMaxima" class="form-control rounded-pill tamaño-input"
-                                    formControlName="valoracionMaxima" type="text"
+                                    formControlName="valoracionMaxima" type="number"
                                     placeholder="Introduce la valoración máxima" required />
                                 <small class="text-danger"
                                     *ngIf="formCriterio.get('valoracionMaxima')?.invalid && formCriterio.get('valoracionMaxima')?.touched"
                                     class="text-danger">
                                     La valoración máxima es obligatoria.
                                 </small>
+                                <small class="text-danger"
+                                    *ngIf="formCriterio.hasError('rangoInvalido') && (formCriterio.get('valoracionMinima')?.touched || formCriterio.get('valoracionMaxima')?.touched)">
+                                    La valoración máxima no puede ser mayor que la valoración mínima.
+                                </small>
+
                             </div>
 
                             <div class="mb-3">

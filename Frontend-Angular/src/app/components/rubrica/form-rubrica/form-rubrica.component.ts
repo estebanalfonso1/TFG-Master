@@ -113,4 +113,8 @@ export class FormRubricaComponent implements OnInit {
       this.router.navigate(['/']);
     }
   }
+
+  volver() {
+    this.router.navigate(['/rubricas']);
+  }
 }

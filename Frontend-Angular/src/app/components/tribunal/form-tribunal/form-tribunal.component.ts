@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { jwtDecode } from 'jwt-decode';
@@ -44,7 +44,7 @@ export class FormTribunalComponent implements OnInit {
     this.formTribunal = this.fb.group(
       {
         fechaEntrega: [''],
-        fechaFin: ['', [Validators.required]],
+        fechaFin: ['', [Validators.required, this.fechaValida()]],
         estado: ['PENDIENTE', [Validators.required]],
         archivo: [''],
         tieneProfesores: [[], [Validators.required]],
@@ -187,4 +187,17 @@ export class FormTribunalComponent implements OnInit {
       this.router.navigate(['/']);
     }
   }
+
+  fechaValida(): ValidatorFn {
+      return (control: AbstractControl): ValidationErrors | null => {
+        const fechaFin = this.formTribunal?.get('fechaFin')?.value;
+        const fechaHoy = new Date();
+  
+        if (fechaHoy > fechaFin) {
+          return { fechaNoValida: true };
+        }
+  
+        return null;
+      };
+    }
 }

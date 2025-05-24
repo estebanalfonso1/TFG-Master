@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CriterioService } from '../../../service/criterio.service';
 import { CommonModule } from '@angular/common';
@@ -26,11 +26,12 @@ export class FormCriterioComponent implements OnInit {
   ) {
     this.formCriterio = this.fb.group(
       {
-        valoracionMaxima: ['', [Validators.min(0), Validators.max(10)]],
-        valoracionMinima: ['', [Validators.min(0), Validators.max(10)]],
+        valoracionMaxima: ['', [Validators.min(0), Validators.max(10), this.validacionMaximaMayorQueMinima]],
+        valoracionMinima: ['', [Validators.min(0), Validators.max(10), this.validacionMinimaMenorQueMaxima]],
         deTutor: [false],
         descripcion: ['', [Validators.required]]
-      });
+      }, { validators: this.validacionValoraciones() }
+    );
   }
 
   ngOnInit(): void {
@@ -93,5 +94,50 @@ export class FormCriterioComponent implements OnInit {
     } else {
       this.router.navigate(['/']);
     }
+  }
+
+  volver() {
+    this.router.navigate(['/criterios']);
+  }
+
+  validacionMinimaMenorQueMaxima(): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+      const valoracionMaxima = this.formCriterio?.get('valoracionMaxima')?.value;
+      const valoracionMinima = control.value;
+
+      if (valoracionMinima > valoracionMaxima) {
+        return { minimaMayorQueMaxima: true };
+      }
+
+      return null;
+    };
+  }
+
+  validacionMaximaMayorQueMinima(): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+      const valoracionMinima = this.formCriterio?.get('valoracionMinima')?.value;
+      const valoracionMaxima = control.value;
+
+      if (valoracionMaxima < valoracionMinima) {
+        return { maximaMenorQueMinima: true };
+      }
+
+      return null;
+    };
+  }
+
+  validacionValoraciones(): ValidatorFn {
+    return (grupo: AbstractControl): ValidationErrors | null => {
+      const valoracionMinima = grupo.get('valoracionMinima')?.value;
+      const valoracionMaxima = grupo.get('valoracionMaxima')?.value;
+
+      if (valoracionMinima != null && valoracionMaxima != null) {
+        if (valoracionMinima > valoracionMaxima) {
+          return { rangoInvalido: true };
+        }
+      }
+
+      return null;
+    };
   }
 }

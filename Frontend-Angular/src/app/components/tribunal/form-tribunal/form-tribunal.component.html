@@ -6,86 +6,90 @@
     <div class="z-3" style="width: 100%; max-width: 1000px;">
 
         <!-- Card -->
-            <div class="card w-100 px-3" style="max-width: 1000px;">
-                <div class="card-body text-center">
-                    <h2 class="titulo mb-4">Crear tribunal</h2>
+        <div class="card w-100 px-3" style="max-width: 1000px;">
+            <div class="card-body text-center">
+                <h2 class="titulo mb-4">Crear tribunal</h2>
 
-                    <form [formGroup]="formTribunal" (ngSubmit)="save()">
+                <form [formGroup]="formTribunal" (ngSubmit)="save()">
 
-                        <div class="d-flex flex-column flex-md-row gap-4 align-items-md-center">
-                            <!-- Primera columna -->
-                            <div class="flex-fill">
+                    <div class="d-flex flex-column flex-md-row gap-4 align-items-md-center">
+                        <!-- Primera columna -->
+                        <div class="flex-fill">
 
-                                <div class="mb-3">
-                                    <label for="alumno" class="form-label text-secondary">Alumno</label>
-                                    <div>
-                                        <p-select [options]="alumnos" formControlName="alumno"
-                                            optionLabel="nombreCompleto" [filter]="true" filterBy="nombreCompleto"
-                                            [showClear]="true" placeholder="Selecciona un alumno"
-                                            class="w-full rounded-pill">
+                            <div class="mb-3">
+                                <label for="alumno" class="form-label text-secondary">Alumno</label>
+                                <div>
+                                    <p-select [options]="alumnos" formControlName="alumno" optionLabel="nombreCompleto"
+                                        [filter]="true" filterBy="nombreCompleto" [showClear]="true"
+                                        placeholder="Selecciona un alumno" class="w-full rounded-pill">
 
-                                        </p-select>
-                                    </div>
-                                    <small
-                                        *ngIf="formTribunal.get('alumno')?.invalid && formTribunal.get('alumno')?.touched"
-                                        class="text-danger">
-                                        El alumno es obligatorio.
-                                    </small>
+                                    </p-select>
                                 </div>
-
-                                <div class="mb-3">
-                                    <label for="tieneProfesores" class="form-label text-secondary">Profesores</label>
-                                    <div>
-                                        <p-multiSelect [options]="profesores" formControlName="tieneProfesores"
-                                            optionLabel="nombreCompleto" [filter]="true" display="chip"
-                                            filterBy="nombreCompleto" [showClear]="true"
-                                            placeholder="Selecciona los profesores" class="w-full rounded-pill">
-
-                                        </p-multiSelect>
-                                    </div>
-                                    <small
-                                        *ngIf="formTribunal.get('tieneProfesores')?.invalid && formTribunal.get('tieneProfesores')?.touched"
-                                        class="text-danger">
-                                        Elegir al menos un profesor es obligatorio.
-                                    </small>
-                                </div>
-
-                                <div class="mb-3">
-                                    <label for="rubrica" class="form-label text-secondary">Rubrica</label>
-                                    <div>
-                                        <p-select [options]="rubricas" formControlName="rubrica"
-                                            optionLabel="descripcion" [filter]="true" filterBy="descripcion"
-                                            [showClear]="true" placeholder="Selecciona una rubrica"
-                                            class="w-full rounded-pill">
-
-                                        </p-select>
-                                    </div>
-                                    <small
-                                        *ngIf="formTribunal.get('rubrica')?.invalid && formTribunal.get('rubrica')?.touched"
-                                        class="text-danger">
-                                        La rubrica es obligatoria.
-                                    </small>
-                                </div>
+                                <small
+                                    *ngIf="formTribunal.get('alumno')?.invalid && formTribunal.get('alumno')?.touched"
+                                    class="text-danger">
+                                    El alumno es obligatorio.
+                                </small>
                             </div>
 
-                            <!-- Segunda columna -->
-                            <div class="flex-fill">
+                            <div class="mb-3">
+                                <label for="tieneProfesores" class="form-label text-secondary">Profesores</label>
+                                <div>
+                                    <p-multiSelect [options]="profesores" formControlName="tieneProfesores"
+                                        optionLabel="nombreCompleto" [filter]="true" display="chip"
+                                        filterBy="nombreCompleto" [showClear]="true"
+                                        placeholder="Selecciona los profesores" class="w-full rounded-pill">
 
-                                
-
-                                <div class="mb-3">
-                                    <div class="flex justify-center">
-                                        <p-datepicker class="max-w-full" formControlName="fechaFin" [inline]="true"
-                                            [showWeek]="true" />
-                                    </div>
+                                    </p-multiSelect>
                                 </div>
+                                <small
+                                    *ngIf="formTribunal.get('tieneProfesores')?.invalid && formTribunal.get('tieneProfesores')?.touched"
+                                    class="text-danger">
+                                    Elegir al menos un profesor es obligatorio.
+                                </small>
+                            </div>
 
+                            <div class="mb-3">
+                                <label for="rubrica" class="form-label text-secondary">Rubrica</label>
+                                <div>
+                                    <p-select [options]="rubricas" formControlName="rubrica" optionLabel="descripcion"
+                                        [filter]="true" filterBy="descripcion" [showClear]="true"
+                                        placeholder="Selecciona una rubrica" class="w-full rounded-pill">
+
+                                    </p-select>
+                                </div>
+                                <small
+                                    *ngIf="formTribunal.get('rubrica')?.invalid && formTribunal.get('rubrica')?.touched"
+                                    class="text-danger">
+                                    La rubrica es obligatoria.
+                                </small>
                             </div>
                         </div>
 
-                        <button type="submit" class="btn btn-primary w-100 w-md-25 py-2 mt-4 rounded-pill boton"
-                            [disabled]="formTribunal.invalid">GUARDAR</button>
-                    </form>
+                        <!-- Segunda columna -->
+                        <div class="flex-fill">
+
+
+
+                            <div class="mb-3">
+                                <div class="flex justify-center">
+                                    <p-datepicker class="max-w-full" formControlName="fechaFin" [inline]="true"
+                                        [showWeek]="true" />
+                                    <small
+                                        *ngIf="formTribunal.get('fechaFin')?.hasError('fechaNoValida') && formTribunal.get('fechaFin')?.touched"
+                                        class="text-danger">
+                                        La fecha fin no puede ser anterior a hoy.
+                                    </small>
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary w-100 w-md-25 py-2 mt-4 rounded-pill boton"
+                        [disabled]="formTribunal.invalid">GUARDAR</button>
+                </form>
 
             </div>
         </div>
