@@ -1,6 +1,18 @@
-footer {
+.footerhome {
   box-shadow: rgba(133, 189, 215, 0.9) 0px 30px 30px -30px;
   background-color: #00b4d8;
   bottom: 0;
+}
 
+.footerNoHome {
+  box-shadow: rgba(133, 189, 215, 0.9) 0px 30px 30px -30px;
+  background: linear-gradient(to bottom, transparent, #00b4d8);
+  bottom: 0;
+}
+
+.footer {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 400;
+  font-size: 16px;
+  color: #fff;
 }

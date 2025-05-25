@@ -1,5 +1,18 @@
-<footer *ngIf="hayToken" class="z-3" style="z-index: 10; position: relative;">
-    <div class="container-fluid py-5">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;300;400;600&display=swap" rel="stylesheet" />
+
+<footer *ngIf="hayToken && obtenerRuta() != '/'" class="z-3 py-5 footerNoHome" style="z-index: 10; position: relative; margin-top: -60px;">
+    <div class="container-fluid text-center">
+        <br />
+        <br />
+        <span class="footer">
+            © 2025, Desarrollada por Esteban Alfonso Isnard
+        </span>
+    </div>
+</footer>
+
+<footer *ngIf="hayToken && obtenerRuta() == '/'" class="z-3 py-4 footerhome" style="z-index: 10; position: relative;">
+    <div class="container-fluid footer text-center">
+        <br />
        © 2025, Desarrollada por Esteban Alfonso Isnard
     </div>
 </footer>

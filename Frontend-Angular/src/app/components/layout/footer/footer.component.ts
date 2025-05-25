@@ -22,4 +22,9 @@ export class FooterComponent implements OnInit {
       this.hayToken = false;
     }
   }
+
+  
+  obtenerRuta () {
+    return this.router.url;
+  }
 }
