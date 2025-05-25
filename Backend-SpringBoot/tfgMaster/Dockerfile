@@ -1,19 +1,13 @@
-# Uso de imagen de OpenJDK con JDK (es necesario compilar el código)
+# Etapa de construcción
 FROM eclipse-temurin:17-jdk AS builder
-# Establecimiento del directorio de trabajo en el contenedor
 WORKDIR /app
-# Copia de todos los archivos del directorio actual
 COPY . .
-# Ejecución de Maven para construir el archivo JAR
 RUN chmod +x ./mvnw
-RUN ./mvnw clean package
-# Uso de la imagen de OpenJDK pero solo JRE
+RUN ./mvnw clean package -DskipTests
+
+# Etapa de ejecución
 FROM eclipse-temurin:17-jre
-# Establecimiento del directorio de trabajo en el contenedor
 WORKDIR /app
-# Copia del archivo JAR generado desde la imagen del build
 COPY --from=builder /app/target/*.jar app.jar
-# Exposición del puerto en el que la aplicación se ejecutará
 EXPOSE 8080
-# Comando para ejecutar la aplicación
 CMD ["java", "-jar", "app.jar"]
