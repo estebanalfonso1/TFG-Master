@@ -2,7 +2,7 @@
 <p-toast position="top-center"></p-toast>
 
 <main style="background-image: url('actor/fondo.jpg');"
-    class="container-fluid d-flex justify-content-center align-items-center min-vh-100">
+    class="container-fluid d-flex justify-content-center align-items-center min-vh-100 z-0">
     <div class="position-fixed top-0 start-0 w-100 h-100 bg-dark bg-opacity-50 z-1"></div>
 
     <div class="card z-2 w-75">
@@ -61,15 +61,21 @@
                             {{ alumno.direccion }} <span *ngIf="!alumno.direccion">No introducida</span>
                         </td>
                         <td style="text-align: center" class="fuenteTr">
-                            <p-tag [value]="alumno.calificacionTotal"
-                                [severity]="aprobado(alumno.calificacionTotal) ? 'success' : 'danger'"></p-tag>
+                            <div *ngIf="alumno.calificacionTotal">
+                                <p-tag [value]="(alumno.calificacionTotal | number:'1.2-2') ?? ''"
+                                    [severity]="aprobado(alumno.calificacionTotal) ? 'success' : 'danger'">
+                                </p-tag>
+                            </div>
+                            <span *ngIf="!alumno.calificacionTotal">
+                                No calificado
+                            </span>
                         </td>
                     </tr>
                 </ng-template>
 
                 <ng-template pTemplate="emptymessage">
                     <tr>
-                        <td colspan="7" class="fuenteTr">No hay alumnos registrados.</td>
+                        <td colspan="7" class="fuenteTr">No tienes alumnos asignados.</td>
                     </tr>
                 </ng-template>
             </p-table>

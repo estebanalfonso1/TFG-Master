@@ -2,7 +2,7 @@
   font-weight: bold;
   color: rgb(16, 137, 211);
   letter-spacing: 1.1px;
-  font-size: 20px;
+  font-size: clamp(1rem, 4vw, 1.25rem);
 }
 
 .titulo {
@@ -26,20 +26,30 @@
 }
 
 .avatar {
-  width: 280px !important;
-  height: 280px !important;
-  font-size: 232px !important;
+  width: 100%;
+  max-width: 280px;
+  height: auto;
+  max-height: 280px;
+  font-size: clamp(100px, 20vw, 232px) !important;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  /* Para que la imagen no se deforme */
 }
 
 .d-flex {
-  gap: 100px;
+  gap: 1rem;
+}
+
+@media (min-width: 768px) {
+  .d-flex {
+    gap: 100px;
+  }
 }
 
 ::placeholder {
   font-size: clamp(0.85rem, 1vw, 1rem);
   color: gray;
   font-weight: 200;
-
 }
 
 label {
@@ -49,10 +59,22 @@ label {
 
 .boton {
   font-weight: 500;
-  font-size: clamp(1rem, 2vw, 1rem);
+  font-size: clamp(0.9rem, 2vw, 1rem);
   letter-spacing: 1px;
+  width: 100%;
+  max-width: 200px;
+  margin: 1rem auto 0;
+  display: block;
 }
 
 .bg-opacity-50 {
   --bs-bg-opacity: 0.8;
+}
+
+
+
+@media (max-width: 576px) {
+  .row {
+    min-height: auto !important;
+  }
 }

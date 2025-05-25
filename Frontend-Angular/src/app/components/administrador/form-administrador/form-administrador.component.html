@@ -1,13 +1,13 @@
 <main style="background-image: url('actor/fondo.jpg');"
-    class="container-fluid d-flex justify-content-center align-items-center min-vh-100">
+    class="container-fluid d-flex justify-content-center align-items-center min-vh-100 z-0">
     <p-toast position="top-center"></p-toast>
 
     <div class="position-fixed top-0 start-0 w-100 h-100 bg-dark bg-opacity-50 z-1"></div>
 
-    <div class="container my-4 z-3">
+    <div class="container my-4 z-3 justify-content-center align-items-center">
         <div class="row" style="min-height: 300px;">
             <!-- Primer card -->
-            <div class="col-md-4 d-flex">
+            <div class="col-12 col-md-4 d-flex flex-column align-items-center">
                 <div class="card w-100 h-100">
                     <div class="card-body text-center position-relative">
                         <p-avatar *ngIf="administradorForm.get('foto')?.value"
@@ -39,7 +39,7 @@
             </div>
 
             <!-- Segundo card -->
-            <div class="col-md-8 d-flex">
+            <div class="col-12 col-md-8 d-flex flex-column">
                 <div class="card w-100 h-100">
                     <div class="card-body justify-content-center text-center">
                         <h2 *ngIf="!isEditMode" class="text-center titulo mb-4">Crear administrador</h2>
@@ -48,16 +48,15 @@
                         <form [formGroup]="administradorForm" (ngSubmit)="save()">
 
                             <!-- Contenido si en modo creación -->
-                            <div *ngIf="!isEditMode" class="d-flex">
+                            <div *ngIf="!isEditMode" class="d-flex flex-column flex-md-row">
                                 <!-- Primera columna -->
-                                <div class="flex-fill">
+                                <div class="flex-fill mb-3 mb-md-0">
                                     <div class="mb-3">
                                         <label for="nombre" class="form-label text-secondary">Nombre*</label>
                                         <input id="nombre" class="form-control rounded-pill" formControlName="nombre"
                                             type="text" placeholder="Introduce el nombre" required />
                                         <small class="text-danger"
-                                            *ngIf="administradorForm.get('nombre')?.invalid && administradorForm.get('nombre')?.touched"
-                                            class="text-danger">
+                                            *ngIf="administradorForm.get('nombre')?.invalid && administradorForm.get('nombre')?.touched">
                                             El nombre es obligatorio.
                                         </small>
                                     </div>
@@ -155,16 +154,15 @@
                             </div>
 
                             <!-- Contenido si en modo edicion -->
-                            <div *ngIf="isEditMode" class="d-flex  mt-5">
+                            <div *ngIf="isEditMode" class="d-flex flex-column flex-md-row mt-5">
                                 <!-- Primera columna -->
-                                <div class="flex-fill">
+                                <div class="flex-fill mb-3 mb-md-0">
                                     <div class="mb-3">
                                         <label for="nombre" class="form-label text-secondary">Nombre*</label>
                                         <input id="nombre" class="form-control rounded-pill" formControlName="nombre"
                                             placeholder="Introduce tu nombre" type="text" required />
                                         <small class="text-danger"
-                                            *ngIf="administradorForm.get('nombre')?.invalid && administradorForm.get('nombre')?.touched"
-                                            class="text-danger">
+                                            *ngIf="administradorForm.get('nombre')?.invalid && administradorForm.get('nombre')?.touched">
                                             El nombre es obligatorio.
                                         </small>
                                     </div>
@@ -195,7 +193,6 @@
                                         </small>
                                     </div>
                                 </div>
-
 
                                 <!-- Segunda columna -->
                                 <div class="flex-fill">
@@ -232,7 +229,7 @@
                                 </div>
                             </div>
 
-                            <button type="submit" class="btn btn-primary w-25 py-2 mt-4 rounded-pill boton"
+                            <button type="submit" class="btn btn-primary w-100 w-md-25 py-2 mt-4 rounded-pill boton"
                                 [disabled]="formularioModificado() || administradorForm.pristine">GUARDAR</button>
                         </form>
 
