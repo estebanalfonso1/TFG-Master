@@ -10,7 +10,7 @@ export class ValoracionService {
 
     constructor(private http: HttpClient) { }
 
-    private urlAPI = "http://localhost:8080/valoracion"
+    private urlAPI = "https://tfg-master.onrender.com/valoracion"
 
     saveValoracion(valoracion: Valoracion): Observable<void> {
         return this.http.post<void>(this.urlAPI, valoracion);

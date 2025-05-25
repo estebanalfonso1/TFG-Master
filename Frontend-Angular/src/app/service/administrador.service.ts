@@ -11,7 +11,7 @@ export class AdministradorService {
     constructor(private http: HttpClient) { }
 
     // URL API Backend
-    private urlAPI = "http://localhost:8080/administrador"
+    private urlAPI = "https://tfg-master.onrender.com/administrador"
 
     saveAdministrador(administrador: Administrador): Observable<void> {
         return this.http.post<void>(this.urlAPI, administrador);

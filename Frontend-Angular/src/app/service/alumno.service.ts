@@ -11,7 +11,7 @@ export class AlumnoService {
     constructor(private http: HttpClient) { }
 
     // URL API Backend
-    private urlAPI = "http://localhost:8080/alumno"
+    private urlAPI = "https://tfg-master.onrender.com/alumno"
 
     saveAlumno(alumno: Alumno): Observable<void> {
         return this.http.post<void>(this.urlAPI, alumno);

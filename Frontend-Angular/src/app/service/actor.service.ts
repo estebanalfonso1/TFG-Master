@@ -2,12 +2,13 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ActorLogin } from '../model/ActorLogin';
 import { Observable } from 'rxjs';
+import { environment } from '../../environments/environment.development';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ActorService {
-  private urlAPI = "http://localhost:8080"
+  private urlAPI = environment.baseUrl;
 
   constructor(private http: HttpClient) { }
 

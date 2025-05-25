@@ -10,7 +10,7 @@ export class RubricaService {
 
     constructor(private http: HttpClient) { }
 
-    private urlAPI = "http://localhost:8080/rubrica"
+    private urlAPI = "https://tfg-master.onrender.com/rubrica"
 
     saveRubrica(rubrica: Rubrica): Observable<void> {
         return this.http.post<void>(this.urlAPI, rubrica);

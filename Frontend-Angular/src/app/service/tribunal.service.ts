@@ -12,7 +12,7 @@ export class TribunalService {
 
     constructor(private http: HttpClient) { }
 
-    private urlAPI = "http://localhost:8080/tribunal"
+    private urlAPI = "https://tfg-master.onrender.com/tribunal"
 
     saveTribunal(tribunal: Tribunal): Observable<void> {
         return this.http.post<void>(this.urlAPI, tribunal);

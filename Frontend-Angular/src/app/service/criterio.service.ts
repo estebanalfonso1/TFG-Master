@@ -10,7 +10,7 @@ export class CriterioService {
 
     constructor(private http: HttpClient) { }
 
-    private urlAPI = "http://localhost:8080/criterio"
+    private urlAPI = "https://tfg-master.onrender.com/criterio"
 
     saveCriterio(criterio: Criterio): Observable<void> {
         return this.http.post<void>(this.urlAPI, criterio);
