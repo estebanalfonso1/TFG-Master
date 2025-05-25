@@ -31,9 +31,9 @@ export class ValoracionService {
         return this.http.get<Valoracion>(url);
     }
 
-    getOneValoracionByTribunalByProfesor(idTribunal: number): Observable<Valoracion> {
-        const url = `${this.urlAPI}/deProfesor/${idTribunal}`;
-        return this.http.get<Valoracion>(url);
+    getAllValoracionesByTribunal(id: number): Observable<Set<Valoracion>> {
+        const url = `${this.urlAPI}/deTribunal/${id}`;
+        return this.http.get<Set<Valoracion>>(url);
     }
 
     getAllValoracion(): Observable<Valoracion[]> {

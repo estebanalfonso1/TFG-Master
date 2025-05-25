@@ -1,0 +1,83 @@
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;300;400;600&display=swap" rel="stylesheet" />
+<p-toast position="top-center"></p-toast>
+
+<main style="background-image: url('actor/fondo.jpg');"
+    class="container-fluid d-flex justify-content-center align-items-center min-vh-100">
+
+    <button class="position-absolute top-0 start-0 z-3 d-none d-lg-block" (click)="volver()"
+        style="margin-top: 150px; margin-left: 80px; border: none; background: none;">
+        <i class="pi pi-arrow-left" style="font-size: 2rem; color: #fff;"></i>
+    </button>
+
+    <div class="position-fixed top-0 start-0 w-100 h-100 bg-dark bg-opacity-50 z-1"></div>
+
+    <div class="card z-2 w-75">
+        <div>
+            <h2 class="text-center titulo mb-4 z-2">Valoraciones</h2>
+            <p-table #dt1 [value]="listaValoraciones" dataKey="id" [rows]="10" [paginator]="true"
+                [globalFilterFields]="['profesor', 'criterio', 'valoracionMinima', 'valoracionMaxima', 'valoracion']">
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th style="min-width:15rem" class="fuenteTh">
+                            Profesor
+                            <p-columnFilter type="text" field="profesor" display="menu"></p-columnFilter>
+                        </th>
+                        <th style="min-width:15rem" class="fuenteTh">
+                            Criterio
+                            <p-columnFilter type="text" field="criterio" display="menu"></p-columnFilter>
+                        </th>
+                        <th style="min-width:15rem" class="fuenteTh">
+                            Valoración mínima
+                            <p-columnFilter type="text" field="valoracionMinima" display="menu"></p-columnFilter>
+                        </th>
+                        <th style="min-width:15rem" class="fuenteTh">
+                            Valoración máxima
+                            <p-columnFilter type="text" field="valoracionMaxima" display="menu"></p-columnFilter>
+                        </th>
+                        <th style="min-width:10rem" class="fuenteTh">
+                            Valoración
+                            <p-columnFilter type="text" field="valoracion" display="menu"></p-columnFilter>
+                        </th>
+                    </tr>
+                </ng-template>
+
+                <ng-template pTemplate="body" let-valoracion>
+                    <tr>
+                        <td class="fuenteTr d-flex align-items-center">
+                            <p-avatar *ngIf="!valoracion.profesor.foto"
+                                label="{{ valoracion.profesor.nombre.charAt(0)?.toUpperCase() }}" styleClass="avatar"
+                                size="large" shape="circle"></p-avatar>
+                            <p-avatar *ngIf="valoracion.profesor.foto" [image]="valoracion.profesor.foto"
+                                styleClass="avatar" size="large" shape="circle"></p-avatar>
+                            {{ valoracion.profesor.nombre }} {{ valoracion.profesor.apellido1 }} {{
+                            valoracion.profesor.apellido2 }}
+                        </td>
+                        <td class="fuenteTr">
+                            {{ valoracion.criterio.descripcion }}
+                        </td>
+                        <td class="fuenteTr">
+                            {{ valoracion.criterio.valoracionMinima }}
+                        </td>
+                        <td class="fuenteTr">
+                            {{ valoracion.criterio.valoracionMaxima }}
+                        </td>
+                        <td style="text-align: center" class="fuenteTr">
+                            <div *ngIf="valoracion.valoracion">
+                                <p-tag [value]="valoracion.valoracion"
+                                    [severity]="aprobado(valoracion.valoracion, valoracion.criterio.valoracionMinima, valoracion.criterio.valoracionMaxima) ? 'success' : 'danger'"></p-tag>
+                            </div>
+                            <span *ngIf="!valoracion.valoracion">No
+                                valorado</span>
+                        </td>
+                    </tr>
+                </ng-template>
+
+                <ng-template pTemplate="emptymessage">
+                    <tr>
+                        <td colspan="7" class="fuenteTr">No hay valoraciones registradas.</td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div>
+    </div>
+</main>

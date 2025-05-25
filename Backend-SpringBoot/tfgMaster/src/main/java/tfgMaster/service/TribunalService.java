@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import jakarta.transaction.Transactional;
+import tfgMaster.entity.Administrador;
 import tfgMaster.entity.Alumno;
 import tfgMaster.entity.Criterio;
 import tfgMaster.entity.Profesor;
@@ -25,7 +26,6 @@ public class TribunalService {
 
 	@Autowired
 	private ValoracionService valoracionService;
-
 
 	@Autowired
 	private JWTUtils JWTUtils;
@@ -150,11 +150,22 @@ public class TribunalService {
 	@Transactional
 	public boolean deleteTribunal(int id) {
 		Optional<Tribunal> tribunalO = tribunalRepository.findById(id);
-		Profesor profesor = JWTUtils.userLogin();
 		boolean res = false;
+		Object object = JWTUtils.userLogin();
 
 		if (tribunalO.isPresent()) {
-			if (profesor != null && tribunalO.get().getEstado().equals("PENDIENTE")) {
+			if (object instanceof Profesor && tribunalO.get().getEstado().equals("PENDIENTE")) {
+
+				for (Valoracion valoracion : valoracionService.getAllValoraciones()) {
+					if (valoracion.getTribunal() != null && valoracion.getTribunal().getId() == id) {
+						valoracionService.deleteValoracion(valoracion.getId());
+					}
+				}
+
+				tribunalRepository.deleteById(id);
+
+				res = true;
+			} else if (object instanceof Administrador) {
 
 				for (Valoracion valoracion : valoracionService.getAllValoraciones()) {
 					if (valoracion.getTribunal() != null && valoracion.getTribunal().getId() == id) {

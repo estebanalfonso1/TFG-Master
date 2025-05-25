@@ -53,8 +53,9 @@ public class SecurityConfiguration {
 				// PROFESOR
 				.requestMatchers(HttpMethod.POST, "/profesor").hasAuthority("ADMINISTRADOR")
 				.requestMatchers(HttpMethod.PUT, "/profesor").hasAuthority("PROFESOR")
-				.requestMatchers(HttpMethod.DELETE, "/profesor").hasAuthority("ADMINISTRADOR")
+				.requestMatchers(HttpMethod.DELETE, "/profesor/{id}").hasAuthority("ADMINISTRADOR")
 				.requestMatchers(HttpMethod.GET, "/profesor").hasAnyAuthority("PROFESOR", "ADMINISTRADOR")
+				.requestMatchers(HttpMethod.GET, "/profesor/{id}").hasAuthority("ADMINISTRADOR")
 
 				// ALUMNO
 				.requestMatchers(HttpMethod.POST, "/alumno").hasAuthority("PROFESOR")
@@ -68,9 +69,9 @@ public class SecurityConfiguration {
 				// TRIBUNAL
 				.requestMatchers(HttpMethod.POST, "/tribunal").hasAuthority("PROFESOR")
 				.requestMatchers(HttpMethod.PUT, "/tribunal/{id}").hasAuthority("ALUMNO")
-				.requestMatchers(HttpMethod.DELETE, "/tribunal/{id}").hasAuthority("PROFESOR")
+				.requestMatchers(HttpMethod.DELETE, "/tribunal/{id}").hasAnyAuthority("ADMINISTRADOR", "PROFESOR")
 				.requestMatchers(HttpMethod.GET, "/tribunal/{id}").hasAnyAuthority("PROFESOR", "ALUMNO")
-				.requestMatchers(HttpMethod.GET, "/tribunal").hasAuthority("PROFESOR")
+				.requestMatchers(HttpMethod.GET, "/tribunal").hasAuthority("ADMINISTRADOR")
 				.requestMatchers(HttpMethod.GET, "/tribunal/deProfesor").hasAuthority("PROFESOR")
 				.requestMatchers(HttpMethod.GET, "/tribunal/profesores/{id}").hasAuthority("PROFESOR")
 				.requestMatchers(HttpMethod.GET, "/tribunal/calificar/{id}").hasAuthority("PROFESOR")
@@ -96,7 +97,7 @@ public class SecurityConfiguration {
 				.requestMatchers(HttpMethod.DELETE, "/valoracion/{id}").hasAuthority("PROFESOR")
 				.requestMatchers(HttpMethod.GET, "/valoracion/{id}").hasAuthority("PROFESOR")
 				.requestMatchers(HttpMethod.GET, "/valoracion").hasAuthority("PROFESOR")
-				.requestMatchers(HttpMethod.GET, "/valoracion/deProfesor/{id}").hasAuthority("PROFESOR")
+				.requestMatchers(HttpMethod.GET, "/valoracion/deTribunal/{id}").hasAuthority("ALUMNO")
 				.requestMatchers(HttpMethod.GET, "/tribunal/calificacion/{id}").hasAuthority("PROFESOR")
 
 				// SWAGGER

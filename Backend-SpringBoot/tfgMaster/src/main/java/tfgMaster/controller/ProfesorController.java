@@ -1,12 +1,14 @@
 package tfgMaster.controller;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -17,6 +19,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import tfgMaster.entity.Alumno;
 import tfgMaster.entity.Profesor;
 import tfgMaster.service.ProfesorService;
 
@@ -58,12 +61,12 @@ public class ProfesorController {
 		}
 	}
 
-	@DeleteMapping
+	@DeleteMapping("/{id}")
 	@Operation(summary = "Eliminar un profesor logueado")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Profesor eliminado exitosamente"),
 			@ApiResponse(responseCode = "404", description = "Profesor no encontrado") })
-	public void deleteProfesor() {
-		if (profesorService.deleteProfesor()) {
+	public void deleteProfesor(@PathVariable int id) {
+		if (profesorService.deleteProfesor(id)) {
 			ResponseEntity.status(HttpStatus.OK).body("Profesor eliminado exitosamente");
 		} else {
 			ResponseEntity.status(HttpStatus.NOT_FOUND).body("Profesor no encontrado");
@@ -72,10 +75,26 @@ public class ProfesorController {
 
 	@GetMapping
 	@Operation(summary = "Obtener todos los profesores")
-	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Lista de profesores obtenida exitosamente"),
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "200", description = "Lista de profesores obtenida exitosamente"),
 			@ApiResponse(responseCode = "500", description = "Error interno del servidor") })
 	public ResponseEntity<List<Profesor>> getAllProfesores() {
 		List<Profesor> listProfesores = profesorService.getAllProfesores();
 		return ResponseEntity.ok(listProfesores);
+	}
+
+	@GetMapping("/{id}")
+	@Operation(summary = "Buscar un profesor por ID")
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "200", description = "Profesor encontrado"),
+			@ApiResponse(responseCode = "404", description = "Profesor no encontrado")
+	})
+	public ResponseEntity<Profesor> findOneProfesor(@PathVariable int id) {
+		Optional<Profesor> profesor = profesorService.getProfesorById(id);
+		if (profesor.isPresent()) {
+			return ResponseEntity.ok(profesor.get());
+		} else {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+		}
 	}
 }

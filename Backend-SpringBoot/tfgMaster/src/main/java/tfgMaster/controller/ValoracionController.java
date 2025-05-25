@@ -2,6 +2,7 @@ package tfgMaster.controller;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -82,18 +83,15 @@ public class ValoracionController {
         }
     }
 
-    @GetMapping("/deProfesor/{id}")
-    @Operation(summary = "Buscar una valoracion de un profesor por ID de tribunal")
-    @ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Valoracion encontrada"),
-            @ApiResponse(responseCode = "404", description = "Valoracion no encontrada") })
-    public ResponseEntity<Valoracion> findOneValoracionByTribunalByProfesor(@PathVariable int idTribunal) {
-        Optional<Valoracion> valoracion = valoracionService.getValoracionByTribunalByProfesor(idTribunal);
-        if (!valoracion.isPresent()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
-        } else {
-            return ResponseEntity.ok(valoracion.get());
-        }
-    }
+    @GetMapping("/deTribunal/{id}")
+	@Operation(summary = "Obtener todas las valoraciones de un tribunal")
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "200", description = "Lista de valoraciones obtenida exitosamente"),
+			@ApiResponse(responseCode = "500", description = "Error interno del servidor") })
+	public ResponseEntity<Set<Valoracion>> getAllValoracionesByTribunal(@PathVariable int id) {
+		Set<Valoracion> listValoracions = valoracionService.getValoracionByTribunal(id);
+		return ResponseEntity.ok(listValoracions);
+	}
 
     @GetMapping
     @Operation(summary = "Obtener todas las valoraciones")

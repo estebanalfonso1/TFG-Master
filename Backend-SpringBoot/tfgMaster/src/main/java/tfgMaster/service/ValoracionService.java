@@ -1,14 +1,17 @@
 package tfgMaster.service;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import jakarta.transaction.Transactional;
+import tfgMaster.entity.Administrador;
 import tfgMaster.entity.Alumno;
 import tfgMaster.entity.Profesor;
 import tfgMaster.entity.Tribunal;
@@ -38,17 +41,18 @@ public class ValoracionService {
         return valoracionRepository.findById(id);
     }
 
-    // Busca una VALORACION por TRIBUNAL y PROFESOR
-    public Optional<Valoracion> getValoracionByTribunalByProfesor(int idTribunal) {
-        Profesor profesor = JWTUtils.userLogin();
+    // Busca VALORACIONES por TRIBUNAL
+    public Set<Valoracion> getValoracionByTribunal(int idTribunal) {
+
+        Set<Valoracion> valoraciones = new HashSet<Valoracion>();
 
         for (Valoracion valoracion : getAllValoraciones()) {
-            if (valoracion.getTribunal().getId() == idTribunal && valoracion.getProfesor().equals(profesor)) {
-                return valoracionRepository.findById(valoracion.getId());
+            if (valoracion.getTribunal().getId() == idTribunal) {
+                valoraciones.add(valoracion);
             }
         }
 
-        return null;
+        return valoraciones;
     }
 
     // Crear VALORACION
@@ -77,7 +81,7 @@ public class ValoracionService {
     @Transactional
     public boolean deleteValoracion(int id) {
         Optional<Valoracion> valoracionO = valoracionRepository.findById(id);
-        Profesor profesor = JWTUtils.userLogin();
+        Object object = JWTUtils.userLogin();
         boolean res = false;
 
         if (valoracionO.isPresent()) {
@@ -86,9 +90,12 @@ public class ValoracionService {
                 tribunalCalificado = true;
             }
 
-            if (profesor != null && !tribunalCalificado) {
+            if (object instanceof Profesor && !tribunalCalificado) {
                 valoracionRepository.deleteById(id);
 
+                res = true;
+            } else if (object instanceof Administrador) {
+                valoracionRepository.deleteById(id);
                 res = true;
             }
         }

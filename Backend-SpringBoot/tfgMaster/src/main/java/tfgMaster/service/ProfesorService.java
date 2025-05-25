@@ -8,6 +8,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import jakarta.transaction.Transactional;
+import tfgMaster.entity.Alumno;
 import tfgMaster.entity.Profesor;
 import tfgMaster.entity.Rol;
 import tfgMaster.repository.ProfesorRepository;
@@ -39,12 +40,6 @@ public class ProfesorService {
 		return profesorRepository.findById(id);
 	}
 
-	// Guardar PROFESOR
-	// @Transactional
-	// public Profesor createProfesor(Profesor profesor) {
-	// 	return profesorRepository.save(profesor);
-	// }
-
 	// Crear PROFESOR
 	@Transactional
 	public Profesor saveProfesor(Profesor profesor) {
@@ -72,10 +67,10 @@ public class ProfesorService {
 
 	// Eliminar PROFESOR
 	@Transactional
-	public boolean deleteProfesor() {
-		Profesor profesor = JWTUtils.userLogin();
+	public boolean deleteProfesor(int id) {
+		Optional<Profesor> profesor = profesorRepository.findById(id);
 		if (profesor != null) {
-			profesorRepository.deleteById(profesor.getId());
+			profesorRepository.deleteById(profesor.get().getId());
 			return true;
 		}
 		return false;

@@ -146,7 +146,7 @@ export class FormProfesorComponent implements OnInit {
                   detail: "Profesor creado correctamente",
                   life: 1900
                 })
-                this.router.navigateByUrl("/");
+                this.profesorForm.reset();
               },
               error => {
                 this.messageService.add({

@@ -21,8 +21,14 @@ export class ProfesorService {
         return this.http.put<void>(this.urlAPI, profesor);
     }
 
-    deleteProfesor(): Observable<void> {
-        return this.http.delete<void>(this.urlAPI);
+    deleteProfesor(id: number): Observable<void> {
+        const url = `${this.urlAPI}/${id}`;
+        return this.http.delete<void>(url);
+    }
+
+    getOneProfesor(id: number): Observable<Profesor> {
+        const url = `${this.urlAPI}/${id}`;
+        return this.http.get<Profesor>(url);
     }
 
     getAllProfesor(): Observable<Profesor[]> {

@@ -1,35 +1,71 @@
-<br>
-<h2 class="">Listado de Profesores</h2>
-<br>
-<div class="">
-    <!-- <div class="text-center mb-3">
-        <button *ngIf="rol == 'PROFESOR'" type="button" class="btn btn-primary" (click)="crearAlumno()">Crear
-            alumno</button>
-    </div> -->
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;300;400;600&display=swap" rel="stylesheet" />
+<p-toast position="top-center"></p-toast>
 
-    <div *ngIf="profesores.length === 0" class="alert alert-info text-center">
-        <strong>No hay tareas de reparación disponibles.</strong>
+<main style="background-image: url('actor/fondo.jpg');"
+    class="container-fluid d-flex justify-content-center align-items-center min-vh-100">
+    <div class="position-fixed top-0 start-0 w-100 h-100 bg-dark bg-opacity-50 z-1"></div>
+
+    <div class="card z-2 w-75">
+        <div>
+            <h2 class="text-center titulo mb-4 z-2">Profesores</h2>
+            <p-table #dt1 [value]="profesores" dataKey="id" [rows]="10" [paginator]="true"
+                [globalFilterFields]="['nombre', 'email', 'telefono', 'direccion']">
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th style="min-width:15rem" class="fuenteTh">
+                            Profesor
+                            <p-columnFilter type="text" field="nombre" display="menu"></p-columnFilter>
+                        </th>
+                        <th style="min-width:10rem" class="fuenteTh">
+                            Email
+                            <p-columnFilter type="text" field="email" display="menu"></p-columnFilter>
+                        </th>
+                        <th style="min-width:10rem" class="fuenteTh">
+                            Teléfono
+                            <p-columnFilter type="text" field="telefono" display="menu"></p-columnFilter>
+                        </th>
+                        <th style="min-width:10rem" class="fuenteTh">
+                            Dirección
+                            <p-columnFilter type="text" field="direccion" display="menu"></p-columnFilter>
+                        </th>
+                        <th style="min-width:13rem" class="fuenteTh">
+                            Acciones
+                        </th>
+                    </tr>
+                </ng-template>
+
+                <ng-template pTemplate="body" let-profesor>
+                    <tr>
+                        <td class="fuenteTr d-flex align-items-center">
+                            <p-avatar *ngIf="!profesor.foto" label="{{ profesor.nombre.charAt(0)?.toUpperCase() }}"
+                                styleClass="avatar" size="large" shape="circle"></p-avatar>
+                            <p-avatar *ngIf="profesor.foto" [image]="profesor.foto" styleClass="avatar" size="large"
+                                shape="circle"></p-avatar>
+
+                            {{ profesor.nombre }} {{ profesor.apellido1 }} {{ profesor.apellido2 }}
+                        </td>
+                        <td class="fuenteTr">{{ profesor.email }}</td>
+                        <td class="fuenteTr">
+                            {{ profesor.telefono }} <span *ngIf="!profesor.telefono">No introducido</span>
+                        </td>
+                        <td class="fuenteTr">
+                            {{ profesor.direccion }} <span *ngIf="!profesor.direccion">No introducida</span>
+                        </td>
+                        <td class="fuenteBoton">
+                            <p-button label="" severity="danger" variant="text"
+                                styleClass="p-button-primary rounded-pill" (click)="eliminar(profesor.id)">
+                                <i class="pi pi-trash"></i>
+                            </p-button>
+                        </td>
+                    </tr>
+                </ng-template>
+
+                <ng-template pTemplate="emptymessage">
+                    <tr>
+                        <td colspan="7" class="fuenteTr">No hay profesores registrados.</td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div>
     </div>
-
-    <table class="table table-striped" *ngIf="profesores.length > 0">
-        <thead>
-            <tr>
-                <th scope="col">Nombre</th>
-                <th scope="col">Primer apellido</th>
-                <th scope="col">Segundo apellido</th>
-                <th scope="col">Curso</th>
-                <th scope="col">Acciones</th>
-            </tr>
-        </thead>
-        <tbody>
-            @for(profesor of profesores; track profesor.id) {
-            <tr>
-                <td>{{ profesor.nombre }}</td>
-                <td>{{ profesor.apellido1 }}</td>
-                <td>{{ profesor.apellido2 }}</td>
-            </tr>
-            }
-        </tbody>
-    </table>
-</div>
-<br>
+</main>

@@ -15,13 +15,14 @@ import { ListTribunalAlumnoComponent } from './components/tribunal/list-tribunal
 import { ListAlumnoProfesorComponent } from './components/alumno/list-alumno-profesor/list-alumno-profesor.component';
 import { ListRubricaComponent } from './components/rubrica/list-rubrica/list-rubrica.component';
 import { ListCriterioComponent } from './components/criterio/list-criterio/list-criterio.component';
+import { ListValoracionComponent } from './components/valoracion/list-valoracion/list-valoracion.component';
+import { ListTribunalComponent } from './components/tribunal/list-tribunal/list-tribunal.component';
 
 export const routes: Routes = [
     { path: '', component: HomeComponent },
     { path: "login", component: LoginComponent },
 
     // ADMINISTRADOR
-    { path: "administrador/registro", component: FormAdministradorComponent },
     { path: "administrador/editar", component: FormAdministradorComponent },
 
     // PROFESOR
@@ -39,20 +40,22 @@ export const routes: Routes = [
     // CRITERIO
     { path: "criterio/nuevo", component: FormCriterioComponent },
     { path: "criterio/editar/:id", component: FormCriterioComponent },
-    { path: "criterios", component: ListCriterioComponent},
+    { path: "criterios", component: ListCriterioComponent },
 
     // RUBRICA
     { path: "rubrica/nueva", component: FormRubricaComponent },
     { path: "rubrica/editar/:id", component: FormRubricaComponent },
-    {path: "rubricas", component: ListRubricaComponent},
+    { path: "rubricas", component: ListRubricaComponent },
 
     // TRIBUNAL
     { path: "tribunal/nuevo", component: FormTribunalComponent },
     { path: "tribunales/asignados", component: ListTribunalProfesorComponent },
     { path: "tribunales/mistribunales", component: ListTribunalAlumnoComponent },
+    { path: "tribunales", component: ListTribunalComponent },
 
     // VALORACION
     { path: "tribunales/asignados/valorar/:id", component: FormValoracionComponent },
+    { path: "tribunales/mistribunales/valoracion/:id", component: ListValoracionComponent },
 
 
 ];
