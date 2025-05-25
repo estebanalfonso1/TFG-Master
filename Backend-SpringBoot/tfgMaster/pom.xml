@@ -11,6 +11,7 @@
 	<artifactId>tfgMaster</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>TFGMaster</name>
+	<packaging>jar</packaging>
 	<description>Aplicación para la gestión de trabajos finales</description>
 	<url />
 	<licenses>

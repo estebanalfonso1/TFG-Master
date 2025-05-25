@@ -46,9 +46,7 @@ public class SecurityConfiguration {
 				.requestMatchers("/actorExiste/**").permitAll()
 
 				// ADMINISTRADOR
-				.requestMatchers(HttpMethod.POST, "/administrador").hasAuthority("ADMINISTRADOR")
 				.requestMatchers(HttpMethod.PUT, "/administrador").hasAuthority("ADMINISTRADOR")
-				.requestMatchers(HttpMethod.DELETE, "/administrador").hasAuthority("ADMINISTRADOR")
 
 				// PROFESOR
 				.requestMatchers(HttpMethod.POST, "/profesor").hasAuthority("ADMINISTRADOR")
@@ -115,7 +113,7 @@ public class SecurityConfiguration {
 	public CorsFilter corsFilter() {
 		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
 		CorsConfiguration config = new CorsConfiguration();
-		config.setAllowedOrigins(List.of("http://localhost:4200"));
+        config.setAllowedOrigins(List.of("https://frontend-angular-six.vercel.app"));
 		config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
 		config.setAllowedHeaders(List.of("Authorization", "Content-Type"));
 		config.setAllowCredentials(true);
