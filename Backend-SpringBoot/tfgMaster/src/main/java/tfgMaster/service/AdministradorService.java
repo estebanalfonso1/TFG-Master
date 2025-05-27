@@ -81,7 +81,7 @@ public class AdministradorService {
 		if (this.getAllAdministradores().size() <= 0) {
 			Administrador defaultAdministrador = new Administrador();
 			defaultAdministrador.setUsername("administrador");
-			defaultAdministrador.setPassword(passwordEncoder.encode("administrador"));
+			defaultAdministrador.setPassword(passwordEncoder.encode("@admin@admin123@@"));
 			defaultAdministrador.setNombre("Administrador");
 			defaultAdministrador.setApellido1("Administrador1");
 			defaultAdministrador.setApellido2("Administrador2");
