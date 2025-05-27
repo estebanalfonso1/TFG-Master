@@ -113,7 +113,7 @@ public class SecurityConfiguration {
 	public CorsFilter corsFilter() {
 		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
 		CorsConfiguration config = new CorsConfiguration();
-        config.setAllowedOrigins(List.of("https://frontend-angular-six.vercel.app"));
+        config.setAllowedOrigins(List.of("https://tfgmaster-estebanalfonso1-estebanalfonso1s-projects.vercel.app/login"));
 		config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
 		config.setAllowedHeaders(List.of("Authorization", "Content-Type"));
 		config.setAllowCredentials(true);
