@@ -28,7 +28,7 @@
                 <div class="input-group">
                     <input [type]="passwordVisible ? 'text' : 'password'" class="form-control rounded-pill"
                         formControlName="password" id="password" placeholder="Introduce tu contraseña" />
-                    <button type="button" class="border-0 bg-transparent" (click)="togglePassword()">
+                    <button aria-label="verContraseña" type="button" class="border-0 bg-transparent" (click)="togglePassword()">
                         <i class="bi" [ngClass]="passwordVisible ? 'bi-eye-slash' : 'bi-eye'"></i>
                     </button>
                 </div>
