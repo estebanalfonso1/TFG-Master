@@ -1,13 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { Alumno } from '../../../model/Alumno';
-import { AlumnoService } from '../../../service/alumno.service';
-import { Router, RouterLink } from '@angular/router';
+import { Router } from '@angular/router';
 import { jwtDecode } from 'jwt-decode';
 import { CommonModule } from '@angular/common';
 import { Tribunal } from '../../../model/Tribunal';
 import { TribunalService } from '../../../service/tribunal.service';
 import { DatePipe } from '@angular/common';
-import { ValoracionService } from '../../../service/valoracion.service';
 import { AvatarModule } from 'primeng/avatar';
 import { TagModule } from 'primeng/tag';
 import { IconFieldModule } from 'primeng/iconfield';
@@ -25,7 +22,7 @@ import { SupabaseServiceArchivo } from '../../../service/supabaseArchivo.service
 @Component({
   selector: 'app-list-tribunal',
   imports: [CommonModule, AvatarModule, TableModule, InputTextModule, TagModule,
-    SelectModule, MultiSelectModule, ButtonModule, IconFieldModule, InputIconModule, FormsModule, ToastModule, RouterLink],
+    SelectModule, MultiSelectModule, ButtonModule, IconFieldModule, InputIconModule, FormsModule, ToastModule],
   providers: [DatePipe, MessageService],
   templateUrl: './list-tribunal.component.html',
   styleUrl: './list-tribunal.component.css'

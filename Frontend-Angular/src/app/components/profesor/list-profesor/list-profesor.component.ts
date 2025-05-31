@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, RouterLink } from '@angular/router';
+import { Router } from '@angular/router';
 import { jwtDecode } from 'jwt-decode';
 import { CommonModule } from '@angular/common';
 import { AvatarModule } from 'primeng/avatar';
@@ -21,7 +21,7 @@ import { ProfesorService } from '../../../service/profesor.service';
 @Component({
   selector: 'app-list-profesor',
   imports: [CommonModule, AvatarModule, TableModule, InputTextModule, TagModule,
-    SelectModule, MultiSelectModule, ButtonModule, IconFieldModule, InputIconModule, FormsModule, RouterLink, ToastModule],
+    SelectModule, MultiSelectModule, ButtonModule, IconFieldModule, InputIconModule, FormsModule, ToastModule],
   providers: [MessageService],
   templateUrl: './list-profesor.component.html',
   styleUrl: './list-profesor.component.css'
