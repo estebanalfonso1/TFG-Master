@@ -17,10 +17,12 @@ import { ListRubricaComponent } from './components/rubrica/list-rubrica/list-rub
 import { ListCriterioComponent } from './components/criterio/list-criterio/list-criterio.component';
 import { ListValoracionComponent } from './components/valoracion/list-valoracion/list-valoracion.component';
 import { ListTribunalComponent } from './components/tribunal/list-tribunal/list-tribunal.component';
+import { TerminosYLeyesComponent } from './components/layout/terminos-yleyes/terminos-yleyes.component';
 
 export const routes: Routes = [
     { path: '', component: HomeComponent },
     { path: "login", component: LoginComponent },
+    { path: "terminos", component: TerminosYLeyesComponent },
 
     // ADMINISTRADOR
     { path: "administrador/editar", component: FormAdministradorComponent },

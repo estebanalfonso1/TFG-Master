@@ -1,14 +1,14 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { ActorService } from '../../../service/actor.service';
 import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-login',
-  imports: [ReactiveFormsModule, CommonModule, ToastModule],
+  imports: [ReactiveFormsModule, RouterLink, CommonModule, ToastModule],
   providers: [MessageService],
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
